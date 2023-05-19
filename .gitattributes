@@ -1,0 +1,14 @@
+resources/reads/GBRF2.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM1.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM1.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRF3.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRF3.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM2.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM2.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM3.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRF1.1_sub_1.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRF1.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRF2.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reads/GBRM3.1_sub_2.fq.gz filter=lfs diff=lfs merge=lfs -text
+resources/reference/chrX_sub.fa.gz filter=lfs diff=lfs merge=lfs -text
+resources/reference/chrX_sub.gtf.gz filter=lfs diff=lfs merge=lfs -text
