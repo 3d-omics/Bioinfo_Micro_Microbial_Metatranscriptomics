@@ -6,3 +6,9 @@ fastp:
 star:
   index:
     sjdbOverhang: 150
+  align:
+
+bowtie2:
+  extra: ""
+  samtools:
+    mem_per_thread: 1G

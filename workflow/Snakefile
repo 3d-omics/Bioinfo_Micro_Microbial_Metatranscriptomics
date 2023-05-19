@@ -27,6 +27,8 @@ include: "rules/fastp_functions.smk"
 include: "rules/fastp.smk"
 include: "rules/star_functions.smk"
 include: "rules/star.smk"
+include: "rules/bowtie2_functions.smk"
+include: "rules/bowtie2.smk"
 
 
 rule all:

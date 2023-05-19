@@ -24,6 +24,27 @@ rule reference_set_gtf:
         "gzip --decompress --stdout {input.gtf} > {output.gtf}"
 
 
+rule reference_join_mags:
+    input:
+        fna=features["mags"],
+    output:
+        fna=REFERENCE / "mags.fa.gz",
+    log:
+        REFERENCE / "mags.log",
+    conda:
+        "../envs/samtools.yml"
+    shell:
+        """
+        (gzip \
+            --decompress \
+            --stdout \
+            {input.fna} \
+        | bgzip \
+        >  {output.fna} ) \
+        2> {log}
+        """
+
+
 rule reference:
     input:
         rules.reference_set_dna.output.fa,
