@@ -21,7 +21,7 @@ rule reference_set_gtf:
     conda:
         "../envs/empty.yml"
     shell:
-        "pigz -dc {input.gtf} > {output.gtf}"
+        "gzip --decompress --stdout {input.gtf} > {output.gtf}"
 
 
 rule reference:
