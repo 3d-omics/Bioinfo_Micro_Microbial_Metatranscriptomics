@@ -21,6 +21,7 @@ MAX_THREADS = params["max_threads"]
 include: "rules/folders.smk"
 include: "rules/reads_functions.smk"
 include: "rules/reads.smk"
+include: "rules/fastqc.smk"
 
 
 rule all:
