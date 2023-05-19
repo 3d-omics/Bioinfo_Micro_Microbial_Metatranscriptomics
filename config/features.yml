@@ -1,3 +1,7 @@
-reference:
-    dna: resources/reference/ggal.mock.fa.gz
-    known_vcf: resources/reference/ggal.mock.vcf.gz
+host:
+    dna: resources/reference/chrX_sub.fa.gz
+    gtf: resources/reference/chrX_sub.gtf.gz
+
+mags:
+    - resources/mags/scybalocola_faecipullorum.fna.gz
+    - resources/mags/acutalibacter_ornithocaccae.fna.gz
