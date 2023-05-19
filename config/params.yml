@@ -2,3 +2,7 @@ max_threads: 96
 
 fastp:
   extra: ""
+
+star:
+  index:
+    sjdbOverhang: 150

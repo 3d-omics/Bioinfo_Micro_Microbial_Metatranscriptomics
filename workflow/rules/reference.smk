@@ -1,30 +1,30 @@
-rule reference_recompress_genome:
-    """Extract the fasta.gz on config.yaml into genome.fa,gz with bgzip"""
+rule reference_set_dna:
     input:
-        fa_gz=features["reference"]["dna"],
+        fa=features["host"]["dna"],
     output:
-        fa_gz=REFERENCE / "genome.fa.gz",
+        fa=REFERENCE / "genome.fa",
     log:
         REFERENCE / "genome.log",
     conda:
-        "../envs/samtools.yml"
-    threads: 8
+        "../envs/empty.yml"
     shell:
-        """
-        (gzip \
-            --decompres \
-            --stdout {input.fa_gz} \
-        | bgzip \
-            --compress-level 9 \
-            --threads {threads} \
-            --stdout \
-            /dev/stdin \
-        > {output.fa_gz} \
-        ) 2> {log}
-        """
+        "pigz -dc {input.fa} > {output.fa} 2> {log}"
+
+
+rule reference_set_gtf:
+    input:
+        gtf=features["host"]["gtf"],
+    output:
+        gtf=REFERENCE / "annotation.gtf",
+    log:
+        REFERENCE / "annotation.log",
+    conda:
+        "../envs/empty.yml"
+    shell:
+        "pigz -dc {input.gtf} > {output.gtf}"
 
 
 rule reference:
-    """Re-bgzip the reference genome and known variants"""
     input:
-        rules.reference_recompress_genome.output,
+        rules.reference_set_dna.output.fa,
+        rules.reference_set_gtf.output.gtf,

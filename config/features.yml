@@ -1,2 +1,3 @@
-reference:
+host:
     dna: resources/reference/chrX_sub.fa.gz
+    gtf: resources/reference/chrX_sub.gtf.gz
