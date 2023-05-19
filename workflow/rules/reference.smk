@@ -24,28 +24,7 @@ rule reference_recompress_genome:
         """
 
 
-rule reference_recompress_vcf:
-    """Extract the vcf.gz on config.yaml into known_variants.vcf.gz with bgzip"""
-    input:
-        vcf_gz=features["reference"]["known_vcf"],
-    output:
-        vcf_gz=REFERENCE / "known_variants.vcf.gz",
-    log:
-        REFERENCE / "known_variants.log",
-    conda:
-        "../envs/samtools.yml"
-    threads: 8
-    shell:
-        """
-        (gzip -dc {input.vcf_gz} \
-        | bgzip --threads {threads} \
-        > {output.vcf_gz}) \
-        2> {log}
-        """
-
-
 rule reference:
     """Re-bgzip the reference genome and known variants"""
     input:
         rules.reference_recompress_genome.output,
-        rules.reference_recompress_vcf.output,

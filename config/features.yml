@@ -1,3 +1,2 @@
 reference:
-    dna: resources/reference/ggal.mock.fa.gz
-    known_vcf: resources/reference/ggal.mock.vcf.gz
+    dna: resources/reference/chrX_sub.fa.gz
