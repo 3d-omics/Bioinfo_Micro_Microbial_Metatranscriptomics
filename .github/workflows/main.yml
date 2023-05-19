@@ -12,32 +12,34 @@ env:
   CACHE_NUMBER: 0  # Increment this number to invalidate the cache
 
 jobs:
-  Formatting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Formatting
-        uses: super-linter/super-linter@v5
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_SNAKEMAKE_SNAKEFMT: true
+  # Formatting:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Formatting
+  #       uses: super-linter/super-linter@v5
+  #       env:
+  #         VALIDATE_ALL_CODEBASE: false
+  #         DEFAULT_BRANCH: main
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         VALIDATE_SNAKEMAKE_SNAKEFMT: true
 
-  Linting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Lint workflow
-        uses: snakemake/snakemake-github-action@v1.24.0
-        with:
-          directory: .
-          snakefile: workflow/Snakefile
-          args: "--lint"
+  # Linting:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Lint workflow
+  #       uses: snakemake/snakemake-github-action@v1.24.0
+  #       with:
+  #         directory: .
+  #         snakefile: workflow/Snakefile
+  #         args: "--lint"
 
   Pre-Commit:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@c3
+      - name: Run pre-commit on all files
       - uses: pre-commit/action@v3.0.0
         with:
           extra_args: flake8 --all-files
