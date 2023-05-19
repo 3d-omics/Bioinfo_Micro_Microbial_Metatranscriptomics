@@ -8,7 +8,7 @@ rule reference_set_dna:
     conda:
         "../envs/empty.yml"
     shell:
-        "pigz -dc {input.fa} > {output.fa} 2> {log}"
+        "gzip --decompress --stdout {input.fa} > {output.fa} 2> {log}"
 
 
 rule reference_set_gtf:
