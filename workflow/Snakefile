@@ -34,7 +34,8 @@ include: "rules/bowtie2.smk"
 rule all:
     """Default pipeline"""
     input:
-        rules.reads.input,
-        rules.reference.input,
-        rules.fastp.input,
-        rules.star.input,
+        # rules.reads.input,
+        # rules.reference.input,
+        # rules.fastp.input,
+        # rules.star.input,
+        rules.bowtie2.input,
