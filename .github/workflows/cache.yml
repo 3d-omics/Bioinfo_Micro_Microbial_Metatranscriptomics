@@ -6,6 +6,9 @@ on:  # yamllint disable-line rule:truthy
     - cron: '0 0 * * 1'
   workflow_dispatch:
 
+env:
+  CACHE_NUMBER: 0  # Increment this number to invalidate the cache
+
 jobs:
   weekly-cache:
     runs-on: ubuntu-latest
@@ -16,7 +19,9 @@ jobs:
       - name: Set up cache
         uses: actions/cache@v3
         with:
-          path: .snakemake/conda
+          path: |
+            .snakemake/conda
+            ~/.cache/pre-commit/
           key: snakemake-conda-${{ env.CACHE_NUMBER }}
         id: cache
       - name: Download environments
