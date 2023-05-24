@@ -9,8 +9,8 @@ rule coverm_overall:
     conda:
         "../envs/coverm.yml"
     params:
-        methods="relative_abundance",
-        min_covered_fraction=0.0,
+        methods=params["coverm"]["genome"]["methods"],
+        min_covered_fraction=params["coverm"]["genome"]["min_covered_fraction"],
     threads: 24
     shell:
         """
@@ -36,7 +36,7 @@ rule coverm_contig:
     conda:
         "../envs/coverm.yml"
     params:
-        methods="count",
+        methods=params["coverm"]["contig"]["methods"],
     threads: 24
     shell:
         """
