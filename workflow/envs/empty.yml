@@ -1,3 +1,5 @@
+# empty.yml: conda environment with python alone
+---
 channels:
   - conda-forge
   - bioconda

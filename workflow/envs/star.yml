@@ -1,3 +1,5 @@
+# star.yml: conda environment file for star
+---
 channels:
   - conda-forge
   - bioconda

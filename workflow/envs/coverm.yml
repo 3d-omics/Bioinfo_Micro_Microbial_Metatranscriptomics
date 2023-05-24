@@ -1,3 +1,5 @@
+# coverm.yml: conda environment file for coverm
+---
 channels:
   - conda-forge
   - bioconda
