@@ -29,6 +29,7 @@ include: "rules/star_functions.smk"
 include: "rules/star.smk"
 include: "rules/bowtie2_functions.smk"
 include: "rules/bowtie2.smk"
+include: "rules/coverm.smk"
 
 
 rule all:
@@ -38,4 +39,5 @@ rule all:
         # rules.reference.input,
         # rules.fastp.input,
         # rules.star.input,
-        rules.bowtie2.input,
+        # rules.bowtie2.input,
+        rules.coverm.input,
