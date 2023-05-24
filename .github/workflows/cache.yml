@@ -19,7 +19,9 @@ jobs:
       - name: Set up cache
         uses: actions/cache@v3
         with:
-          path: .snakemake/conda
+          path: |
+            .snakemake/conda
+            ~/.cache/pre-commit/
           key: snakemake-conda-${{ env.CACHE_NUMBER }}
         id: cache
       - name: Download environments
