@@ -1,3 +1,5 @@
+# fastp.yml: conda environment file for fastp
+---
 channels:
   - conda-forge
   - bioconda

@@ -1,3 +1,5 @@
+# params.yml: execution parameters for the workflow
+---
 max_threads: 96
 
 fastp:

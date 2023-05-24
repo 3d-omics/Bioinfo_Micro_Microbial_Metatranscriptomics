@@ -1,3 +1,5 @@
+# features.yml: paths and parameters for the features
+---
 host:
     dna: resources/reference/chrX_sub.fa.gz
     gtf: resources/reference/chrX_sub.gtf.gz
