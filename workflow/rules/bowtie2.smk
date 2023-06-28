@@ -13,6 +13,9 @@ rule bowtie2_build:
     params:
         extra=params["bowtie2"]["extra"],
     threads: 8
+    resources:
+        mem_gb=32,
+        runtime=6 * 60,
     shell:
         """
         bowtie2-build \
