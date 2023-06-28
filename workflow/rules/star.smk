@@ -61,6 +61,7 @@ rule star_align_one:
                 {input.r2} \
             --outFileNamePrefix {params.out_prefix} \
             --outSAMtype BAM SortedByCoordinate \
+            --outSAMunmapped Within KeepPairs \
             --outReadsUnmapped Fastx \
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
@@ -72,34 +73,6 @@ rule star_align_all:
         [
             STAR / f"{sample}.{library}.ReadsPerGene.out.tab"
             for sample, library in SAMPLE_LIB
-        ],
-
-
-rule star_compress_unpaired_one:
-    input:
-        u1=STAR / "{sample}.{library}.Unmapped.out.mate1",
-        u2=STAR / "{sample}.{library}.Unmapped.out.mate2",
-    output:
-        u1=STAR / "{sample}.{library}.Unmapped.out.mate1.fq.gz",
-        u2=STAR / "{sample}.{library}.Unmapped.out.mate2.fq.gz",
-    log:
-        STAR / "{sample}.{library}.compression.log",
-    conda:
-        "../envs/star.yml"
-    threads: 24
-    shell:
-        """
-        pigz --best --stdout {input.u1} > {output.u1} 2>  {log}
-        pigz --best --stdout {input.u2} > {output.u2} 2>> {log}
-        """
-
-
-rule star_compress_all:
-    input:
-        [
-            STAR / f"{sample}.{library}.Unmapped.out.{mate}.fq.gz"
-            for sample, library in SAMPLE_LIB
-            for mate in "mate1 mate2".split()
         ],
 
 
@@ -150,7 +123,7 @@ rule star_report_all:
 
 rule star_all:
     input:
-        rules.star_compress_all.input,
+        rules.star_align_all.input,
         rules.star_cram_all.input,
         rules.star_report_all.input,
 
