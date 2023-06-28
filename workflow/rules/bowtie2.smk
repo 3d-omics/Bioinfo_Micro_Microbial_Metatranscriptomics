@@ -19,7 +19,7 @@ rule bowtie2_build:
     conda:
         "../envs/bowtie2.yml"
     params:
-        output_path=REFERENCE / "mags",
+        output_path=REFERENCE / "genome",
         extra=params["bowtie2"]["extra"],
     threads: 8
     shell:
@@ -34,10 +34,15 @@ rule bowtie2_build:
 
 
 rule bowtie2_map_one:
-    """Map one library to reference genome using bowtie2"""
+    """Map one library to reference genome using bowtie2
+
+    Output SAM file is piped to samtools sort to generate a CRAM file.
+    """
     input:
-        forward_=STAR / "{sample}.{library}.Unmapped.out.mate1",
-        reverse_=STAR / "{sample}.{library}.Unmapped.out.mate2",
+        forward_=FASTP / "{sample}.{library}_1.fq.gz",
+        reverse_=FASTP / "{sample}.{library}_2.fq.gz",
+        unpaired1=FASTP / "{sample}.{library}_u1.fq.gz",
+        unpaired2=FASTP / "{sample}.{library}_u2.fq.gz",
         idx=multiext(
             f"{REFERENCE}/mags",
             ".1.bt2",
@@ -72,6 +77,7 @@ rule bowtie2_map_one:
             -x {params.index_prefix} \
             -1 {input.forward_} \
             -2 {input.reverse_} \
+            -U {input.unpaired1},{input.unpaired2} \
             --threads {threads} \
             --rg-id '{params.rg_id}' \
             --rg '{params.rg_extra}' \
@@ -88,12 +94,27 @@ rule bowtie2_map_one:
 
 
 rule bowtie2_map_all:
-    """Run bowtie2 on all libraries"""
+    """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
+
+
+rule bowtie2_report_all:
+    """Generate bowtie2 reports for all libraries:
+    - samtools stats
+    - samtools flagstats
+    - samtools idxstats
+    """
+    input:
+        [
+            BOWTIE2 / f"{sample}.{library}.{report}"
+            for sample, library in SAMPLE_LIB
+            for report in BAM_REPORTS
+        ],
 
 
 rule bowtie2:
     """Run bowtie2 on all libraries and generate reports"""
     input:
         rules.bowtie2_map_all.input,
+        rules.bowtie2_report_all.input,

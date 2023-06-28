@@ -70,9 +70,43 @@ rule report_step_star:
         """
 
 
+rule report_step_bowtie2:
+    """Collect all reports for the bowtie2 step"""
+    input:
+        rules.bowtie2_report_all.input,
+    output:
+        html=REPORT_STEP / "bowtie2.html",
+    log:
+        REPORT_STEP / "bowtie2.log",
+    conda:
+        "../envs/report.yml"
+    params:
+        dir=REPORT_STEP,
+    shell:
+        """
+        multiqc \
+            --title bowtie2 \
+            --force \
+            --filename bowtie2 \
+            --outdir {params.dir} \
+            --dirs \
+            --dirs-depth 1 \
+            {input} \
+        2> {log} 1>&2
+        """
+
+
 rule report_step:
     """Collect all per step reports for the pipeline"""
     input:
         rules.report_step_reads.output,
         rules.report_step_fastp.output,
         rules.report_step_star.output,
+        rules.report_step_bowtie2.output,
+
+
+localrules:
+    report_step_reads,
+    report_step_fastp,
+    report_step_star,
+    report_step_bowtie2,

@@ -20,7 +20,7 @@ rule fastp_trim_one:
         extra=params["fastp"]["extra"],
     threads: 16
     resources:
-        mem_mb=1024,
+        mem_gb=4,
         runtime=240,
     conda:
         "../envs/fastp.yml"
@@ -55,10 +55,22 @@ rule fastp_trim_all:
         ],
 
 
+rule fastp_fastqc_all:
+    """Run fastqc over all libraries"""
+    input:
+        [
+            FASTP / f"{sample}.{library}_{end}_fastqc.{extension}"
+            for sample, library in SAMPLE_LIB
+            for end in ["1", "2"]
+            for extension in ["html", "zip"]
+        ],
+
+
 rule fastp_report_all:
-    """Collect fastp reports"""
+    """Collect fastp and fastqc reports"""
     input:
         [FASTP / f"{sample}.{library}_fastp.json" for sample, library in SAMPLE_LIB],
+        rules.fastp_fastqc_all.input,
 
 
 rule fastp:
