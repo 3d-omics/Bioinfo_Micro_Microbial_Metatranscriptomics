@@ -62,7 +62,7 @@ rule star_align_one:
             --outSAMtype BAM SortedByCoordinate \
             --outReadsUnmapped Fastx \
             --readFilesCommand "gzip -cd" \
-            --quantMode TranscriptomeSAM GeneCounts \
+            --quantMode GeneCounts \
         2>> {log} 1>&2
         """
 
