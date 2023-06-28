@@ -108,8 +108,8 @@ rule star_cram_one:
         bam=STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
         reference=REFERENCE / "genome.fa",
     output:
-        cram=protected(STAR / "{sample}.{library}.Aligned.sortedByCoord.out.cram"),
-        crai=STAR / "{sample}.{library}.Aligned.sortedByCoord.out.cram.crai",
+        cram=protected(STAR / "{sample}.{library}.cram"),
+        crai=STAR / "{sample}.{library}.cram.crai",
     log:
         STAR / "{sample}.{library}.Aligned.sortedByCoord.out.cram.log",
     conda:
@@ -137,7 +137,7 @@ rule star_cram_one:
 rule star_cram_all:
     input:
         [
-            STAR / f"{sample}.{library}.Aligned.sortedByCoord.out.cram"
+            STAR / f"{sample}.{library}.cram"
             for sample, library in SAMPLE_LIB
         ],
 
