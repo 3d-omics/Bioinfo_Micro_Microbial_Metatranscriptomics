@@ -37,6 +37,7 @@ rule star_align_one:
         u1=temp(STAR / "{sample}.{library}.Unmapped.out.mate1"),
         u2=temp(STAR / "{sample}.{library}.Unmapped.out.mate2"),
         report=STAR / "{sample}.{library}.Log.final.out",
+        counts=STAR / "{sample}.{library}.ReadsPerGene.out.tab",
     log:
         STAR / "{sample}.{library}.log",
     params:
