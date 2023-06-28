@@ -67,6 +67,13 @@ rule star_align_one:
         2>> {log} 1>&2
         """
 
+rule star_align_all:
+    input:
+        [
+            STAR / f"{sample}.{library}.ReadsPerGene.out.tab"
+            for sample, library in SAMPLE_LIB
+        ],
+
 
 rule star_compress_unpaired_one:
     input:
