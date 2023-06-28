@@ -14,7 +14,7 @@ rule bowtie2_build:
         extra=params["bowtie2"]["extra"],
     threads: 8
     resources:
-        mem_gb=32,
+        mem_mb=32 * 1024,
         runtime=6 * 60,
     shell:
         """
@@ -55,7 +55,7 @@ rule bowtie2_map_one:
     conda:
         "../envs/bowtie2.yml"
     resources:
-        mem_gb=32,
+        mem_mb=32 * 1024,
         runtime=1440,
     shell:
         """
