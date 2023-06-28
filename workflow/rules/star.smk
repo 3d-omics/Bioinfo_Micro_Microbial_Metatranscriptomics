@@ -115,6 +115,7 @@ rule star_cram_one:
         samtools sort \
             -l 9 \
             -m 1G \
+            -M \
             -o {output.cram} \
             --output-fmt CRAM \
             --reference {input.reference} \
