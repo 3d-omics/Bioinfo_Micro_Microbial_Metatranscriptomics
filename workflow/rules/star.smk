@@ -45,7 +45,7 @@ rule star_align_one:
         "../envs/star.yml"
     threads: 24
     resources:
-        mem_mb=4 * 1024,
+        mem_gb=4,
         runtime=24 * 60,
     shell:
         """
@@ -108,7 +108,7 @@ rule star_cram_one:
         "../envs/star.yml"
     threads: 24
     resources:
-        mem_mb=24 * 2048,
+        mem_gb=24,
         runtime=24 * 60,
     shell:
         """

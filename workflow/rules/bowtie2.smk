@@ -52,7 +52,7 @@ rule bowtie2_map_one:
     conda:
         "../envs/bowtie2.yml"
     resources:
-        mem_mb=30000,
+        mem_gb=32,
         runtime=1440,
     shell:
         """
