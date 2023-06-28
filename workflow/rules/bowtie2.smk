@@ -3,15 +3,7 @@ rule bowtie2_build:
     input:
         reference=REFERENCE / "mags.fa.gz",
     output:
-        multiext(
-            f"{REFERENCE}/mags",
-            ".1.bt2",
-            ".2.bt2",
-            ".3.bt2",
-            ".4.bt2",
-            ".rev.1.bt2",
-            ".rev.2.bt2",
-        ),
+        prefix = touch(REFERENCE / "mags")
     log:
         BOWTIE2 / "build.log",
     benchmark:
@@ -19,7 +11,6 @@ rule bowtie2_build:
     conda:
         "../envs/bowtie2.yml"
     params:
-        output_path=REFERENCE / "genome",
         extra=params["bowtie2"]["extra"],
     threads: 8
     shell:
@@ -28,7 +19,7 @@ rule bowtie2_build:
             --threads {threads} \
             {params.extra} \
             {input.reference} \
-            {params.output_path} \
+            {output.prefix} \
         2> {log} 1>&2
         """
 
@@ -43,15 +34,7 @@ rule bowtie2_map_one:
         reverse_=FASTP / "{sample}.{library}_2.fq.gz",
         unpaired1=FASTP / "{sample}.{library}_u1.fq.gz",
         unpaired2=FASTP / "{sample}.{library}_u2.fq.gz",
-        idx=multiext(
-            f"{REFERENCE}/mags",
-            ".1.bt2",
-            ".2.bt2",
-            ".3.bt2",
-            ".4.bt2",
-            ".rev.1.bt2",
-            ".rev.2.bt2",
-        ),
+        idx=REFERENCE / "mags",
         reference=REFERENCE / "mags.fa.gz",
     output:
         cram=protected(BOWTIE2 / "{sample}.{library}.cram"),
