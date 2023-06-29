@@ -1,4 +1,5 @@
 rule coverm_overall:
+   """calculation of mag-wise coverage"""
     input:
         crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
         mags=REFERENCE / "mags.fa.gz",
@@ -26,6 +27,7 @@ rule coverm_overall:
 
 
 rule coverm_contig:
+   """calculation of contig-wise coverage"""
     input:
         crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
         mags=REFERENCE / "mags.fa.gz",
