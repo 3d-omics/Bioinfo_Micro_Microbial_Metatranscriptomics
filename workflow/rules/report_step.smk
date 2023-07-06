@@ -46,6 +46,30 @@ rule report_step_fastp:
         """
 
 
+rule report_step_kraken2:
+    """Collect all reports for the fastp step"""
+    input:
+        rules.kraken2_report_all.input,
+    output:
+        html=REPORT_STEP / "kraken2.html",
+    log:
+        REPORT_STEP / "kraken2.log",
+    conda:
+        "../envs/report.yml"
+    params:
+        dir=REPORT_STEP,
+    shell:
+        """
+        multiqc \
+            --title kraken2 \
+            --force \
+            --filename kraken2 \
+            --outdir {params.dir} \
+            {input} \
+        2> {log} 1>&2
+        """
+
+
 rule report_step_star:
     """Collect all reports for the star step"""
     input:
@@ -101,6 +125,7 @@ rule report_step:
     input:
         rules.report_step_reads.output,
         rules.report_step_fastp.output,
+        rules.report_step_kraken2.output,
         rules.report_step_star.output,
         rules.report_step_bowtie2.output,
 

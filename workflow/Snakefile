@@ -25,8 +25,9 @@ include: "rules/reads.smk"
 include: "rules/samtools.smk"
 include: "rules/reference.smk"
 include: "rules/fastqc.smk"
-include: "rules/fastp.smk"
 include: "rules/fastp_functions.smk"
+include: "rules/fastp.smk"
+include: "rules/kraken2.smk"
 include: "rules/star_functions.smk"
 include: "rules/star.smk"
 include: "rules/bowtie2_functions.smk"
@@ -43,6 +44,7 @@ rule all:
         # rules.reads.input,
         # rules.reference.input,
         # rules.fastp.input,
+        rules.kraken2.input,
         # rules.star.input,
         # rules.bowtie2.input,
         rules.report_step.input,

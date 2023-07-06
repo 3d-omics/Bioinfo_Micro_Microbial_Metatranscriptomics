@@ -6,6 +6,7 @@ rule report_library_one:
         FASTP / "{sample}.{library}_fastp.json",
         FASTP / "{sample}.{library}_1_fastqc.zip",
         FASTP / "{sample}.{library}_2_fastqc.zip",
+        KRAKEN2 / "{sample}.{library}.report",
         BOWTIE2 / "{sample}.{library}.stats.tsv",
         BOWTIE2 / "{sample}.{library}.flagstats.txt",
         BOWTIE2 / "{sample}.{library}.idxstats.tsv",

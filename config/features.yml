@@ -7,3 +7,5 @@ host:
 mags:
     - resources/mags/scybalocola_faecipullorum.fna.gz
     - resources/mags/acutalibacter_ornithocaccae.fna.gz
+
+kraken2_db: resources/kraken_mock
