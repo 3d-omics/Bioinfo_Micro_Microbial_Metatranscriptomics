@@ -68,6 +68,7 @@ rule star_align_one:
         2>> {log} 1>&2
         """
 
+
 rule star_align_all:
     input:
         [
@@ -77,6 +78,11 @@ rule star_align_all:
 
 
 rule star_cram_one:
+    """Convert to cram one library
+
+    Note: we use samtools sort when it is already sorted because there is no
+    other way to use minimizers on the unmapped fraction.
+    """
     input:
         bam=STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
         reference=REFERENCE / "genome.fa",
