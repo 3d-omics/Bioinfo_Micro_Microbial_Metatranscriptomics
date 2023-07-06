@@ -12,7 +12,7 @@ rule kraken2_assign_one:
         "../envs/kraken2.yml"
     threads: 24
     resources:
-        mem_mb=8 * 1024,
+        mem_mb=eval(params["kraken2"]["mem_mb"]),
         runtime=60,
     shell:
         """
@@ -36,12 +36,12 @@ rule kraken2_assign_all:
 
 rule kraken2_report_one:
     input:
-        KRAKEN2 / "{sample}.{library}.report",
+        rules.kraken2_assign_one.output.report,
 
 
 rule kraken2_report_all:
     input:
-        [KRAKEN2 / f"{sample}.{library}.report" for sample, library in SAMPLE_LIB],
+        rules.kraken2_assign_all.input,
 
 
 rule kraken2:

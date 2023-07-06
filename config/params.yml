@@ -5,6 +5,9 @@ max_threads: 96
 fastp:
   extra: ""
 
+kraken2:
+  mem_mb: 4 * 1024  # approx same memory as database size in disk
+
 star:
   index:
     sjdbOverhang: 150
