@@ -1,18 +1,21 @@
-rule coverm_overall:
+rule coverm_genome:
    """calculation of mag-wise coverage"""
     input:
         crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
         mags=REFERENCE / "mags.fa.gz",
     output:
-        COVERM / "coverm_overall.tsv",
+        COVERM / "coverm_genomel.tsv",
     log:
-        COVERM / "coverm_overall.log",
+        COVERM / "coverm_genome.log",
     conda:
         "../envs/coverm.yml"
     params:
         methods=params["coverm"]["genome"]["methods"],
         min_covered_fraction=params["coverm"]["genome"]["min_covered_fraction"],
     threads: 24
+    resources:
+        runtime=24 * 60,
+        mem_mb=32 * 1024
     shell:
         """
         coverm genome \
@@ -40,6 +43,9 @@ rule coverm_contig:
     params:
         methods=params["coverm"]["contig"]["methods"],
     threads: 24
+    resources:
+        runtime=24 * 60,
+        mem_mb=32 * 1024
     shell:
         """
         coverm contig \
@@ -53,5 +59,5 @@ rule coverm_contig:
 
 rule coverm:
     input:
-        rules.coverm_overall.output,
+        rules.coverm_genome.output,
         rules.coverm_contig.output,
