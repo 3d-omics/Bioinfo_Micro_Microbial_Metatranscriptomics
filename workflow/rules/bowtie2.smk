@@ -33,10 +33,8 @@ rule bowtie2_map_one:
     Output SAM file is piped to samtools sort to generate a CRAM file.
     """
     input:
-        forward_=FASTP / "{sample}.{library}_1.fq.gz",
-        reverse_=FASTP / "{sample}.{library}_2.fq.gz",
-        unpaired1=FASTP / "{sample}.{library}_u1.fq.gz",
-        unpaired2=FASTP / "{sample}.{library}_u2.fq.gz",
+        forward_=STAR / "{sample}.{library}.Unmapped.out.mate1",
+        reverse_=STAR / "{sample}.{library}.Unmapped.out.mate2",
         idx=REFERENCE / "mags",
         reference=REFERENCE / "mags.fa.gz",
     output:
@@ -63,7 +61,6 @@ rule bowtie2_map_one:
             -x {params.index_prefix} \
             -1 {input.forward_} \
             -2 {input.reverse_} \
-            -U {input.unpaired1},{input.unpaired2} \
             --threads {threads} \
             --rg-id '{params.rg_id}' \
             --rg '{params.rg_extra}' \
