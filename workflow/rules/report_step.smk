@@ -133,5 +133,6 @@ rule report_step:
 localrules:
     report_step_reads,
     report_step_fastp,
+    report_step_kraken2,
     report_step_star,
     report_step_bowtie2,
