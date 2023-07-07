@@ -6,8 +6,6 @@ rule bowtie2_build:
         prefix = touch(REFERENCE / "mags")
     log:
         BOWTIE2 / "build.log",
-    benchmark:
-        BOWTIE2 / "build.bmk"
     conda:
         "../envs/bowtie2.yml"
     params:
