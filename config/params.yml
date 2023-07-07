@@ -8,6 +8,8 @@ fastp:
 kraken2:
   mem_mb: 4 * 1024  # approx same memory as database size in disk
 
+ribodetector: null
+
 star:
   index:
     sjdbOverhang: 150
