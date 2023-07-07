@@ -46,6 +46,30 @@ rule report_step_fastp:
         """
 
 
+rule report_step_ribodetector:
+    """Collect all reports for the ribodetector step"""
+    input:
+        rules.ribodetector_fastqc_all.input,
+    output:
+        html=REPORT_STEP / "ribodetector.html",
+    log:
+        REPORT_STEP / "ribodetector.log",
+    conda:
+        "../envs/report.yml"
+    params:
+        dir=REPORT_STEP,
+    shell:
+        """
+        multiqc \
+            --title ribodetector \
+            --force \
+            --filename ribodetector \
+            --outdir {params.dir} \
+            {input} \
+        2> {log} 1>&2
+        """
+
+
 rule report_step_kraken2:
     """Collect all reports for the fastp step"""
     input:

@@ -29,8 +29,8 @@ rule star_index:
 
 rule star_align_one:
     input:
-        r1=FASTP / "{sample}.{library}_1.fq.gz",
-        r2=FASTP / "{sample}.{library}_2.fq.gz",
+        r1=RIBODETECTOR / "{sample}.{library}_1.fq.gz",
+        r2=RIBODETECTOR / "{sample}.{library}_2.fq.gz",
         index=STAR / "index",
     output:
         bam=temp(STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam"),
