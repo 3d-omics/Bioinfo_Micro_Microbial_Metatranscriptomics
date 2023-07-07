@@ -38,11 +38,9 @@ rule bowtie2_map_one:
         idx=REFERENCE / "mags",
         reference=REFERENCE / "mags.fa.gz",
     output:
-        cram=protected(BOWTIE2 / "{sample}.{library}.cram"),
+        cram=BOWTIE2 / "{sample}.{library}.cram",
     log:
         BOWTIE2 / "{sample}.{library}.log",
-    benchmark:
-        BOWTIE2 / "{sample}.{library}.bmk"
     params:
         index_prefix=REFERENCE / "mags",
         extra=params["bowtie2"]["extra"],

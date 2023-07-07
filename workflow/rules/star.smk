@@ -87,7 +87,7 @@ rule star_cram_one:
         bam=STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
         reference=REFERENCE / "genome.fa",
     output:
-        cram=protected(STAR / "{sample}.{library}.cram"),
+        cram=STAR / "{sample}.{library}.cram",
         crai=STAR / "{sample}.{library}.cram.crai",
     log:
         STAR / "{sample}.{library}.Aligned.sortedByCoord.out.cram.log",
