@@ -1,4 +1,5 @@
 rule reference_set_dna:
+    """Link the reference genome to the results directory"""
     input:
         fa=features["host"]["dna"],
     output:
@@ -12,6 +13,7 @@ rule reference_set_dna:
 
 
 rule reference_set_gtf:
+    """Link the reference annotation to the results directory"""
     input:
         gtf=features["host"]["gtf"],
     output:
@@ -25,6 +27,7 @@ rule reference_set_gtf:
 
 
 rule reference_set_mags:
+    """Recpmpress the MAGs into the results directory"""
     input:
         fna=features["mags"],
     output:

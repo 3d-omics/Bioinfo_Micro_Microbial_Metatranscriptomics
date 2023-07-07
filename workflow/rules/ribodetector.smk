@@ -1,4 +1,8 @@
 rule ribodetector_filter_one:
+    """Run ribodetector on one library
+
+    ribodetector filters out rRNA reads from a library
+    """
     input:
         forward_=FASTP / "{sample}.{library}_1.fq.gz",
         reverse_=FASTP / "{sample}.{library}_2.fq.gz",
@@ -29,6 +33,7 @@ rule ribodetector_filter_one:
 
 
 rule ribodetector_find_all:
+    """Run ribodetector_find_one over all libraries"""
     input:
         [
             RIBODETECTOR / f"{sample}.{library}_{end}.fq.gz"
@@ -49,6 +54,7 @@ rule ribodetector_fastqc_all:
 
 
 rule ribodetector:
+    """Run ribodetector and generate reports for all libraries"""
     input:
         rules.ribodetector_find_all.input,
         rules.ribodetector_fastqc_all.input,

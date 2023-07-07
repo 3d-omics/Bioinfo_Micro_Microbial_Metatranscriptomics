@@ -1,4 +1,5 @@
 rule star_index:
+    """Index the genome for STAR"""
     input:
         dna=REFERENCE / "genome.fa",
         gtf=REFERENCE / "annotation.gtf",
@@ -28,6 +29,7 @@ rule star_index:
 
 
 rule star_align_one:
+    """Align one library to the host genome with STAR to discard host RNA"""
     input:
         r1=RIBODETECTOR / "{sample}.{library}_1.fq.gz",
         r2=RIBODETECTOR / "{sample}.{library}_2.fq.gz",
@@ -114,6 +116,7 @@ rule star_cram_one:
 
 
 rule star_cram_all:
+    """Convert to cram all libraries"""
     input:
         [
             STAR / f"{sample}.{library}.cram"
@@ -127,13 +130,9 @@ rule star_report_all:
         [STAR / f"{sample}.{library}.Log.final.out" for sample, library in SAMPLE_LIB],
 
 
-rule star_all:
+rule star:
+    """Run all the elements in the star subworkflow"""
     input:
         rules.star_align_all.input,
         rules.star_cram_all.input,
         rules.star_report_all.input,
-
-
-rule star:
-    input:
-        rules.star_all.input,

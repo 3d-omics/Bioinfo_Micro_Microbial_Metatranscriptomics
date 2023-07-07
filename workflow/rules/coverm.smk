@@ -4,7 +4,7 @@ rule coverm_genome:
         crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
         mags=REFERENCE / "mags.fa.gz",
     output:
-        COVERM / "coverm_genomel.tsv",
+        COVERM / "coverm_genome.tsv",
     log:
         COVERM / "coverm_genome.log",
     conda:
