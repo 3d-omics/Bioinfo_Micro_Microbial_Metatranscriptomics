@@ -21,7 +21,7 @@ rule coverm_genome:
         coverm genome \
             --bam-files {input.crams} \
             --methods {params.methods} \
-            --separator _ \
+            --separator "^" \
             --threads {threads} \
             --min-covered-fraction {params.min_covered_fraction} \
         > {output} \
