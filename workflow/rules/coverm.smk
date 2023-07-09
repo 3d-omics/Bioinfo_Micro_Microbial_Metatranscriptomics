@@ -1,8 +1,34 @@
+rule coverm_cram_to_bam:
+    input:
+        cram=BOWTIE2 / "{sample}.{library}.cram",
+        reference=REFERENCE / "mags.fa.gz",
+    output:
+        bam=temp(COVERM / "bams/{sample}.{library}.bam"),
+    log:
+        COVERM / "bams/{sample}.{library}.log",
+    conda:
+        "../envs/coverm.yml"
+    threads: 4
+    resources:
+        runtime=60,
+        mem_mb=32 * 1024
+    shell:
+        """
+        samtools view \
+            --threads {threads} \
+            --reference {input.reference} \
+            --output-fmt BAM \
+            --threads {threads} \
+            --output {output.bam} \
+            {input.cram} \
+        2> {log} 1>&2
+        """
+
+
 rule coverm_genome:
    """calculation of mag-wise coverage"""
     input:
-        crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
-        mags=REFERENCE / "mags.fa.gz",
+        bams=[COVERM / f"bams/{sample}.{library}.bam" for sample, library in SAMPLE_LIB],
     output:
         COVERM / "coverm_genome.tsv",
     log:
@@ -19,7 +45,7 @@ rule coverm_genome:
     shell:
         """
         coverm genome \
-            --bam-files {input.crams} \
+            --bam-files {input.bams} \
             --methods {params.methods} \
             --separator "^" \
             --threads {threads} \
@@ -32,8 +58,7 @@ rule coverm_genome:
 rule coverm_contig:
    """calculation of contig-wise coverage"""
     input:
-        crams=[BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
-        mags=REFERENCE / "mags.fa.gz",
+        bams=[COVERM / f"bams/{sample}.{library}.bam" for sample, library in SAMPLE_LIB],
     output:
         COVERM / "coverm_contig.tsv",
     log:
@@ -49,7 +74,7 @@ rule coverm_contig:
     shell:
         """
         coverm contig \
-            --bam-files {input.crams} \
+            --bam-files {input.bams} \
             --methods {params.methods} \
             --proper-pairs-only \
         > {output} \
