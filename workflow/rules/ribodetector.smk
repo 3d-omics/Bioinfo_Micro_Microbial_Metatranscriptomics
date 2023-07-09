@@ -13,21 +13,26 @@ rule ribodetector_filter_one:
         RIBODETECTOR / "interleaved/{sample}.{library}.log",
     threads: 24
     params:
-        len=100
+        average_length=params["ribodetector"]["average_length"],
+        chunk_size=params["ribodetector"]["chunk_size"],
     conda:
         "../envs/ribodetector.yml",
+    resources:
+        mem_mb=32 * 1024,
+        runtime= 6 * 60,
     shell:
         """
         ribodetector_cpu \
-            --len {params.len} \
             --input \
                 {input.forward_} \
                 {input.reverse_} \
             --output \
-                >(pigz --fast > {output.forward_}) \
-                >(pigz --fast > {output.reverse_}) \
+                {output.forward_} \
+                {output.reverse_} \
+            --len {params.average_length} \
             --ensure rrna \
             --threads {threads} \
+            --chunk_size {params.chunk_size} \
         2> {log} 1>&2
         """
 
