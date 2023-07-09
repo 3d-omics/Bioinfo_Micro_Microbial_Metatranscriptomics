@@ -10,7 +10,7 @@ rule ribodetector_filter_one:
         forward_=temp(RIBODETECTOR / "{sample}.{library}_1.fq.gz"),
         reverse_=temp(RIBODETECTOR / "{sample}.{library}_2.fq.gz"),
     log:
-        RIBODETECTOR / "interleaved/{sample}.{library}.log",
+        RIBODETECTOR / "{sample}.{library}.log",
     threads: 24
     params:
         average_length=params["ribodetector"]["average_length"],
