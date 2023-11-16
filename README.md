@@ -32,22 +32,22 @@ If you use this workflow in a paper, don't forget to give credits to the authors
   conda activte Snakemake
   #run the pipeline with the test data, it will download all the necesary software through conda. It should take less than 5 minutes.
   snakemake --use-conda --jobs 8 all
-  ``` 
+  ```
 
 - Run it with your own data:
   - Edit `config/samples.tsv` and add your samples and where are they located. Here is an example of the tsv table filled with the information
-    
+
     <img width="828" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/1afac14d-8bc5-47da-b154-6e0c75f0e255">
 
 
   - Edit `config/features.yml` with information regarding the reference and the mags you are
     using like in this example.
-    
+
     <img width="476" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/99af1063-9a25-4ef8-adab-1a7af1df4e64">
 
 
   - Edit `config/params.yml` to change the execution of the steps like in this example
-    
+
     <img width="548" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/33187236-3b46-40ac-997a-2d1b49466c60">
 
 
@@ -60,7 +60,7 @@ If you use this workflow in a paper, don't forget to give credits to the authors
 - SAM/BAM/CRAM processing with `samtools`
 - coverage eveluation with `coverm`
 - Reports with `multiqc` and `FastQC`
-  
+
 ## DAG
 
 ![image](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/59fb81c6-47a8-4307-9056-1eab5f180303)
@@ -74,4 +74,3 @@ If you use this workflow in a paper, don't forget to give credits to the authors
 - [`samtools`](https://github.com/samtools/samtools)
 - [`FastQC`](https://github.com/s-andrews/FastQC)
 - [`multiqc`](https://github.com/ewels/MultiQC)
-
