@@ -4,7 +4,7 @@ rule star_index:
         dna=REFERENCE / "genome.fa",
         gtf=REFERENCE / "annotation.gtf",
     output:
-        folder=directory("results/star/index"),
+        folder=INDEX / "index",
     params:
         sjdbOverhang=params["star"]["index"]["sjdbOverhang"],
     conda:
@@ -33,7 +33,7 @@ rule star_align_one:
     input:
         r1=RIBODETECTOR / "{sample}.{library}_1.fq.gz",
         r2=RIBODETECTOR / "{sample}.{library}_2.fq.gz",
-        index=STAR / "index",
+        index=INDEX / "index",
     output:
         bam=temp(STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam"),
         u1=temp(STAR / "{sample}.{library}.Unmapped.out.mate1"),

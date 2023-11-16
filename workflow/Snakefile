@@ -24,7 +24,6 @@ include: "rules/helpers/_main.smk"
 include: "rules/reads/_main.smk"
 include: "rules/reference/_main.smk"
 include: "rules/preprocessing/_main.smk"
-include: "rules/host_removal/_main.smk"
 include: "rules/quantification/_main.smk"
 include: "rules/report/_main.smk"
 

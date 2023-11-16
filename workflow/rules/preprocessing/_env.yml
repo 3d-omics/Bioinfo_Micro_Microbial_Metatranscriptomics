@@ -11,3 +11,5 @@ dependencies:
   - multiqc =1.14
   - pigz=2.6
   - ribodetector=0.2.7
+  - samtools=1.18
+  - star=2.7.10a

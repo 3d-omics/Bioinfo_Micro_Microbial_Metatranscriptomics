@@ -1,5 +1,6 @@
 digraph snakemake_dag {
     rankdir="LR";
+    // newrank=true;
     graph[bgcolor=white, margin=0];
     node[shape=box, style=rounded, fontname=sans, fontsize=10, penwidth=2];
     edge[penwidth=2, color=grey];
@@ -7,9 +8,8 @@ digraph snakemake_dag {
     subgraph cluster_0 {
         label = "Input";
         shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
-
-        mags       [label = "Reference\nMAGs",       color = "0.38 0.6 0.85", style="rounded"];
         reads      [label = "FASTQ\nreads",          color = "0.31 0.6 0.85", style="rounded"];
+        mags       [label = "Reference\nMAGs",       color = "0.38 0.6 0.85", style="rounded"];
         genome     [label = "Reference\nGenome",     color = "0.28 0.6 0.85", style="rounded"];
         annotation [label = "Reference\nAnnotation", color = "0.14 0.6 0.85", style="rounded"];
     }
@@ -21,15 +21,10 @@ digraph snakemake_dag {
         fastp        [label = "fastp",        color = "0.01 0.6 0.85", style="rounded"];
         ribodetector [label = "RiboDetector", color = "0.65 0.6 0.85", style="rounded"];
         kraken2      [label = "kraken2",      color = "0.29 0.6 0.85", style="rounded"];
-    }
-
-    subgraph cluster_2 {
-        label = "Host removal";
-        shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
         star [label = "STAR", color = "0.66 0.6 0.85", style="rounded"];
     }
 
-    subgraph cluster_3 {
+    subgraph cluster_2 {
         label = "Quantification";
         shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
         bowtie2   [label = "bowtie2",                color = "0.55 0.6 0.85", style="rounded"];
