@@ -7,7 +7,7 @@ rule reference_set_dna:
     log:
         REFERENCE / "genome.log",
     conda:
-        "../envs/empty.yml"
+        "_env.yml"
     shell:
         "gzip --decompress --stdout {input.fa} > {output.fa} 2> {log}"
 
@@ -21,9 +21,9 @@ rule reference_set_gtf:
     log:
         REFERENCE / "annotation.log",
     conda:
-        "../envs/empty.yml"
+        "_env.yml"
     shell:
-        "gzip --decompress --stdout {input.gtf} > {output.gtf}"
+        "gzip --decompress --stdout {input.gtf} > {output.gtf} 2>{log}"
 
 
 rule reference_set_mags:
@@ -35,16 +35,20 @@ rule reference_set_mags:
     log:
         REFERENCE / "mags.log",
     conda:
-        "../envs/samtools.yml"
+        "_env.yml"
     threads:
         24
     shell:
         """
-        (gzip -dc {input.fna} \
+        ( gzip \
+            --decompress \
+            --stdout \
+            {input.fna} \
         | bgzip \
             -@ {threads} \
             -l 9 \
-        > {output.fna}) 2> {log}
+        > {output.fna} \
+        ) 2> {log}
         """
 
 

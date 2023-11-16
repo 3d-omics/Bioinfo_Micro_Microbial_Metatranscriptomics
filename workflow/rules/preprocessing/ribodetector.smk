@@ -16,7 +16,7 @@ rule ribodetector_filter_one:
         average_length=params["ribodetector"]["average_length"],
         chunk_size=params["ribodetector"]["chunk_size"],
     conda:
-        "../envs/ribodetector.yml",
+        "_env.yml",
     resources:
         mem_mb=32 * 1024,
         runtime= 6 * 60,

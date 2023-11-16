@@ -21,7 +21,7 @@ rule fastp_trim_one:
         mem_mb=4 * 1024,
         runtime=240,
     conda:
-        "../envs/fastp.yml"
+        "_env.yml"
     shell:
         """
         fastp \

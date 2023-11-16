@@ -7,7 +7,7 @@ rule bowtie2_build:
     log:
         BOWTIE2 / "build.log",
     conda:
-        "../envs/bowtie2.yml"
+        "_env.yml"
     params:
         extra=params["bowtie2"]["extra"],
     threads: 8
@@ -47,7 +47,7 @@ rule bowtie2_map_one:
         rg_extra=compose_rg_extra,
     threads: 24
     conda:
-        "../envs/bowtie2.yml"
+        "_env.yml"
     resources:
         mem_mb=32 * 1024,
         runtime=1440,

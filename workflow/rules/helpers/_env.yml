@@ -1,4 +1,4 @@
-# bowtie2.yml: conda environment file for bowtie2
+# samtools.yml: conda environment file for samtools
 ---
 channels:
   - conda-forge
@@ -6,4 +6,4 @@ channels:
   - nodefaults
 dependencies:
   - samtools=1.17
-  - bowtie2=2.5.1
+  - fastqc

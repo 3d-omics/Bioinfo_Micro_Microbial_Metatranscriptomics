@@ -5,5 +5,4 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - fastqc=0.12.1
-  - multiqc=1.14
+  - multiqc=1.17

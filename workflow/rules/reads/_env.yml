@@ -1,8 +1,8 @@
-# coverm.yml: conda environment file for coverm
+# samtools.yml: conda environment file for samtools
 ---
 channels:
   - conda-forge
   - bioconda
   - nodefaults
 dependencies:
-  - coverm=0.6.1
+  - coreutils

@@ -13,7 +13,7 @@ rule kraken2_assign_one:
     log:
         log=KRAKEN2 / "{sample}.{library}.log",
     conda:
-        "../envs/kraken2.yml"
+        "_env.yml"
     threads: 24
     resources:
         mem_mb=eval(params["kraken2"]["mem_mb"]),

@@ -7,7 +7,7 @@ rule coverm_cram_to_bam:
     log:
         COVERM / "bams/{sample}.{library}.log",
     conda:
-        "../envs/coverm.yml"
+        "_env.yml"
     threads: 4
     resources:
         runtime=60,
@@ -34,7 +34,7 @@ rule coverm_genome:
     log:
         COVERM / "coverm_genome.log",
     conda:
-        "../envs/coverm.yml"
+        "_env.yml"
     params:
         methods=params["coverm"]["genome"]["methods"],
         min_covered_fraction=params["coverm"]["genome"]["min_covered_fraction"],
@@ -64,7 +64,7 @@ rule coverm_contig:
     log:
         COVERM / "coverm_contig.log",
     conda:
-        "../envs/coverm.yml"
+        "_env.yml"
     params:
         methods=params["coverm"]["contig"]["methods"],
     threads: 24
