@@ -15,3 +15,13 @@ def get_kraken2_for_library_report(wildcards):
         for kraken2_db in KRAKEN2_DBS
     ]
     return files
+
+def get_samtools_for_library_report(wildcards):
+    sample = wildcards.sample
+    library = wildcards.library
+    files = [
+        BOWTIE2 / f"{mag_catalogue}.{sample}.{library}.{report}"
+        for mag_catalogue in MAG_CATALOGUES
+        for report in BAM_REPORTS
+    ]
+    return files

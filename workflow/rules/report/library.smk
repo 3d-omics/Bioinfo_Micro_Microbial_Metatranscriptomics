@@ -9,9 +9,7 @@ rule report_library_one:
         RIBODETECTOR / "{sample}.{library}_1_fastqc.zip",
         RIBODETECTOR / "{sample}.{library}_2_fastqc.zip",
         get_kraken2_for_library_report,
-        BOWTIE2 / "{sample}.{library}.stats.tsv",
-        BOWTIE2 / "{sample}.{library}.flagstats.txt",
-        BOWTIE2 / "{sample}.{library}.idxstats.tsv",
+        get_samtools_for_library_report,
         get_star_for_library_report,
     output:
         REPORT_LIBRARY / "{sample}.{library}.html",

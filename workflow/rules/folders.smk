@@ -1,5 +1,8 @@
 READS = Path("results/reads/")
 REFERENCE = Path("results/reference/")
+HOSTS = REFERENCE / "hosts"
+MAGS = REFERENCE / "mags"
+
 
 PRE = Path("results/preprocessing")
 FASTP = PRE / "fastp"
@@ -9,6 +12,7 @@ INDEX = PRE / "index"
 STAR = PRE / "star"
 
 QUANT = Path("results/quantification")
+BOWTIE2_INDEX = QUANT / "index"
 BOWTIE2 = QUANT / "bowtie2"
 COVERM = QUANT / "coverm"
 

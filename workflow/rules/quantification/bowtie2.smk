@@ -1,11 +1,12 @@
-rule bowtie2_build:
+rule quantification_bowtie2_build_one:
     """Build bowtie2 index for the mags"""
     input:
-        reference=REFERENCE / "mags.fa.gz",
+        reference=MAGS / "{mag_catalogue}.fa.gz",
+        fai = MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        prefix = touch(REFERENCE / "mags")
+        prefix = touch(BOWTIE2_INDEX / "{mag_catalogue}")
     log:
-        BOWTIE2 / "build.log",
+        BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
         "_env.yml"
     params:
@@ -25,7 +26,7 @@ rule bowtie2_build:
         """
 
 
-rule bowtie2_map_one:
+rule quantification_bowtie2_map_one:
     """Map one library to reference genome using bowtie2
 
     Output SAM file is piped to samtools sort to generate a CRAM file.
@@ -33,14 +34,14 @@ rule bowtie2_map_one:
     input:
         forward_=STAR / "{sample}.{library}.Unmapped.out.mate1",
         reverse_=STAR / "{sample}.{library}.Unmapped.out.mate2",
-        idx=REFERENCE / "mags",
-        reference=REFERENCE / "mags.fa.gz",
+        bowtie2_index=BOWTIE2_INDEX / "{mag_catalogue}",
+        reference=MAGS / "{mag_catalogue}.fa.gz",
+        fai = MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        cram=BOWTIE2 / "{sample}.{library}.cram",
+        cram=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram",
     log:
-        BOWTIE2 / "{sample}.{library}.log",
+        BOWTIE2 / "{mag_catalogue}.{sample}.{library}.log",
     params:
-        index_prefix=REFERENCE / "mags",
         extra=params["bowtie2"]["extra"],
         samtools_mem=params["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
@@ -53,8 +54,8 @@ rule bowtie2_map_one:
         runtime=1440,
     shell:
         """
-        (bowtie2 \
-            -x {params.index_prefix} \
+        ( bowtie2 \
+            -x {input.bowtie2_index} \
             -1 {input.forward_} \
             -2 {input.reverse_} \
             --threads {threads} \
@@ -72,13 +73,17 @@ rule bowtie2_map_one:
         """
 
 
-rule bowtie2_map_all:
+rule quantification_bowtie2_map_all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
-        [BOWTIE2 / f"{sample}.{library}.cram" for sample, library in SAMPLE_LIB],
+        [
+            BOWTIE2 / f"{mag_catalogue}.{sample}.{library}.cram"
+            for sample, library in SAMPLE_LIB
+            for mag_catalogue in MAG_CATALOGUES
+        ],
 
 
-rule bowtie2_report_all:
+rule quantification_bowtie2_report_all:
     """Generate bowtie2 reports for all libraries:
     - samtools stats
     - samtools flagstats
@@ -86,14 +91,15 @@ rule bowtie2_report_all:
     """
     input:
         [
-            BOWTIE2 / f"{sample}.{library}.{report}"
+            BOWTIE2 / f"{mag_catalogue}.{sample}.{library}.{report}"
             for sample, library in SAMPLE_LIB
             for report in BAM_REPORTS
+            for mag_catalogue in MAG_CATALOGUES
         ],
 
 
-rule bowtie2:
+rule quantification_bowtie2:
     """Run bowtie2 on all libraries and generate reports"""
     input:
-        rules.bowtie2_map_all.input,
-        rules.bowtie2_report_all.input,
+        rules.quantification_bowtie2_map_all.input,
+        rules.quantification_bowtie2_report_all.input,

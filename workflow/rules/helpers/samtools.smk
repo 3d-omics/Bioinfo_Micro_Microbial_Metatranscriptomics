@@ -1,3 +1,12 @@
+rule fai_gz:
+    """Generate a fai from a fa.gz"""
+    input: "{prefix}.fa.gz"
+    output: "{prefix}.fa.gz.fai"
+    log: "{prefix}.fa.gz.fai.log"
+    conda:"_env.yml"
+    shell: "samtools faidx {input} 2> {log} 1>&2"
+
+
 rule bai:
     """Generate a bam index"""
     input:
@@ -54,79 +63,35 @@ rule dict_fagz:
         "samtools dict {input} --output {output} 2> {log} 1>&2"
 
 
-rule vcf_gz_tbi:
-    """Generate index for a vcf.gz"""
-    input:
-        "{prefix}.vcf.gz",
-    output:
-        "{prefix}.vcf.gz.tbi",
-    log:
-        "{prefix}.vcf.gz.tbi.log",
-    conda:
-        "_env.yml"
-    shell:
-        "tabix {input} 2> {log} 1>&2"
+
+# rule samtools_stats_bam:
+#     """Compute stats for a bam"""
+#     input:
+#         bam="{prefix}.bam",
+#         bai="{prefix}.bam.bai",
+#     output:
+#         tsv="{prefix}.stats.tsv",
+#     log:
+#         "{prefix}.stats.log",
+#     conda:
+#         "_env.yml"
+#     shell:
+#         "samtools stats --reference {input.reference} {input.bam} > {output.tsv} 2> {log}"
 
 
-rule vcf_gz:
-    """bgzip a vcf file"""
-    input:
-        "{prefix}.vcf",
-    output:
-        "{prefix}.vcf.gz",
-    log:
-        "{prefix}.vcf.gz.log",
-    conda:
-        "_env.yml"
-    shell:
-        "bgzip {input} 2> {log} 1>&2"
-
-
-rule samtools_stats_bam:
-    """Compute stats for a bam"""
-    input:
-        bam="{prefix}.bam",
-        bai="{prefix}.bam.bai",
-        reference=REFERENCE / "mags.fa.gz"
-    output:
-        tsv="{prefix}.stats.tsv",
-    log:
-        "{prefix}.stats.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools stats --reference {input.reference} {input.bam} > {output.tsv} 2> {log}"
-
-
-rule samtools_stats_cram:
-    """Compute stats for a cram"""
-    input:
-        cram="{prefix}.cram",
-        crai="{prefix}.cram.crai",
-        reference=REFERENCE / "mags.fa.gz"
-    output:
-        tsv="{prefix}.stats.tsv",
-    log:
-        "{prefix}.stats.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools stats --reference {input.reference} {input.cram} > {output.tsv} 2> {log}"
-
-
-rule samtools_flagstats_bam:
-    """Compute flagstats for a bam"""
-    input:
-        bam="{prefix}.bam",
-        bai="{prefix}.bam.bai",
-    output:
-        txt="{prefix}.flagstats.txt",
-    log:
-        "{prefix}.flagstats.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools flagstats {input.bam} > {output.txt} 2> {log}"
+# rule samtools_flagstats_bam:
+#     """Compute flagstats for a bam"""
+#     input:
+#         bam="{prefix}.bam",
+#         bai="{prefix}.bam.bai",
+#     output:
+#         txt="{prefix}.flagstats.txt",
+#     log:
+#         "{prefix}.flagstats.log",
+#     conda:
+#         "_env.yml"
+#     shell:
+#         "samtools flagstats {input.bam} > {output.txt} 2> {log}"
 
 
 rule samtools_flagstats_cram:
@@ -144,19 +109,19 @@ rule samtools_flagstats_cram:
         "samtools flagstats {input.cram} > {output.txt} 2> {log}"
 
 
-rule samtools_idxstats_bam:
-    """Compute idxstats for a bam"""
-    input:
-        bam="{prefix}.bam",
-        bai="{prefix}.bam.bai",
-    output:
-        tsv="{prefix}.idxstats.tsv",
-    log:
-        "{prefix}.idxstats.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools idxstats {input.bam} > {output.tsv} 2> {log}"
+# rule samtools_idxstats_bam:
+#     """Compute idxstats for a bam"""
+#     input:
+#         bam="{prefix}.bam",
+#         bai="{prefix}.bam.bai",
+#     output:
+#         tsv="{prefix}.idxstats.tsv",
+#     log:
+#         "{prefix}.idxstats.log",
+#     conda:
+#         "_env.yml"
+#     shell:
+#         "samtools idxstats {input.bam} > {output.tsv} 2> {log}"
 
 
 rule samtools_idxstats_cram:

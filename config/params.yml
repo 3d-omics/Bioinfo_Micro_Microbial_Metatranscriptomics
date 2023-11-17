@@ -2,6 +2,7 @@
 ---
 max_threads: 96
 
+
 fastp:
   extra: ""
 
@@ -23,8 +24,9 @@ bowtie2:
     mem_per_thread: 1G
 
 coverm:
+  separator: "^"
   genome:
-    methods: "relative_abundance"
+    methods: ["relative_abundance"]
     min_covered_fraction: 0.0
   contig:
-    methods: "count"
+    methods: ["count"]

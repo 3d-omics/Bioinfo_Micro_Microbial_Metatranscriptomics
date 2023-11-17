@@ -121,7 +121,7 @@ rule report_step_star:
 rule report_step_bowtie2:
     """Collect all reports for the bowtie2 step"""
     input:
-        rules.bowtie2_report_all.input,
+        rules.quantification_bowtie2_report_all.input,
     output:
         html=REPORT_STEP / "bowtie2.html",
     log:

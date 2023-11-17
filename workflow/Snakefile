@@ -17,6 +17,9 @@ SAMPLE_LIB = samples[["sample", "library"]].values.tolist()
 MAX_THREADS = params["max_threads"]
 BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
 KRAKEN2_DBS = features["kraken2_databases"]
+MAG_CATALOGUES = features["mag_catalogues"]
+COVERM_GENOME_METHODS = params["coverm"]["genome"]["methods"]
+COVERM_CONTIG_METHODS = params["coverm"]["contig"]["methods"]
 
 
 # Import subworkflows
