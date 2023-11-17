@@ -6,4 +6,5 @@ host:
 
 mags: resources/mags_mock.fa.gz
 
-kraken2_db: resources/kraken_mock
+kraken2_databases:
+    mock: resources/kraken_mock

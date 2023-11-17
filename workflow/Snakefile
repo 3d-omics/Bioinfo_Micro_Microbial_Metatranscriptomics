@@ -16,6 +16,7 @@ SAMPLES = samples["sample"].drop_duplicates().values.tolist()
 SAMPLE_LIB = samples[["sample", "library"]].values.tolist()
 MAX_THREADS = params["max_threads"]
 BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
+KRAKEN2_DBS = features["kraken2_databases"]
 
 
 # Import subworkflows

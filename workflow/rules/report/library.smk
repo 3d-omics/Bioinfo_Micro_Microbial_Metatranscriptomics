@@ -8,7 +8,7 @@ rule report_library_one:
         FASTP / "{sample}.{library}_2_fastqc.zip",
         RIBODETECTOR / "{sample}.{library}_1_fastqc.zip",
         RIBODETECTOR / "{sample}.{library}_2_fastqc.zip",
-        KRAKEN2 / "{sample}.{library}.report",
+        get_kraken2_for_library_report,
         BOWTIE2 / "{sample}.{library}.stats.tsv",
         BOWTIE2 / "{sample}.{library}.flagstats.txt",
         BOWTIE2 / "{sample}.{library}.idxstats.tsv",
