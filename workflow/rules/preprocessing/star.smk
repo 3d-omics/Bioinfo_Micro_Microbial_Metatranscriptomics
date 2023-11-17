@@ -4,7 +4,7 @@ rule star_index:
         dna=REFERENCE / "genome.fa",
         gtf=REFERENCE / "annotation.gtf",
     output:
-        folder=INDEX / "index",
+        folder=directory(INDEX / "index"),
     params:
         sjdbOverhang=params["star"]["index"]["sjdbOverhang"],
     conda:
