@@ -1,16 +1,16 @@
-rule star_index:
+rule star_index_one:
     """Index the genome for STAR"""
     input:
-        dna=REFERENCE / "genome.fa",
-        gtf=REFERENCE / "annotation.gtf",
+        genome=HOSTS / "{host_name}.fa",
+        annotation=HOSTS / "{host_name}.gtf",
     output:
-        folder=directory(INDEX / "index"),
+        folder=directory(STAR_INDEX / "{host_name}"),
     params:
         sjdbOverhang=params["star"]["index"]["sjdbOverhang"],
     conda:
         "_env.yml"
     log:
-        REFERENCE / "index.log",
+        STAR_INDEX / "{host_name}.log"
     threads: 24
     resources:
         mem_mb=32 * 1024,
@@ -21,27 +21,35 @@ rule star_index:
             --runMode genomeGenerate \
             --runThreadN {threads} \
             --genomeDir {output.folder} \
-            --genomeFastaFiles {input.dna} \
-            --sjdbGTFfile {input.gtf} \
+            --genomeFastaFiles {input.genome} \
+            --sjdbGTFfile {input.annotation} \
             --sjdbOverhang {params.sjdbOverhang} \
         2> {log} 1>&2
         """
 
 
+rule star_index:
+    input:
+        [
+            STAR_INDEX / f"{host_name}"
+            for host_name in HOST_NAMES
+        ]
+
+
 rule star_align_one:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
-        r1=RIBODETECTOR / "{sample}.{library}_1.fq.gz",
-        r2=RIBODETECTOR / "{sample}.{library}_2.fq.gz",
-        index=INDEX / "index",
+        forward_=get_input_forward_for_host_mapping,
+        reverse_=get_input_reverse_for_host_mapping,
+        index=STAR_INDEX / "{host_name}",
     output:
-        bam=temp(STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam"),
-        u1=temp(STAR / "{sample}.{library}.Unmapped.out.mate1"),
-        u2=temp(STAR / "{sample}.{library}.Unmapped.out.mate2"),
-        report=STAR / "{sample}.{library}.Log.final.out",
-        counts=STAR / "{sample}.{library}.ReadsPerGene.out.tab",
+        bam=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"),
+        u1=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1"),
+        u2=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2"),
+        report=STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
+        counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
-        STAR / "{sample}.{library}.log",
+        STAR / "{host_name}" / "{sample_id}.{library_id}.log",
     params:
         out_prefix=get_star_out_prefix,
     conda:
@@ -59,8 +67,8 @@ rule star_align_one:
             --runThreadN {threads} \
             --genomeDir {input.index} \
             --readFilesIn \
-                {input.r1} \
-                {input.r2} \
+                {input.forward_} \
+                {input.reverse_} \
             --outFileNamePrefix {params.out_prefix} \
             --outSAMtype BAM SortedByCoordinate \
             --outSAMunmapped Within KeepPairs \
@@ -74,8 +82,9 @@ rule star_align_one:
 rule star_align_all:
     input:
         [
-            STAR / f"{sample}.{library}.ReadsPerGene.out.tab"
-            for sample, library in SAMPLE_LIB
+            STAR / host_name / f"{sample_id}.{library_id}.ReadsPerGene.out.tab"
+            for sample_id, library_id in SAMPLE_LIB
+            for host_name in HOST_NAMES
         ],
 
 
@@ -86,13 +95,14 @@ rule star_cram_one:
     other way to use minimizers on the unmapped fraction.
     """
     input:
-        bam=STAR / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
-        reference=REFERENCE / "genome.fa",
+        bam=STAR / "{host_name}" / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
+        reference=HOSTS / "{host_name}.fa",
+        fai = HOSTS / "{host_name}.fa.fai",
     output:
-        cram=STAR / "{sample}.{library}.cram",
-        crai=STAR / "{sample}.{library}.cram.crai",
+        cram=STAR / "{host_name}" / "{sample}.{library}.cram",
+        crai=STAR / "{host_name}" / "{sample}.{library}.cram.crai",
     log:
-        STAR / "{sample}.{library}.Aligned.sortedByCoord.out.cram.log",
+        STAR / "{host_name}" / "{sample}.{library}.Aligned.sortedByCoord.out.cram.log",
     conda:
         "_env.yml"
     threads: 24
@@ -119,15 +129,20 @@ rule star_cram_all:
     """Convert to cram all libraries"""
     input:
         [
-            STAR / f"{sample}.{library}.cram"
+            STAR / host_name / f"{sample}.{library}.cram"
             for sample, library in SAMPLE_LIB
+            for host_name in HOST_NAMES
         ],
 
 
 rule star_report_all:
     """Collect star reports"""
     input:
-        [STAR / f"{sample}.{library}.Log.final.out" for sample, library in SAMPLE_LIB],
+        [
+            STAR / host_name / f"{sample}.{library}.Log.final.out"
+            for sample, library in SAMPLE_LIB
+            for host_name in HOST_NAMES
+        ],
 
 
 rule star:

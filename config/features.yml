@@ -1,8 +1,9 @@
 # features.yml: paths and parameters for the features
 ---
-host:
-    dna: resources/reference/chrX_sub.fa.gz
-    gtf: resources/reference/chrX_sub.gtf.gz
+hosts:
+    human:
+        genome: resources/reference/chrX_sub.fa.gz
+        annotation: resources/reference/chrX_sub.gtf.gz
 
 mag_catalogues:
     mag1: resources/mags_mock.fa.gz

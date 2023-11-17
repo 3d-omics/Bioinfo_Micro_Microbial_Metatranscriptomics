@@ -1,26 +1,67 @@
-rule reference_set_dna:
-    """Link the reference genome to the results directory"""
+rule reference_hosts_recompress_genome_one:
+    """Link the reference genome to the results directory
+
+    Note: STAR requires the genome decompressed.
+    """
     input:
-        fa=features["host"]["dna"],
+        get_host_genome,
     output:
-        fa=REFERENCE / "genome.fa",
+        HOSTS / "{host_name}.fa",
     log:
-        REFERENCE / "genome.log",
+        HOSTS / "{host_name}.fa.log"
     conda:
         "_env.yml"
     shell:
-        "gzip --decompress --stdout {input.fa} > {output.fa} 2> {log}"
+        """
+        gzip \
+            --decompress \
+            --stdout \
+            {input} \
+        > {output} \
+        2> {log}
+        """
 
 
-rule reference_set_gtf:
-    """Link the reference annotation to the results directory"""
+rule reference_hosts_recompress_gtf_one:
+    """Link the reference annotation to the results directory
+
+    Note: STAR requires the annotation decompressed
+    """
     input:
-        gtf=features["host"]["gtf"],
+        get_host_annotation,
     output:
-        gtf=REFERENCE / "annotation.gtf",
+        HOSTS / "{host_name}.gtf",
     log:
-        REFERENCE / "annotation.log",
+        HOSTS / "{host_name}.gtf.log",
     conda:
         "_env.yml"
     shell:
-        "gzip --decompress --stdout {input.gtf} > {output.gtf} 2>{log}"
+        """
+        gzip \
+            --decompress \
+            --stdout \
+            {input} \
+        > {output} \
+        2>{log}
+        """
+
+
+
+rule reference_hosts_recompress_genome:
+    input:
+        [
+            HOSTS / f"{host_name}.fa.gz" for host_name in HOST_NAMES
+        ]
+
+
+rule reference_hosts_recompress_gtf:
+    input:
+        [
+            HOSTS / f"{host_name}.gtf.gz" for host_name in HOST_NAMES
+        ]
+
+
+rule reference_hosts:
+    input:
+        rules.reference_hosts_recompress_genome.input,
+        rules.reference_hosts_recompress_gtf.input,

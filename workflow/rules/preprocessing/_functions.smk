@@ -19,20 +19,48 @@ def get_reverse_adapter(wildcards):
         return "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
     return reverse_adapter
 
+def get_input_forward_for_host_mapping(wildcards):
+    """Compose the forward input file"""
+    host_name = wildcards.host_name
+    sample_id = wildcards.sample_id
+    library_id = wildcards.library_id
+    if host_name == HOST_NAMES[0]:
+        return RIBODETECTOR / f"{sample_id}.{library_id}_1.fq.gz"
+    genome_index = HOST_NAMES.index(host_name)
+    prev_genome = HOST_NAMES[genome_index - 1]
+    return [
+        STAR / host_name / f"{sample_id}.{library_id}.Unmapped.out.mate1"
+        for sample_id, library_id in SAMPLE_LIB
+    ]
+
+
+def get_input_reverse_for_host_mapping(wildcards):
+    """Compose the forward input file"""
+    host_name = wildcards.host_name
+    sample_id = wildcards.sample_id
+    library_id = wildcards.library_id
+    if host_name == HOST_NAMES[0]:
+        return RIBODETECTOR / f"{sample_id}.{library_id}_1.fq.gz"
+    genome_index = HOST_NAMES.index(host_name)
+    prev_genome = HOST_NAMES[genome_index - 1]
+    return [
+        STAR / host_name / f"{sample_id}.{library_id}.Unmapped.out.mate2"
+        for sample_id, library_id in SAMPLE_LIB
+    ]
+
 
 def get_star_out_prefix(wildcards):
     """Get the star output folder from the library wildcards"""
-    return STAR / f"{wildcards.sample}.{wildcards.library}."
-
+    return STAR / wildcards.host_name / f"{wildcards.sample_id}.{wildcards.library_id}."
 
 def get_star_output_r1(wildcards):
     """Get the forward read output from the library wildcards"""
-    return STAR / f"{wildcards.sample}.{wildcards.library}.Unmapped.out.mate1"
+    return STAR / f"{wildcards.sample_id}.{wildcards.library_id}.Unmapped.out.mate1"
 
 
 def get_star_output_r2(wildcards):
     """Get the reverse read output from the library wildcards"""
-    return STAR / f"{wildcards.sample}.{wildcards.library}.Unmapped.out.mate2"
+    return STAR / f"{wildcards.sample_id}.{wildcards.library_id}.Unmapped.out.mate2"
 
 
 def get_kraken2_database(wildcards):

@@ -2,7 +2,10 @@ def get_star_for_library_report(wildcards):
     """Get all star reports for a single library"""
     sample = wildcards.sample
     library = wildcards.library
-    files = [STAR / f"{sample}.{library}.Log.final.out"]
+    files = [
+        STAR / host_name / f"{sample}.{library}.Log.final.out"
+        for host_name in HOST_NAMES
+    ]
     return files
 
 

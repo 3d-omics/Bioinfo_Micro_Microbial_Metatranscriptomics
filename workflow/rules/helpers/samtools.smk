@@ -1,11 +1,17 @@
-rule fai_gz:
-    """Generate a fai from a fa.gz"""
+rule fa_gz_fai:
     input: "{prefix}.fa.gz"
     output: "{prefix}.fa.gz.fai"
-    log: "{prefix}.fa.gz.fai.log"
-    conda:"_env.yml"
+    log: "{prefix}.fa.fai.gz.log"
+    conda: "_env.yml"
     shell: "samtools faidx {input} 2> {log} 1>&2"
 
+
+rule fa_fai:
+    input: "{prefix}.fa"
+    output: "{prefix}.fa.fai"
+    log: "{prefix}.fa.fai.log"
+    conda: "_env.yml"
+    shell: "samtools faidx {input} 2> {log} 1>&2"
 
 rule bai:
     """Generate a bam index"""

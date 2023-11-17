@@ -32,15 +32,15 @@ rule quantification_bowtie2_map_one:
     Output SAM file is piped to samtools sort to generate a CRAM file.
     """
     input:
-        forward_=STAR / "{sample}.{library}.Unmapped.out.mate1",
-        reverse_=STAR / "{sample}.{library}.Unmapped.out.mate2",
+        forward_=get_forward_for_bowtie2,
+        reverse_=get_reverse_for_bowtie2,
         bowtie2_index=BOWTIE2_INDEX / "{mag_catalogue}",
         reference=MAGS / "{mag_catalogue}.fa.gz",
         fai = MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram",
+        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
     log:
-        BOWTIE2 / "{mag_catalogue}.{sample}.{library}.log",
+        BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     params:
         extra=params["bowtie2"]["extra"],
         samtools_mem=params["bowtie2"]["samtools"]["mem_per_thread"],
@@ -77,8 +77,8 @@ rule quantification_bowtie2_map_all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            BOWTIE2 / f"{mag_catalogue}.{sample}.{library}.cram"
-            for sample, library in SAMPLE_LIB
+            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.cram"
+            for sample_id, library_id in SAMPLE_LIB
             for mag_catalogue in MAG_CATALOGUES
         ],
 
@@ -91,8 +91,8 @@ rule quantification_bowtie2_report_all:
     """
     input:
         [
-            BOWTIE2 / f"{mag_catalogue}.{sample}.{library}.{report}"
-            for sample, library in SAMPLE_LIB
+            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.{report}"
+            for sample_id, library_id in SAMPLE_LIB
             for report in BAM_REPORTS
             for mag_catalogue in MAG_CATALOGUES
         ],

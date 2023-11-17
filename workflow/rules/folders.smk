@@ -8,7 +8,7 @@ PRE = Path("results/preprocessing")
 FASTP = PRE / "fastp"
 KRAKEN2 = PRE / "kraken2"
 RIBODETECTOR = PRE / "ribodetector/"
-INDEX = PRE / "index"
+STAR_INDEX = PRE / "index"
 STAR = PRE / "star"
 
 QUANT = Path("results/quantification")

@@ -1,11 +1,27 @@
+def get_forward_for_bowtie2(wildcards):
+    sample_id = wildcards.sample_id
+    library_id = wildcards.library_id
+    if len(HOST_NAMES) == 0:
+        return RIBODETECTOR / f"{sample_id}.{library_id}.fq.gz"
+    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate1"
+
+
+def get_reverse_for_bowtie2(wildcards):
+    sample_id = wildcards.sample_id
+    library_id = wildcards.library_id
+    if len(HOST_NAMES) == 0:
+        return RIBODETECTOR / f"{sample_id}.{library_id}.fq.gz"
+    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate2"
+
+
 def compose_rg_id(wildcards):
     """Compose read group ID for bowtie2"""
-    return f"{wildcards.sample}_{wildcards.library}"
+    return f"{wildcards.sample_id}_{wildcards.library_id}"
 
 
 def compose_rg_extra(wildcards):
     """Compose read group extra information for bowtie2"""
-    return f"LB:truseq_{wildcards.library}\tPL:Illumina\tSM:{wildcards.sample}"
+    return f"LB:truseq_{wildcards.library_id}\tPL:Illumina\tSM:{wildcards.sample_id}"
 
 
 def get_method(wildcards):

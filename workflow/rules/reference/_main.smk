@@ -6,5 +6,4 @@ include: "mags.smk"
 rule reference:
     input:
         rules.reference_mags.input,
-        rules.reference_set_dna.output.fa,
-        rules.reference_set_gtf.output.gtf,
+        rules.reference_hosts.input,
