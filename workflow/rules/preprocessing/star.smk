@@ -29,6 +29,7 @@ rule star_index_one:
 
 
 rule star_index:
+    """Build all the STAR indexes"""
     input:
         [
             STAR_INDEX / f"{host_name}"
@@ -90,6 +91,7 @@ rule star_align_one:
 
 
 rule star_align_all:
+    """Get all the STAR counts for all hosts"""
     input:
         [
             STAR / host_name / f"{sample_id}.{library_id}.ReadsPerGene.out.tab"
@@ -101,7 +103,7 @@ rule star_align_all:
 rule star_cram_one:
     """Convert to cram one library
 
-    Note: we use samtools sort when it is already sorted because there is no
+    NOTE: we use samtools sort when it is already sorted because there is no
     other way to use minimizers on the unmapped fraction.
     """
     input:
