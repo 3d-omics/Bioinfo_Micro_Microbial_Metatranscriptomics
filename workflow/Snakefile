@@ -14,12 +14,11 @@ samples = pd.read_table("config/samples.tsv", comment="#", dtype="str")
 # Generate useful variables
 SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
 SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
-MAX_THREADS = params["max_threads"]
 BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
 KRAKEN2_DBS = [] if features["kraken2_databases"] is None else list(features["kraken2_databases"].keys())
 MAG_CATALOGUES = features["mag_catalogues"]
-COVERM_GENOME_METHODS = params["coverm"]["genome"]["methods"]
-COVERM_CONTIG_METHODS = params["coverm"]["contig"]["methods"]
+COVERM_GENOME_METHODS = params["quantification"]["coverm"]["genome"]["methods"]
+COVERM_CONTIG_METHODS = params["quantification"]["coverm"]["contig"]["methods"]
 HOST_NAMES = [] if features["hosts"] is None else list(features["hosts"].keys())
 LAST_HOST = HOST_NAMES[-1] if len(HOST_NAMES) > 0 else None
 

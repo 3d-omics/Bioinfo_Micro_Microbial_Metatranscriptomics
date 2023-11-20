@@ -55,8 +55,8 @@ rule coverm_genome_one:
         "_env.yml"
     params:
         method=get_method,
-        min_covered_fraction=params["coverm"]["genome"]["min_covered_fraction"],
-        separator=params["coverm"]["separator"],
+        min_covered_fraction=params["quantification"]["coverm"]["genome"]["min_covered_fraction"],
+        separator=params["quantification"]["coverm"]["separator"],
     resources:
         runtime=24 * 60,
         mem_mb=32 * 1024

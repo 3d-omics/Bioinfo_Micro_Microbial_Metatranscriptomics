@@ -6,7 +6,7 @@ rule star_index_one:
     output:
         folder=directory(STAR_INDEX / "{host_name}"),
     params:
-        sjdbOverhang=params["star"]["index"]["sjdbOverhang"],
+        sjdbOverhang=params["preprocessing"]["star"]["index"]["sjdbOverhang"],
     conda:
         "_env.yml"
     log:

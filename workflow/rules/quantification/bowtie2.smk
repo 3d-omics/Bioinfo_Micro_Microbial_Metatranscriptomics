@@ -10,7 +10,7 @@ rule quantification_bowtie2_build_one:
     conda:
         "_env.yml"
     params:
-        extra=params["bowtie2"]["extra"],
+        extra=params["quantification"]["bowtie2"]["extra"],
     threads: 8
     resources:
         mem_mb=32 * 1024,
@@ -42,8 +42,8 @@ rule quantification_bowtie2_map_one:
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     params:
-        extra=params["bowtie2"]["extra"],
-        samtools_mem=params["bowtie2"]["samtools"]["mem_per_thread"],
+        extra=params["quantification"]["bowtie2"]["extra"],
+        samtools_mem=params["quantification"]["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
     threads: 24

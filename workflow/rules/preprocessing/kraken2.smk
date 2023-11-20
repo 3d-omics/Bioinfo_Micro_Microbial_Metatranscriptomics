@@ -16,7 +16,7 @@ rule kraken2_assign_one:
         "_env.yml"
     threads: 24
     resources:
-        mem_mb=eval(params["kraken2"]["mem_mb"]),
+        mem_mb=params["preprocessing"]["kraken2"]["mem_gb"] * 1024,
         runtime=24 * 60,
     shell:
         """
