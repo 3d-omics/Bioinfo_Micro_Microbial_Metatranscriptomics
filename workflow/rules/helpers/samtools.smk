@@ -52,64 +52,6 @@ rule _crai:
         "samtools index {input} 2> {log} 1>&2"
 
 
-# rule _dict_fa:
-#     """Generate a dictionary from a .fa"""
-#     input:
-#         "{prefix}.fa",
-#     output:
-#         "{prefix}.dict",
-#     log:
-#         "{prefix}.dict.log",
-#     conda:
-#         "_env.yml"
-#     shell:
-#         "samtools dict {input} --output {output} 2> {log} 1>&2"
-
-
-# rule dict_fagz:
-#     """Generate a dictionary from a fa.gz"""
-#     input:
-#         "{prefix}.fa.gz",
-#     output:
-#         "{prefix}.dict",
-#     log:
-#         "{prefix}.dict.log",
-#     conda:
-#         "_env.yml"
-#     shell:
-#         "samtools dict {input} --output {output} 2> {log} 1>&2"
-
-
-# rule samtools_stats_bam:
-#     """Compute stats for a bam"""
-#     input:
-#         bam="{prefix}.bam",
-#         bai="{prefix}.bam.bai",
-#     output:
-#         tsv="{prefix}.stats.tsv",
-#     log:
-#         "{prefix}.stats.log",
-#     conda:
-#         "_env.yml"
-#     shell:
-#         "samtools stats --reference {input.reference} {input.bam} > {output.tsv} 2> {log}"
-
-
-# rule samtools_flagstats_bam:
-#     """Compute flagstats for a bam"""
-#     input:
-#         bam="{prefix}.bam",
-#         bai="{prefix}.bam.bai",
-#     output:
-#         txt="{prefix}.flagstats.txt",
-#     log:
-#         "{prefix}.flagstats.log",
-#     conda:
-#         "_env.yml"
-#     shell:
-#         "samtools flagstats {input.bam} > {output.txt} 2> {log}"
-
-
 rule _samtools_flagstats_cram:
     """Compute flagstats for a cram"""
     input:
@@ -123,21 +65,6 @@ rule _samtools_flagstats_cram:
         "_env.yml"
     shell:
         "samtools flagstats {input.cram} > {output.txt} 2> {log}"
-
-
-# rule samtools_idxstats_bam:
-#     """Compute idxstats for a bam"""
-#     input:
-#         bam="{prefix}.bam",
-#         bai="{prefix}.bam.bai",
-#     output:
-#         tsv="{prefix}.idxstats.tsv",
-#     log:
-#         "{prefix}.idxstats.log",
-#     conda:
-#         "_env.yml"
-#     shell:
-#         "samtools idxstats {input.bam} > {output.tsv} 2> {log}"
 
 
 rule _samtools_idxstats_cram:
