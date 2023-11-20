@@ -5,5 +5,5 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - coreutils
+  - coreutils=9.3
   - samtools=1.18
