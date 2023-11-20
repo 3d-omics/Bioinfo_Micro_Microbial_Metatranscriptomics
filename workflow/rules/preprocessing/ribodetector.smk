@@ -4,13 +4,13 @@ rule ribodetector_filter_one:
     ribodetector filters out rRNA reads from a library
     """
     input:
-        forward_=FASTP / "{sample}.{library}_1.fq.gz",
-        reverse_=FASTP / "{sample}.{library}_2.fq.gz",
+        forward_=FASTP / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=FASTP / "{sample_id}.{library_id}_2.fq.gz",
     output:
-        forward_=temp(RIBODETECTOR / "{sample}.{library}_1.fq.gz"),
-        reverse_=temp(RIBODETECTOR / "{sample}.{library}_2.fq.gz"),
+        forward_=temp(RIBODETECTOR / "{sample_id}.{library_id}_1.fq.gz"),
+        reverse_=temp(RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz"),
     log:
-        RIBODETECTOR / "{sample}.{library}.log",
+        RIBODETECTOR / "{sample_id}.{library_id}.log",
     threads: 24
     params:
         average_length=params["ribodetector"]["average_length"],
@@ -41,8 +41,8 @@ rule ribodetector_find_all:
     """Run ribodetector_find_one over all libraries"""
     input:
         [
-            RIBODETECTOR / f"{sample}.{library}_{end}.fq.gz"
-            for sample, library  in SAMPLE_LIB
+            RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
+            for sample_id, library_id  in SAMPLE_LIBRARY
             for end in ["1", "2"]
         ]
 
@@ -51,8 +51,8 @@ rule ribodetector_fastqc_all:
     """Run fastqc over all libraries"""
     input:
         [
-            RIBODETECTOR / f"{sample}.{library}_{end}_fastqc.{extension}"
-            for sample, library in SAMPLE_LIB
+            RIBODETECTOR / f"{sample_id}.{library_id}_{end}_fastqc.{extension}"
+            for sample_id, library_id in SAMPLE_LIBRARY
             for end in ["1", "2"]
             for extension in ["html", "zip"]
         ],

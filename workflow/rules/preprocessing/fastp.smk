@@ -1,17 +1,17 @@
 rule fastp_trim_one:
     """Run fastp on one library"""
     input:
-        forward_=READS / "{sample}.{library}_1.fq.gz",
-        reverse_=READS / "{sample}.{library}_2.fq.gz",
+        forward_=READS / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=READS / "{sample_id}.{library_id}_2.fq.gz",
     output:
-        forward_=temp(FASTP / "{sample}.{library}_1.fq.gz"),
-        reverse_=temp(FASTP / "{sample}.{library}_2.fq.gz"),
-        unpaired1=temp(FASTP / "{sample}.{library}_u1.fq.gz"),
-        unpaired2=temp(FASTP / "{sample}.{library}_u2.fq.gz"),
-        html=FASTP / "{sample}.{library}.html",
-        json=FASTP / "{sample}.{library}_fastp.json",
+        forward_=temp(FASTP / "{sample_id}.{library_id}_1.fq.gz"),
+        reverse_=temp(FASTP / "{sample_id}.{library_id}_2.fq.gz"),
+        unpaired1=temp(FASTP / "{sample_id}.{library_id}_u1.fq.gz"),
+        unpaired2=temp(FASTP / "{sample_id}.{library_id}_u2.fq.gz"),
+        html=FASTP / "{sample_id}.{library_id}.html",
+        json=FASTP / "{sample_id}.{library_id}_fastp.json",
     log:
-        FASTP / "{sample}.{library}.log",
+        FASTP / "{sample_id}.{library_id}.log",
     params:
         adapter_forward=get_forward_adapter,
         adapter_reverse=get_reverse_adapter,
@@ -47,8 +47,8 @@ rule fastp_trim_all:
     """Run fastp over all libraries"""
     input:
         [
-            FASTP / f"{sample}.{library}_{end}.fq.gz"
-            for sample, library in SAMPLE_LIB
+            FASTP / f"{sample_id}.{library_id}_{end}.fq.gz"
+            for sample_id, library_id in SAMPLE_LIBRARY
             for end in "1 2 u1 u2".split(" ")
         ],
 
@@ -57,8 +57,8 @@ rule fastp_fastqc_all:
     """Run fastqc over all libraries"""
     input:
         [
-            FASTP / f"{sample}.{library}_{end}_fastqc.{extension}"
-            for sample, library in SAMPLE_LIB
+            FASTP / f"{sample_id}.{library_id}_{end}_fastqc.{extension}"
+            for sample_id, library_id in SAMPLE_LIBRARY
             for end in ["1", "2"]
             for extension in ["html", "zip"]
         ],
@@ -67,7 +67,10 @@ rule fastp_fastqc_all:
 rule fastp_report_all:
     """Collect fastp and fastqc reports"""
     input:
-        [FASTP / f"{sample}.{library}_fastp.json" for sample, library in SAMPLE_LIB],
+        [
+            FASTP / f"{sample_id}.{library_id}_fastp.json"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
         rules.fastp_fastqc_all.input,
 
 

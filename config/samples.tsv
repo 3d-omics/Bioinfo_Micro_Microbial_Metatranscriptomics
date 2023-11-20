@@ -1,4 +1,4 @@
-sample	library	forward	reverse	forward_adapter	reverse_adapter
+sample_id	library_id	forward_filename	reverse_filename	forward_adapter	reverse_adapter
 GBRF1	1	resources/reads_mixed/GBRF1.1_1.fq.gz	resources/reads_mixed/GBRF1.1_2.fq.gz
 GBRF2	1	resources/reads_mixed/GBRF2.1_1.fq.gz	resources/reads_mixed/GBRF2.1_2.fq.gz
 GBRF3	1	resources/reads_mixed/GBRF3.1_1.fq.gz	resources/reads_mixed/GBRF3.1_2.fq.gz

@@ -37,7 +37,7 @@ rule coverm_cram_to_bam:
         [
             COVERM / "bams" / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
             for mag_catalogue in MAG_CATALOGUES
-            for sample_id, library_id in SAMPLE_LIB
+            for sample_id, library_id in SAMPLE_LIBRARY
         ]
 
 

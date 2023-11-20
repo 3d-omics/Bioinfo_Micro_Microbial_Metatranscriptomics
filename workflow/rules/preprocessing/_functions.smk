@@ -1,8 +1,8 @@
 def get_forward_adapter(wildcards):
     """Get forward adapter for a sample and library."""
     forward_adapter =  samples[
-        (samples["sample"] == wildcards.sample)
-        & (samples["library"] == wildcards.library)
+        (samples["sample_id"] == wildcards.sample_id)
+        & (samples["library_id"] == wildcards.library_id)
     ]["forward_adapter"].tolist()[0]
     if pd.isna(forward_adapter):
         return "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"
@@ -12,8 +12,8 @@ def get_forward_adapter(wildcards):
 def get_reverse_adapter(wildcards):
     """Get reverse adapter for a sample and library."""
     reverse_adapter = samples[
-        (samples["sample"] == wildcards.sample)
-        & (samples["library"] == wildcards.library)
+        (samples["sample_id"] == wildcards.sample_id)
+        & (samples["library_id"] == wildcards.library_id)
     ]["reverse_adapter"].tolist()[0]
     if pd.isna(reverse_adapter):
         return "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
@@ -30,7 +30,6 @@ def get_input_forward_for_host_mapping(wildcards):
     prev_genome = HOST_NAMES[genome_index - 1]
     return [
         STAR / host_name / f"{sample_id}.{library_id}.Unmapped.out.mate1"
-        for sample_id, library_id in SAMPLE_LIB
     ]
 
 
@@ -45,7 +44,6 @@ def get_input_reverse_for_host_mapping(wildcards):
     prev_genome = HOST_NAMES[genome_index - 1]
     return [
         STAR / host_name / f"{sample_id}.{library_id}.Unmapped.out.mate2"
-        for sample_id, library_id in SAMPLE_LIB
     ]
 
 

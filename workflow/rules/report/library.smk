@@ -1,24 +1,24 @@
 rule report_library_one:
     """Make a MultiQC report for a single library"""
      input:
-        READS / "{sample}.{library}_1_fastqc.zip",
-        READS / "{sample}.{library}_2_fastqc.zip",
-        FASTP / "{sample}.{library}_fastp.json",
-        FASTP / "{sample}.{library}_1_fastqc.zip",
-        FASTP / "{sample}.{library}_2_fastqc.zip",
-        RIBODETECTOR / "{sample}.{library}_1_fastqc.zip",
-        RIBODETECTOR / "{sample}.{library}_2_fastqc.zip",
+        READS / "{sample_id}.{library_id}_1_fastqc.zip",
+        READS / "{sample_id}.{library_id}_2_fastqc.zip",
+        FASTP / "{sample_id}.{library_id}_fastp.json",
+        FASTP / "{sample_id}.{library_id}_1_fastqc.zip",
+        FASTP / "{sample_id}.{library_id}_2_fastqc.zip",
+        RIBODETECTOR / "{sample_id}.{library_id}_1_fastqc.zip",
+        RIBODETECTOR / "{sample_id}.{library_id}_2_fastqc.zip",
         get_kraken2_for_library_report,
         get_samtools_for_library_report,
         get_star_for_library_report,
     output:
-        REPORT_LIBRARY / "{sample}.{library}.html",
+        REPORT_LIBRARY / "{sample_id}.{library_id}.html",
     log:
-        REPORT_LIBRARY / "{sample}.{library}.log",
+        REPORT_LIBRARY / "{sample_id}.{library_id}.log",
     conda:
         "_env.yml"
     params:
-        library="{sample}.{library}",
+        library="{sample_id}.{library_id}",
         out_dir=REPORT_LIBRARY,
     shell:
         """
@@ -37,7 +37,10 @@ rule report_library_one:
 rule report_library_all:
     """Make a MultiQC report for every library"""
     input:
-        [REPORT_LIBRARY / f"{sample}.{library}.html" for sample, library in SAMPLE_LIB],
+        [
+            REPORT_LIBRARY / f"{sample_id}.{library_id}.html"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
 
 
 rule report_library:

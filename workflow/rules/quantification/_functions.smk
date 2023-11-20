@@ -35,7 +35,7 @@ def get_tsvs_for_assembly_coverm_genome(wildcards):
     mag_catalogue = wildcards.mag_catalogue
     tsv_files = [
        COVERM / "genome" / mag_catalogue / method / f"{sample_id}.{library_id}.tsv"
-        for sample_id, library_id in SAMPLE_LIB
+        for sample_id, library_id in SAMPLE_LIBRARY
     ]
     return tsv_files
 
@@ -46,7 +46,7 @@ def get_tsvs_for_assembly_coverm_contig(wildcards):
     mag_catalogue = wildcards.mag_catalogue
     tsv_files = [
         COVERM / "contig" / mag_catalogue / method / f"{sample_id}.{library_id}.tsv"
-        for sample_id, library_id in SAMPLE_LIB
+        for sample_id, library_id in SAMPLE_LIBRARY
     ]
     return tsv_files
 

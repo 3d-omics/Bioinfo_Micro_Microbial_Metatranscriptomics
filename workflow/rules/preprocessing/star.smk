@@ -83,7 +83,7 @@ rule star_align_all:
     input:
         [
             STAR / host_name / f"{sample_id}.{library_id}.ReadsPerGene.out.tab"
-            for sample_id, library_id in SAMPLE_LIB
+            for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
 
@@ -95,14 +95,14 @@ rule star_cram_one:
     other way to use minimizers on the unmapped fraction.
     """
     input:
-        bam=STAR / "{host_name}" / "{sample}.{library}.Aligned.sortedByCoord.out.bam",
+        bam=STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
         reference=HOSTS / "{host_name}.fa",
         fai = HOSTS / "{host_name}.fa.fai",
     output:
-        cram=STAR / "{host_name}" / "{sample}.{library}.cram",
-        crai=STAR / "{host_name}" / "{sample}.{library}.cram.crai",
+        cram=STAR / "{host_name}" / "{sample_id}.{library_id}.cram",
+        crai=STAR / "{host_name}" / "{sample_id}.{library_id}.cram.crai",
     log:
-        STAR / "{host_name}" / "{sample}.{library}.Aligned.sortedByCoord.out.cram.log",
+        STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.cram.log",
     conda:
         "_env.yml"
     threads: 24
@@ -129,8 +129,8 @@ rule star_cram_all:
     """Convert to cram all libraries"""
     input:
         [
-            STAR / host_name / f"{sample}.{library}.cram"
-            for sample, library in SAMPLE_LIB
+            STAR / host_name / f"{sample_id}.{library_id}.cram"
+            for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
 
@@ -139,8 +139,8 @@ rule star_report_all:
     """Collect star reports"""
     input:
         [
-            STAR / host_name / f"{sample}.{library}.Log.final.out"
-            for sample, library in SAMPLE_LIB
+            STAR / host_name / f"{sample_id}.{library_id}.Log.final.out"
+            for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
 

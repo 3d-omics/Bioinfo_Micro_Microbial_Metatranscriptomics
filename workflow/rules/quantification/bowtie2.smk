@@ -78,7 +78,7 @@ rule quantification_bowtie2_map_all:
     input:
         [
             BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.cram"
-            for sample_id, library_id in SAMPLE_LIB
+            for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],
 
@@ -92,7 +92,7 @@ rule quantification_bowtie2_report_all:
     input:
         [
             BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.{report}"
-            for sample_id, library_id in SAMPLE_LIB
+            for sample_id, library_id in SAMPLE_LIBRARY
             for report in BAM_REPORTS
             for mag_catalogue in MAG_CATALOGUES
         ],
