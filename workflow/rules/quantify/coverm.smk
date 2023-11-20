@@ -63,10 +63,8 @@ rule _quantify__coverm__genome:
         "_env.yml"
     params:
         method=get_method,
-        min_covered_fraction=params["quantify"]["coverm"]["genome"][
-            "min_covered_fraction"
-        ],
-        separator=params["quantify"]["coverm"]["separator"],
+        min_covered_fraction=get_min_covered_fraction,
+        separator=get_separator,
     resources:
         runtime=24 * 60,
         mem_mb=32 * 1024,

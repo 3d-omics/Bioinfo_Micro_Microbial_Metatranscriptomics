@@ -29,6 +29,16 @@ def get_method(wildcards):
     return wildcards.method
 
 
+def get_min_covered_fraction(wildcards):
+    """Get the min covered fraction"""
+    return params["quantify"]["coverm"]["genome"]["min_covered_fraction"]
+
+
+def get_separator(wildcards):
+    """Get the mag-contig separator"""
+    return params["quantify"]["coverm"]["separator"]
+
+
 def get_tsvs_for_assembly_coverm_genome(wildcards):
     """Get all the concrete coverm genome tsv files for a concrete assembly"""
     method = wildcards.method
