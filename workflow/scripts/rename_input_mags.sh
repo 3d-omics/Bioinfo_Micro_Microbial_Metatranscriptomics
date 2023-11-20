@@ -8,10 +8,11 @@ set -euo pipefail
 cat /dev/null > mags.fa
 
 for file in *.fa.gz ; do
-    mag_id=$(echo $file | sed 's/.fa.gz$//g')
+    # mag_id=$(echo $file | sed 's/.fa.gz$//g')
+    mag_id=${file//.fa.gz$/}
 
-    gzip -dc $file \
-    | awk -v mag_id=$mag_id 'sub(/^>/,"") { $0=">" mag_id "^" $0} 1' \
+    gzip -dc "$file" \
+    | awk -v mag_id="$mag_id" 'sub(/^>/,"") { $0=">" mag_id "^" $0} 1' \
     >> mags.fa
 
 done
