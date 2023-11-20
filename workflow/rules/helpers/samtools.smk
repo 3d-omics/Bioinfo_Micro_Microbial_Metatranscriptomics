@@ -1,4 +1,4 @@
-rule _fa_gz_fai:
+rule _helpers__samtools__faidx_fagz:
     input:
         "{prefix}.fa.gz",
     output:
@@ -11,7 +11,7 @@ rule _fa_gz_fai:
         "samtools faidx {input} 2> {log} 1>&2"
 
 
-rule _fa_fai:
+rule _helpers__samtools__faidx_fa:
     input:
         "{prefix}.fa",
     output:
@@ -24,7 +24,7 @@ rule _fa_fai:
         "samtools faidx {input} 2> {log} 1>&2"
 
 
-rule _bai:
+rule _helpers__samtools__index_bam:
     """Generate a bam index"""
     input:
         "{prefix}.bam",
@@ -38,7 +38,7 @@ rule _bai:
         "samtools index {input} 2> {log} 1>&2"
 
 
-rule _crai:
+rule _helpers__samtools__index_cram:
     """Generate a cram index"""
     input:
         "{prefix}.cram",
@@ -52,7 +52,7 @@ rule _crai:
         "samtools index {input} 2> {log} 1>&2"
 
 
-rule _samtools_flagstats_cram:
+rule _helpers__samtools__flagstats_cram:
     """Compute flagstats for a cram"""
     input:
         cram="{prefix}.cram",
@@ -67,7 +67,7 @@ rule _samtools_flagstats_cram:
         "samtools flagstats {input.cram} > {output.txt} 2> {log}"
 
 
-rule _samtools_idxstats_cram:
+rule _helpers__samtools__idxstats_cram:
     """Compute idxstats for a cram"""
     input:
         cram="{prefix}.cram",
