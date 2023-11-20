@@ -13,8 +13,9 @@ rule star_index_one:
         STAR_INDEX / "{host_name}.log"
     threads: 24
     resources:
-        mem_mb=32 * 1024,
+        mem_mb= double_ram(32),
         runtime=24 * 60,
+    retries: 5
     shell:
         """
         STAR \
@@ -59,8 +60,9 @@ rule star_align_one:
         "_env.yml"
     threads: 24
     resources:
-        mem_mb = 32 * 1024,
+        mem_mb=double_ram(32),
         runtime=24 * 60,
+    retries: 5
     shell:
         """
         ulimit -n 90000 2> {log} 1>&2
@@ -119,8 +121,9 @@ rule star_cram_one:
         "_env.yml"
     threads: 24
     resources:
-        mem_mb=24 * 1024,
+        mem_mb=double_ram(32),
         runtime=24 * 60,
+    retries: 5
     shell:
         """
         samtools sort \
