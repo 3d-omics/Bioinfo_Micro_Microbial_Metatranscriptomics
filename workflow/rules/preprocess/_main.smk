@@ -5,9 +5,9 @@ include: "kraken2.smk"
 include: "star.smk"
 
 
-rule preprocessing:
+rule preprocess:
     input:
-        rules.fastp.input,
-        rules.ribodetector.input,
-        rules.kraken2.input,
-        rules.star.input,
+        rules.preprocess__fastp.input,
+        rules.preprocess__ribodetector.input,
+        rules.preprocess__kraken2.input,
+        rules.preprocess__star.input,

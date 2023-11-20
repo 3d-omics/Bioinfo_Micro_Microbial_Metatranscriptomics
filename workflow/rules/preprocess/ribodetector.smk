@@ -1,4 +1,4 @@
-rule ribodetector_filter_one:
+rule _preprocess__ribodetector__filter:
     """Run ribodetector on one library
 
     ribodetector filters out rRNA reads from a library
@@ -37,7 +37,7 @@ rule ribodetector_filter_one:
         """
 
 
-rule ribodetector_find_all:
+rule preprocess__ribodetector__filter:
     """Run ribodetector_find_one over all libraries"""
     input:
         [
@@ -47,7 +47,7 @@ rule ribodetector_find_all:
         ],
 
 
-rule ribodetector_fastqc_all:
+rule preprocess__ribodetector__fastqc:
     """Run fastqc over all libraries"""
     input:
         [
@@ -58,8 +58,8 @@ rule ribodetector_fastqc_all:
         ],
 
 
-rule ribodetector:
+rule preprocess__ribodetector:
     """Run ribodetector and generate reports for all libraries"""
     input:
-        rules.ribodetector_find_all.input,
-        rules.ribodetector_fastqc_all.input,
+        rules.preprocess__ribodetector__filter.input,
+        rules.preprocess__ribodetector__fastqc.input,

@@ -1,39 +1,4 @@
-# rule kraken2_assign_one:
-#     """Run kraken2 over one library
-
-#     The database must be provided by the user in the config file.
-#     """
-#     input:
-#         forward_=FASTP / "{sample_id}.{library_id}_1.fq.gz",
-#         reverse_=FASTP / "{sample_id}.{library_id}_2.fq.gz",
-#         database=get_kraken2_database,
-#     output:
-#         out_gz=KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.out.gz",
-#         report=KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.report",
-#     log:
-#         log=KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.log",
-#     conda:
-#         "_env.yml"
-#     threads: 24
-#     resources:
-#         mem_mb=params["preprocessing"]["kraken2"]["mem_gb"] * 1024,
-#         runtime=24 * 60,
-#     shell:
-#         """
-#         kraken2 \
-#             --db {input.database} \
-#             --threads {threads} \
-#             --paired \
-#             --gzip-compressed \
-#             --output >(pigz -11 > {output.out_gz}) \
-#             --report {output.report} \
-#             {input.forward_} \
-#             {input.reverse_} \
-#         > {log} 2>&1
-#         """
-
-
-rule kraken2_assign_one:
+rule _preprocess__kraken2__assign:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.
 
@@ -110,7 +75,7 @@ rule kraken2_assign_one:
         """
 
 
-rule kraken2_assign_all:
+rule preprocess__kraken2__assign:
     """Run kraken2 over all libraries"""
     input:
         [
@@ -120,23 +85,14 @@ rule kraken2_assign_all:
         ],
 
 
-# rule kraken2_report_one:
-#     """Generate a report for one library
-
-#     Equivalent to just runing kraken2.
-#     """
-#     input:
-#         rules.kraken2_assign_one.output.report,
-
-
-rule kraken2_report_all:
+rule preprocess__kraken2__report:
     """Generate all the reports"""
     input:
-        rules.kraken2_assign_all.input,
+        rules.preprocess__kraken2__assign.input,
 
 
-rule kraken2:
+rule preprocess__kraken2:
     """Run the kraken2 subworkflow"""
     input:
-        rules.kraken2_assign_all.input,
-        rules.kraken2_report_all.input,
+        rules.preprocess__kraken2__assign.input,
+        rules.preprocess__kraken2__report.input,

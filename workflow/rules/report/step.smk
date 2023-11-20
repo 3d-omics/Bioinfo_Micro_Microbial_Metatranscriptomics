@@ -22,10 +22,10 @@ rule report_step_reads:
         """
 
 
-rule report_step_fastp:
+rule report__step__fastp:
     """Collect all reports for the fastp step"""
     input:
-        rules.fastp_report_all.input,
+        rules.preprocess__fastp__report.input,
     output:
         html=REPORT_STEP / "fastp.html",
     log:
@@ -46,10 +46,10 @@ rule report_step_fastp:
         """
 
 
-rule report_step_ribodetector:
+rule report__step__ribodetector:
     """Collect all reports for the ribodetector step"""
     input:
-        rules.ribodetector_fastqc_all.input,
+        rules.preprocess__ribodetector__fastqc.input,
     output:
         html=REPORT_STEP / "ribodetector.html",
     log:
@@ -70,10 +70,10 @@ rule report_step_ribodetector:
         """
 
 
-rule report_step_kraken2:
+rule report__step__kraken2:
     """Collect all reports for the fastp step"""
     input:
-        rules.kraken2_report_all.input,
+        rules.preprocess__kraken2__report.input,
     output:
         html=REPORT_STEP / "kraken2.html",
     log:
@@ -94,10 +94,10 @@ rule report_step_kraken2:
         """
 
 
-rule report_step_star:
+rule report__step__star:
     """Collect all reports for the star step"""
     input:
-        rules.star_report_all.input,
+        rules.preprocess__star__report.input,
     output:
         html=REPORT_STEP / "star.html",
     log:
@@ -146,16 +146,7 @@ rule report_step:
     """Collect all per step reports for the pipeline"""
     input:
         rules.report_step_reads.output,
-        rules.report_step_fastp.output,
-        rules.report_step_kraken2.output if features["kraken2_databases"] else [],
-        rules.report_step_star.output if features["hosts"] else [],  # No point if no hosts
+        rules.report__step__fastp.output,
+        rules.report__step__kraken2.output if features["kraken2_databases"] else [],
+        rules.report__step__star.output if features["hosts"] else [],  # No point if no hosts
         rules.report_step_bowtie2.output,
-
-
-localrules:
-    report_step_reads,
-    report_step_fastp,
-    report_step_kraken2,
-    report_step_ribodetector,
-    report_step_star,
-    report_step_bowtie2,

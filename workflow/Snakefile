@@ -43,7 +43,7 @@ rule all:
         # rules.reads.input,
         # rules.reference.input,
         # rules.fastp.input,
-        rules.kraken2.input,
+        rules.preprocess__kraken2.input,
         # rules.star.input,
         # rules.bowtie2.input,
         rules.report_step.input,

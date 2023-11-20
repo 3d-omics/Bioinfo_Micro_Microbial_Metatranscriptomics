@@ -1,4 +1,4 @@
-rule star_index_one:
+rule _preprocess__star__index:
     """Index the genome for STAR"""
     input:
         genome=HOSTS / "{host_name}.fa",
@@ -29,13 +29,13 @@ rule star_index_one:
         """
 
 
-rule star_index:
+rule preprocess__star__index:
     """Build all the STAR indexes"""
     input:
         [STAR_INDEX / f"{host_name}" for host_name in HOST_NAMES],
 
 
-rule star_align_one:
+rule _preprocess__star__align:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
         forward_=get_input_forward_for_host_mapping,
@@ -93,7 +93,7 @@ rule star_align_one:
         """
 
 
-rule star_align_all:
+rule preprocess__star__align:
     """Get all the STAR counts for all hosts"""
     input:
         [
@@ -103,7 +103,7 @@ rule star_align_all:
         ],
 
 
-rule star_cram_one:
+rule _preprocess__star__cram:
     """Convert to cram one library
 
     NOTE: we use samtools sort when it is already sorted because there is no
@@ -145,7 +145,7 @@ rule star_cram_one:
         """
 
 
-rule star_cram_all:
+rule preprocess__star__cram:
     """Convert to cram all libraries"""
     input:
         [
@@ -155,7 +155,7 @@ rule star_cram_all:
         ],
 
 
-rule star_report_all:
+rule preprocess__star__report:
     """Collect star reports"""
     input:
         [
@@ -165,9 +165,9 @@ rule star_report_all:
         ],
 
 
-rule star:
+rule preprocess__star:
     """Run all the elements in the star subworkflow"""
     input:
-        rules.star_align_all.input,
-        rules.star_cram_all.input,
-        rules.star_report_all.input,
+        rules.preprocess__star__align.input,
+        rules.preprocess__star__cram.input,
+        rules.preprocess__star__report.input,
