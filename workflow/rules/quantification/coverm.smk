@@ -38,28 +38,38 @@ rule coverm_cram_to_bam:
             COVERM / "bams" / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
-        ]
+        ],
 
 
 # CoverM Contig
 rule coverm_genome_one:
     """calculation of mag-wise coverage"""
     input:
-        bam = COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam",
-        bai = COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam.bai",
+        bam=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bai=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam.bai",
     output:
-        tsv=COVERM / "genome" / "{mag_catalogue}" / "{method}" / "{sample_id}.{library_id}.tsv",
+        tsv=COVERM
+        / "genome"
+        / "{mag_catalogue}"
+        / "{method}"
+        / "{sample_id}.{library_id}.tsv",
     log:
-        COVERM / "genome" / "{mag_catalogue}" / "{method}" / "{sample_id}.{library_id}.log"
+        COVERM
+        / "genome"
+        / "{mag_catalogue}"
+        / "{method}"
+        / "{sample_id}.{library_id}.log",
     conda:
         "_env.yml"
     params:
         method=get_method,
-        min_covered_fraction=params["quantification"]["coverm"]["genome"]["min_covered_fraction"],
+        min_covered_fraction=params["quantification"]["coverm"]["genome"][
+            "min_covered_fraction"
+        ],
         separator=params["quantification"]["coverm"]["separator"],
     resources:
         runtime=24 * 60,
-        mem_mb=32 * 1024
+        mem_mb=32 * 1024,
     shell:
         """
         coverm genome \
@@ -104,9 +114,17 @@ rule coverm_contig_one:
         reference=MAGS / "{mag_catalogue}.fa.gz",
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        tsv=COVERM / "contig" / "{mag_catalogue}" / "{method}" / "{sample_id}.{library_id}.tsv",
+        tsv=COVERM
+        / "contig"
+        / "{mag_catalogue}"
+        / "{method}"
+        / "{sample_id}.{library_id}.tsv",
     log:
-        COVERM / "contig" / "{mag_catalogue}" / "{method}" / "{sample_id}.{library_id}.log",
+        COVERM
+        / "contig"
+        / "{mag_catalogue}"
+        / "{method}"
+        / "{sample_id}.{library_id}.log",
     conda:
         "_env.yml"
     params:
@@ -151,7 +169,7 @@ rule coverm_contig:
             COVERM / f"contig.{mag_catalogue}.{method}.tsv"
             for method in COVERM_CONTIG_METHODS
             for mag_catalogue in MAG_CATALOGUES
-        ]
+        ],
 
 
 rule coverm_genome:
@@ -160,7 +178,7 @@ rule coverm_genome:
             COVERM / f"genome.{mag_catalogue}.{method}.tsv"
             for method in COVERM_CONTIG_METHODS
             for mag_catalogue in MAG_CATALOGUES
-        ]
+        ],
 
 
 rule coverm:

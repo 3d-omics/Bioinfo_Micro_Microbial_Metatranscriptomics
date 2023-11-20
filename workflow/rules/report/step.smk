@@ -148,7 +148,7 @@ rule report_step:
         rules.report_step_reads.output,
         rules.report_step_fastp.output,
         rules.report_step_kraken2.output if features["kraken2_databases"] else [],
-        rules.report_step_star.output if features["hosts"] else [], # No point if no hosts
+        rules.report_step_star.output if features["hosts"] else [],  # No point if no hosts
         rules.report_step_bowtie2.output,
 
 

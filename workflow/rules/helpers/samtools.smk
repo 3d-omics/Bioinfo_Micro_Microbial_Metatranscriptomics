@@ -1,17 +1,28 @@
 rule fa_gz_fai:
-    input: "{prefix}.fa.gz"
-    output: "{prefix}.fa.gz.fai"
-    log: "{prefix}.fa.fai.gz.log"
-    conda: "_env.yml"
-    shell: "samtools faidx {input} 2> {log} 1>&2"
+    input:
+        "{prefix}.fa.gz",
+    output:
+        "{prefix}.fa.gz.fai",
+    log:
+        "{prefix}.fa.fai.gz.log",
+    conda:
+        "_env.yml"
+    shell:
+        "samtools faidx {input} 2> {log} 1>&2"
 
 
 rule fa_fai:
-    input: "{prefix}.fa"
-    output: "{prefix}.fa.fai"
-    log: "{prefix}.fa.fai.log"
-    conda: "_env.yml"
-    shell: "samtools faidx {input} 2> {log} 1>&2"
+    input:
+        "{prefix}.fa",
+    output:
+        "{prefix}.fa.fai",
+    log:
+        "{prefix}.fa.fai.log",
+    conda:
+        "_env.yml"
+    shell:
+        "samtools faidx {input} 2> {log} 1>&2"
+
 
 rule bai:
     """Generate a bam index"""
@@ -67,7 +78,6 @@ rule dict_fagz:
         "_env.yml"
     shell:
         "samtools dict {input} --output {output} 2> {log} 1>&2"
-
 
 
 # rule samtools_stats_bam:

@@ -2,9 +2,9 @@ rule quantification_bowtie2_build_one:
     """Build bowtie2 index for the mags"""
     input:
         reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai = MAGS / "{mag_catalogue}.fa.gz.fai",
+        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        prefix = touch(BOWTIE2_INDEX / "{mag_catalogue}")
+        prefix=touch(BOWTIE2_INDEX / "{mag_catalogue}"),
     log:
         BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
@@ -37,7 +37,7 @@ rule quantification_bowtie2_map_one:
         reverse_=get_reverse_for_bowtie2,
         bowtie2_index=BOWTIE2_INDEX / "{mag_catalogue}",
         reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai = MAGS / "{mag_catalogue}.fa.gz.fai",
+        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
     log:

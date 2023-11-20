@@ -32,6 +32,7 @@
 #         > {log} 2>&1
 #         """
 
+
 rule kraken2_assign_one:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.

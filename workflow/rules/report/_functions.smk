@@ -19,6 +19,7 @@ def get_kraken2_for_library_report(wildcards):
     ]
     return files
 
+
 def get_samtools_for_library_report(wildcards):
     sample_id = wildcards.sample_id
     library_id = wildcards.library_id

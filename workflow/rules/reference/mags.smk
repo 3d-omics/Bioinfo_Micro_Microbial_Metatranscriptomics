@@ -8,8 +8,7 @@ rule reference_mags_recompress_one:
         MAGS / "{mag_catalogue}.log",
     conda:
         "_env.yml"
-    threads:
-        24
+    threads: 24
     shell:
         """
         ( gzip \
@@ -26,7 +25,4 @@ rule reference_mags_recompress_one:
 
 rule reference_mags:
     input:
-        [
-            MAGS / f"{mag_catalogue}.fa.gz"
-            for mag_catalogue in MAG_CATALOGUES
-        ]
+        [MAGS / f"{mag_catalogue}.fa.gz" for mag_catalogue in MAG_CATALOGUES],

@@ -3,8 +3,8 @@ rule samtools_stats_cram:
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram",
         crai=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram.crai",
-        reference=REFERENCE / "mags" /  "{mag_catalogue}.fa.gz",
-        fai=REFERENCE / "mags" /  "{mag_catalogue}.fa.gz.fai",
+        reference=REFERENCE / "mags" / "{mag_catalogue}.fa.gz",
+        fai=REFERENCE / "mags" / "{mag_catalogue}.fa.gz.fai",
     output:
         tsv=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.stats.tsv",
     log:

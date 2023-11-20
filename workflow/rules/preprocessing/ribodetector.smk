@@ -16,10 +16,10 @@ rule ribodetector_filter_one:
         average_length=params["preprocessing"]["ribodetector"]["average_length"],
         chunk_size=params["preprocessing"]["ribodetector"]["chunk_size"],
     conda:
-        "_env.yml",
+        "_env.yml"
     resources:
         mem_mb=32 * 1024,
-        runtime= 6 * 60,
+        runtime=6 * 60,
     shell:
         """
         ribodetector_cpu \
@@ -42,9 +42,9 @@ rule ribodetector_find_all:
     input:
         [
             RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
-            for sample_id, library_id  in SAMPLE_LIBRARY
+            for sample_id, library_id in SAMPLE_LIBRARY
             for end in ["1", "2"]
-        ]
+        ],
 
 
 rule ribodetector_fastqc_all:

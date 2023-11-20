@@ -10,10 +10,10 @@ rule star_index_one:
     conda:
         "_env.yml"
     log:
-        STAR_INDEX / "{host_name}.log"
+        STAR_INDEX / "{host_name}.log",
     threads: 24
     resources:
-        mem_mb= double_ram(32),
+        mem_mb=double_ram(32),
         runtime=24 * 60,
     retries: 5
     shell:
@@ -32,10 +32,7 @@ rule star_index_one:
 rule star_index:
     """Build all the STAR indexes"""
     input:
-        [
-            STAR_INDEX / f"{host_name}"
-            for host_name in HOST_NAMES
-        ]
+        [STAR_INDEX / f"{host_name}" for host_name in HOST_NAMES],
 
 
 rule star_align_one:
@@ -45,7 +42,11 @@ rule star_align_one:
         reverse_=get_input_reverse_for_host_mapping,
         index=STAR_INDEX / "{host_name}",
     output:
-        bam=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"),
+        bam=temp(
+            STAR
+            / "{host_name}"
+            / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
+        ),
         u1=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1.gz"),
         u2=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2.gz"),
         report=STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
@@ -109,14 +110,18 @@ rule star_cram_one:
     other way to use minimizers on the unmapped fraction.
     """
     input:
-        bam=STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bam=STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
         reference=HOSTS / "{host_name}.fa",
-        fai = HOSTS / "{host_name}.fa.fai",
+        fai=HOSTS / "{host_name}.fa.fai",
     output:
         cram=STAR / "{host_name}" / "{sample_id}.{library_id}.cram",
         crai=STAR / "{host_name}" / "{sample_id}.{library_id}.cram.crai",
     log:
-        STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.cram.log",
+        STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.cram.log",
     conda:
         "_env.yml"
     threads: 24
