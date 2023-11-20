@@ -1,6 +1,6 @@
 # params.yml: execution parameters for the workflow
 ---
-preprocessing:
+preprocess:
 
   fastp:
     extra: ""
@@ -17,7 +17,7 @@ preprocessing:
       sjdbOverhang: 150
 
 
-quantification:
+quantify:
 
   bowtie2:
     extra: ""

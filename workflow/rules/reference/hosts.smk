@@ -1,4 +1,4 @@
-rule reference_hosts_decompress_genome_one:
+rule _reference__hosts__decompress_fa:
     """Decompress the genome to its place
 
     Note: STAR requires the genome decompressed.
@@ -22,7 +22,7 @@ rule reference_hosts_decompress_genome_one:
         """
 
 
-rule reference_hosts_recompress_gtf_one:
+rule _reference__hosts__decompress_gtf:
     """Decomplress the GTF annotation to its place
 
     Note: STAR requires the annotation decompressed
@@ -46,17 +46,17 @@ rule reference_hosts_recompress_gtf_one:
         """
 
 
-rule reference_hosts_recompress_genome:
+rule reference__hosts__recompress_fa:
     input:
         [HOSTS / f"{host_name}.fa.gz" for host_name in HOST_NAMES],
 
 
-rule reference_hosts_recompress_gtf:
+rule reference__hosts__recompress_gtf:
     input:
         [HOSTS / f"{host_name}.gtf.gz" for host_name in HOST_NAMES],
 
 
-rule reference_hosts:
+rule reference__hosts:
     input:
-        rules.reference_hosts_recompress_genome.input,
-        rules.reference_hosts_recompress_gtf.input,
+        rules.reference__hosts__recompress_fa.input,
+        rules.reference__hosts__recompress_gtf.input,

@@ -1,4 +1,4 @@
-rule reference_mags_recompress_one:
+rule _reference__mags__recompress:
     """Recpmpress the MAGs into the results directory"""
     input:
         fna=get_mag_catalogue,
@@ -23,6 +23,6 @@ rule reference_mags_recompress_one:
         """
 
 
-rule reference_mags:
+rule reference__mags:
     input:
         [MAGS / f"{mag_catalogue}.fa.gz" for mag_catalogue in MAG_CATALOGUES],

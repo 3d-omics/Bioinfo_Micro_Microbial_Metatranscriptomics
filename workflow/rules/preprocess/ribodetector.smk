@@ -13,8 +13,8 @@ rule _preprocess__ribodetector__filter:
         RIBODETECTOR / "{sample_id}.{library_id}.log",
     threads: 24
     params:
-        average_length=params["preprocessing"]["ribodetector"]["average_length"],
-        chunk_size=params["preprocessing"]["ribodetector"]["chunk_size"],
+        average_length=params["preprocess"]["ribodetector"]["average_length"],
+        chunk_size=params["preprocess"]["ribodetector"]["chunk_size"],
     conda:
         "_env.yml"
     resources:

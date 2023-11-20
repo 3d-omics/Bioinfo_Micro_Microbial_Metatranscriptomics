@@ -4,6 +4,6 @@ include: "coverm.smk"
 include: "samtools.smk"
 
 
-rule quantification:
+rule quantify:
     input:
-        rules.coverm.input,
+        rules.quantify__coverm.input,

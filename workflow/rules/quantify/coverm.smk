@@ -1,5 +1,5 @@
 # CRAM to BAM
-rule coverm_cram_to_bam_one:
+rule _quantify__coverm__cram_to_bam:
     """Convert cram to bam
 
     Note: this step is needed because coverm probably does not support cram. The
@@ -32,7 +32,7 @@ rule coverm_cram_to_bam_one:
         """
 
 
-rule coverm_cram_to_bam:
+rule quantify__coverm__cram_to_bam:
     input:
         [
             COVERM / "bams" / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
@@ -42,7 +42,7 @@ rule coverm_cram_to_bam:
 
 
 # CoverM Contig
-rule coverm_genome_one:
+rule _quantify__coverm__genome:
     """calculation of mag-wise coverage"""
     input:
         bam=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam",
@@ -63,10 +63,10 @@ rule coverm_genome_one:
         "_env.yml"
     params:
         method=get_method,
-        min_covered_fraction=params["quantification"]["coverm"]["genome"][
+        min_covered_fraction=params["quantify"]["coverm"]["genome"][
             "min_covered_fraction"
         ],
-        separator=params["quantification"]["coverm"]["separator"],
+        separator=params["quantify"]["coverm"]["separator"],
     resources:
         runtime=24 * 60,
         mem_mb=32 * 1024,
@@ -82,7 +82,7 @@ rule coverm_genome_one:
         """
 
 
-rule coverm_aggregate_genome:
+rule _quantify__coverm__genome_aggregate:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
         get_tsvs_for_assembly_coverm_genome,
@@ -105,8 +105,17 @@ rule coverm_aggregate_genome:
         """
 
 
+rule quantify__coverm__genome:
+    input:
+        [
+            COVERM / f"genome.{mag_catalogue}.{method}.tsv"
+            for method in COVERM_CONTIG_METHODS
+            for mag_catalogue in MAG_CATALOGUES
+        ],
+
+
 # CoverM contig ----
-rule coverm_contig_one:
+rule _quantify__coverm__contig:
     """Run coverm genome for one library and one mag catalogue"""
     input:
         bam=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam",
@@ -140,7 +149,7 @@ rule coverm_contig_one:
         """
 
 
-rule coverm_contig_aggregate:
+rule _quantify__coverm__contig_aggregate:
     """Aggregate coverm contig results"""
     input:
         get_tsvs_for_assembly_coverm_contig,
@@ -163,7 +172,7 @@ rule coverm_contig_aggregate:
         """
 
 
-rule coverm_contig:
+rule quantify__coverm__contig:
     input:
         [
             COVERM / f"contig.{mag_catalogue}.{method}.tsv"
@@ -172,16 +181,7 @@ rule coverm_contig:
         ],
 
 
-rule coverm_genome:
+rule quantify__coverm:
     input:
-        [
-            COVERM / f"genome.{mag_catalogue}.{method}.tsv"
-            for method in COVERM_CONTIG_METHODS
-            for mag_catalogue in MAG_CATALOGUES
-        ],
-
-
-rule coverm:
-    input:
-        rules.coverm_genome.input,
-        rules.coverm_contig.input,
+        rules.quantify__coverm__genome.input,
+        rules.quantify__coverm__contig.input,

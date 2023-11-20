@@ -15,7 +15,7 @@ rule _preprocess__fastp__trim:
     params:
         adapter_forward=get_forward_adapter,
         adapter_reverse=get_reverse_adapter,
-        extra=params["preprocessing"]["fastp"]["extra"],
+        extra=params["preprocess"]["fastp"]["extra"],
     threads: 16
     resources:
         mem_mb=4 * 1024,

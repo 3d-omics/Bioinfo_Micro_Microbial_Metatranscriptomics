@@ -1,4 +1,4 @@
-rule quantification_bowtie2_build_one:
+rule _quantify__bowtie2__build:
     """Build bowtie2 index for the mags"""
     input:
         reference=MAGS / "{mag_catalogue}.fa.gz",
@@ -10,7 +10,7 @@ rule quantification_bowtie2_build_one:
     conda:
         "_env.yml"
     params:
-        extra=params["quantification"]["bowtie2"]["extra"],
+        extra=params["quantify"]["bowtie2"]["extra"],
     threads: 24
     resources:
         mem_mb=double_ram(32),
@@ -27,7 +27,13 @@ rule quantification_bowtie2_build_one:
         """
 
 
-rule quantification_bowtie2_map_one:
+rule quantify__bowtie2__build:
+    """Build all the bowtie2 indexes"""
+    input:
+        [BOWTIE2_INDEX / f"{mag_catalogue}" for mag_catalogue in MAG_CATALOGUES],
+
+
+rule _quantify__bowtie2__map:
     """Map one library to reference genome using bowtie2
 
     Output SAM file is piped to samtools sort to generate a CRAM file.
@@ -43,8 +49,8 @@ rule quantification_bowtie2_map_one:
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     params:
-        extra=params["quantification"]["bowtie2"]["extra"],
-        samtools_mem=params["quantification"]["bowtie2"]["samtools"]["mem_per_thread"],
+        extra=params["quantify"]["bowtie2"]["extra"],
+        samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
     threads: 24
@@ -74,7 +80,7 @@ rule quantification_bowtie2_map_one:
         """
 
 
-rule quantification_bowtie2_map_all:
+rule quantify__bowtie2__map:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
@@ -84,7 +90,7 @@ rule quantification_bowtie2_map_all:
         ],
 
 
-rule quantification_bowtie2_report_all:
+rule quantify__bowtie2__report:
     """Generate bowtie2 reports for all libraries:
     - samtools stats
     - samtools flagstats
@@ -99,8 +105,8 @@ rule quantification_bowtie2_report_all:
         ],
 
 
-rule quantification_bowtie2:
+rule quantify__bowtie2:
     """Run bowtie2 on all libraries and generate reports"""
     input:
-        rules.quantification_bowtie2_map_all.input,
-        rules.quantification_bowtie2_report_all.input,
+        rules.quantify__bowtie2__map.input,
+        rules.quantify__bowtie2__report.input,

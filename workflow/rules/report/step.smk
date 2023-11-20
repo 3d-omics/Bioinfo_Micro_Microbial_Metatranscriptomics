@@ -1,7 +1,7 @@
-rule report_step_reads:
+rule report__step__reads:
     """Collect all reports for the reads step"""
     input:
-        rules.reads_fastqc_all.input,
+        rules.reads__fastqc.input,
     output:
         html=REPORT_STEP / "reads.html",
     log:
@@ -118,10 +118,10 @@ rule report__step__star:
         """
 
 
-rule report_step_bowtie2:
+rule report__step__bowtie2:
     """Collect all reports for the bowtie2 step"""
     input:
-        rules.quantification_bowtie2_report_all.input,
+        rules.quantify__bowtie2__report.input,
     output:
         html=REPORT_STEP / "bowtie2.html",
     log:
@@ -142,11 +142,11 @@ rule report_step_bowtie2:
         """
 
 
-rule report_step:
+rule report__step:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report_step_reads.output,
+        rules.report__step__reads.output,
         rules.report__step__fastp.output,
         rules.report__step__kraken2.output if features["kraken2_databases"] else [],
         rules.report__step__star.output if features["hosts"] else [],  # No point if no hosts
-        rules.report_step_bowtie2.output,
+        rules.report__step__bowtie2.output,

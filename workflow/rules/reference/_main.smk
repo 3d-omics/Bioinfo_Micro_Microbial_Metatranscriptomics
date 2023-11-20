@@ -5,5 +5,5 @@ include: "mags.smk"
 
 rule reference:
     input:
-        rules.reference_mags.input,
-        rules.reference_hosts.input,
+        rules.reference__mags.input,
+        rules.reference__hosts.input,
