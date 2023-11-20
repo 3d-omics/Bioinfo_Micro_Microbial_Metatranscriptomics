@@ -1,4 +1,4 @@
-rule fa_gz_fai:
+rule _fa_gz_fai:
     input:
         "{prefix}.fa.gz",
     output:
@@ -11,7 +11,7 @@ rule fa_gz_fai:
         "samtools faidx {input} 2> {log} 1>&2"
 
 
-rule fa_fai:
+rule _fa_fai:
     input:
         "{prefix}.fa",
     output:
@@ -24,7 +24,7 @@ rule fa_fai:
         "samtools faidx {input} 2> {log} 1>&2"
 
 
-rule bai:
+rule _bai:
     """Generate a bam index"""
     input:
         "{prefix}.bam",
@@ -38,7 +38,7 @@ rule bai:
         "samtools index {input} 2> {log} 1>&2"
 
 
-rule crai:
+rule _crai:
     """Generate a cram index"""
     input:
         "{prefix}.cram",
@@ -52,32 +52,32 @@ rule crai:
         "samtools index {input} 2> {log} 1>&2"
 
 
-rule dict_fa:
-    """Generate a dictionary from a .fa"""
-    input:
-        "{prefix}.fa",
-    output:
-        "{prefix}.dict",
-    log:
-        "{prefix}.dict.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools dict {input} --output {output} 2> {log} 1>&2"
+# rule _dict_fa:
+#     """Generate a dictionary from a .fa"""
+#     input:
+#         "{prefix}.fa",
+#     output:
+#         "{prefix}.dict",
+#     log:
+#         "{prefix}.dict.log",
+#     conda:
+#         "_env.yml"
+#     shell:
+#         "samtools dict {input} --output {output} 2> {log} 1>&2"
 
 
-rule dict_fagz:
-    """Generate a dictionary from a fa.gz"""
-    input:
-        "{prefix}.fa.gz",
-    output:
-        "{prefix}.dict",
-    log:
-        "{prefix}.dict.log",
-    conda:
-        "_env.yml"
-    shell:
-        "samtools dict {input} --output {output} 2> {log} 1>&2"
+# rule dict_fagz:
+#     """Generate a dictionary from a fa.gz"""
+#     input:
+#         "{prefix}.fa.gz",
+#     output:
+#         "{prefix}.dict",
+#     log:
+#         "{prefix}.dict.log",
+#     conda:
+#         "_env.yml"
+#     shell:
+#         "samtools dict {input} --output {output} 2> {log} 1>&2"
 
 
 # rule samtools_stats_bam:
@@ -110,7 +110,7 @@ rule dict_fagz:
 #         "samtools flagstats {input.bam} > {output.txt} 2> {log}"
 
 
-rule samtools_flagstats_cram:
+rule _samtools_flagstats_cram:
     """Compute flagstats for a cram"""
     input:
         cram="{prefix}.cram",
@@ -140,7 +140,7 @@ rule samtools_flagstats_cram:
 #         "samtools idxstats {input.bam} > {output.tsv} 2> {log}"
 
 
-rule samtools_idxstats_cram:
+rule _samtools_idxstats_cram:
     """Compute idxstats for a cram"""
     input:
         cram="{prefix}.cram",
