@@ -44,14 +44,16 @@ rule star_align_one:
         index=STAR_INDEX / "{host_name}",
     output:
         bam=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"),
-        u1=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1"),
-        u2=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2"),
+        u1=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1.gz"),
+        u2=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2.gz"),
         report=STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
         counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
         STAR / "{host_name}" / "{sample_id}.{library_id}.log",
     params:
         out_prefix=get_star_out_prefix,
+        u1=get_star_output_r1,
+        u2=get_star_output_r2,
     conda:
         "_env.yml"
     threads: 24
@@ -75,6 +77,14 @@ rule star_align_one:
             --outReadsUnmapped Fastx \
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
+        2>> {log} 1>&2
+
+        pigz \
+            --processes {threads} \
+            --verbose \
+            --fast \
+            {params.u1} \
+            {params.u2} \
         2>> {log} 1>&2
         """
 

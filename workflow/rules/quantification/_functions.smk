@@ -2,16 +2,16 @@ def get_forward_for_bowtie2(wildcards):
     sample_id = wildcards.sample_id
     library_id = wildcards.library_id
     if len(HOST_NAMES) == 0:
-        return RIBODETECTOR / f"{sample_id}.{library_id}.fq.gz"
-    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate1"
+        return RIBODETECTOR / f"{sample_id}.{library_id}_1.fq.gz"
+    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate1.gz"
 
 
 def get_reverse_for_bowtie2(wildcards):
     sample_id = wildcards.sample_id
     library_id = wildcards.library_id
     if len(HOST_NAMES) == 0:
-        return RIBODETECTOR / f"{sample_id}.{library_id}.fq.gz"
-    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate2"
+        return RIBODETECTOR / f"{sample_id}.{library_id}_2.fq.gz"
+    return STAR / LAST_HOST / f"{sample_id}.{library_id}.Unmapped.out.mate2.gz"
 
 
 def compose_rg_id(wildcards):
