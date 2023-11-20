@@ -3,10 +3,10 @@
 hosts:  # Comment the next lines of no host
     human:
         genome: resources/reference/chrX_sub.fa.gz
-        annotation: resources/reference/chrX_sub.gtf.gz
+        gtf: resources/reference/chrX_sub.gtf.gz
     # human2:
     #     genome: resources/reference/chrX_sub.fa.gz
-    #     annotation: resources/reference/chrX_sub.gtf.gz
+    #     gtf: resources/reference/chrX_sub.gtf.gz
 
 mag_catalogues:
     mag1: resources/mags_mock.fa.gz

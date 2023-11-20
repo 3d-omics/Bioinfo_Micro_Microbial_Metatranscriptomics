@@ -1,5 +1,5 @@
-rule reference_hosts_recompress_genome_one:
-    """Link the reference genome to the results directory
+rule reference_hosts_decompress_genome_one:
+    """Decompress the genome to its place
 
     Note: STAR requires the genome decompressed.
     """
@@ -23,7 +23,7 @@ rule reference_hosts_recompress_genome_one:
 
 
 rule reference_hosts_recompress_gtf_one:
-    """Link the reference annotation to the results directory
+    """Decomplress the GTF annotation to its place
 
     Note: STAR requires the annotation decompressed
     """

@@ -10,4 +10,4 @@ def get_host_genome(wildcards):
 
 def get_host_annotation(wildcards):
     """Get the path to the host annotation in GTF format"""
-    return features["hosts"][wildcards.host_name]["annotation"]
+    return features["hosts"][wildcards.host_name]["gtf"]
