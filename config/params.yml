@@ -6,7 +6,7 @@ preprocessing:
     extra: ""
 
   kraken2:
-    mem_gb: 4  # approx same memory as database size in disk
+    memory_gb: 4  # approx same memory as database size in disk
 
   ribodetector:
     chunk_size: 1024  # 2 * 150 bp reads * 1024 * 1024 (chunk size) * 24 threads ~ 22 GB of RAM
