@@ -10,3 +10,4 @@ dependencies:
   - r-argparse
   - r-tidyverse=2.0.0
   - samtools=1.17
+  - rsync
