@@ -11,10 +11,11 @@ rule quantification_bowtie2_build_one:
         "_env.yml"
     params:
         extra=params["quantification"]["bowtie2"]["extra"],
-    threads: 8
+    threads: 24
     resources:
-        mem_mb=32 * 1024,
+        mem_mb=double_ram(32),
         runtime=6 * 60,
+    retries: 5
     shell:
         """
         bowtie2-build \
@@ -50,7 +51,7 @@ rule quantification_bowtie2_map_one:
     conda:
         "_env.yml"
     resources:
-        mem_mb=32 * 1024,
+        mem_mb=double_ram(32),
         runtime=1440,
     shell:
         """
