@@ -46,17 +46,20 @@ rule _reference__hosts__decompress_gtf:
         """
 
 
-rule reference__hosts__recompress_fa:
+rule reference__hosts__decompress_fa:
+    """Decompress all the hosts fasta files"""
     input:
-        [HOSTS / f"{host_name}.fa.gz" for host_name in HOST_NAMES],
+        [HOSTS / f"{host_name}.fa" for host_name in HOST_NAMES],
 
 
-rule reference__hosts__recompress_gtf:
+rule reference__hosts__decompress_gtf:
+    """Decompress all the host GTF annotations"""
     input:
         [HOSTS / f"{host_name}.gtf.gz" for host_name in HOST_NAMES],
 
 
 rule reference__hosts:
+    """Prepare all the host files"""
     input:
-        rules.reference__hosts__recompress_fa.input,
-        rules.reference__hosts__recompress_gtf.input,
+        rules.reference__hosts__decompress_fa.input,
+        rules.reference__hosts__decompress_gtf.input,

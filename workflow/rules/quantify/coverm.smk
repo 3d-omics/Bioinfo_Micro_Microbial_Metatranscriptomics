@@ -33,6 +33,9 @@ rule _quantify__coverm__cram_to_bam:
 
 
 rule quantify__coverm__cram_to_bam:
+    """
+    Convert the CRAMs to BAMs for coverm
+    """
     input:
         [
             COVERM / "bams" / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
@@ -43,7 +46,7 @@ rule quantify__coverm__cram_to_bam:
 
 # CoverM Contig
 rule _quantify__coverm__genome:
-    """calculation of mag-wise coverage"""
+    """calculation of MAG-wise coverage"""
     input:
         bam=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam",
         bai=COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam.bai",
@@ -104,6 +107,9 @@ rule _quantify__coverm__genome_aggregate:
 
 
 rule quantify__coverm__genome:
+    """
+    Get the MAG-wise count tables
+    """
     input:
         [
             COVERM / f"genome.{mag_catalogue}.{method}.tsv"
@@ -171,6 +177,9 @@ rule _quantify__coverm__contig_aggregate:
 
 
 rule quantify__coverm__contig:
+    """
+    Get the contig-wise count table
+    """
     input:
         [
             COVERM / f"contig.{mag_catalogue}.{method}.tsv"
@@ -180,6 +189,9 @@ rule quantify__coverm__contig:
 
 
 rule quantify__coverm:
+    """
+    Get the MAG- and contig-wise count tables
+    """
     input:
         rules.quantify__coverm__genome.input,
         rules.quantify__coverm__contig.input,

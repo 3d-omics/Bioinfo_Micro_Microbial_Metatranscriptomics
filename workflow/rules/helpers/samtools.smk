@@ -1,4 +1,5 @@
 rule _helpers__samtools__faidx_fagz:
+    """Index a .fa.gz file"""
     input:
         "{prefix}.fa.gz",
     output:
@@ -12,6 +13,7 @@ rule _helpers__samtools__faidx_fagz:
 
 
 rule _helpers__samtools__faidx_fa:
+    """Index a .fa file"""
     input:
         "{prefix}.fa",
     output:
