@@ -1,0 +1,9 @@
+# samtools.yml: conda environment file for samtools
+---
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - samtools=1.17
+  - fastqc=0.12.1

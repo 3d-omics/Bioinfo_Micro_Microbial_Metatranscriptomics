@@ -1,0 +1,9 @@
+# conda environment file
+---
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - coreutils=9.3
+  - samtools=1.18

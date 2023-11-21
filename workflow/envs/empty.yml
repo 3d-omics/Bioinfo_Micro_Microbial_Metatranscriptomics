@@ -1,8 +1,0 @@
-# empty.yml: conda environment with python alone
----
-channels:
-  - conda-forge
-  - bioconda
-  - nodefaults
-dependencies:
-  - python=3.10

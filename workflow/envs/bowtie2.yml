@@ -1,9 +1,0 @@
-# bowtie2.yml: conda environment file for bowtie2
----
-channels:
-  - conda-forge
-  - bioconda
-  - nodefaults
-dependencies:
-  - samtools=1.17
-  - bowtie2=2.5.1

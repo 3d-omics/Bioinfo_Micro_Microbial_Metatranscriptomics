@@ -1,0 +1,13 @@
+rule _fastqc:
+    """Run FastQC on a FASTQ file"""
+    input:
+        "{prefix}.fq.gz",
+    output:
+        html="{prefix}_fastqc.html",
+        zip="{prefix}_fastqc.zip",
+    conda:
+        "_env.yml"
+    log:
+        "{prefix}_fastqc.log",
+    shell:
+        "fastqc {input} 2> {log} 1>&2"

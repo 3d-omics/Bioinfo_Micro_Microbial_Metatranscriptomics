@@ -7,13 +7,12 @@ set -euo pipefail
 
 
 # Build db
-cat /dev/null > resources/kraken_mock.fa
-
+( cat /dev/null
 gzip -dc resources/mags/acutalibacter_ornithocaccae.fna.gz \
 | sed '/^>/ s/$/|kraken:taxid|2838416/' \
 | seqtk seq \
 | head -200 \
->> resources/kraken_mock.fa
+) > resources/kraken_mock.fa
 
 gzip -dc resources/mags/scybalocola_faecipullorum.fna.gz \
 | sed '/^>/ s/$/|kraken:taxid|2840942/' \
