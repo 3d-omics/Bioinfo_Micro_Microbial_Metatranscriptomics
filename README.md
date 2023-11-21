@@ -45,10 +45,8 @@ A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
 
         ```tsv
         sample_id	library_id	forward_filename	reverse_filename	forward_adapter	reverse_adapter
-        GBRF1	1	resources/reads_mixed/GBRF1.1_1.fq.gz	resources/reads_mixed/GBRF1.1_2.fq.gz
-        # GBRF2	1	resources/reads_mixed/GBRF2.1_1.fq.gz	resources/reads_mixed/GBRF2.1_2.fq.gz
-        # GBRF3	1	resources/reads_mixed/GBRF3.1_1.fq.gz	resources/reads_mixed/GBRF3.1_2.fq.gz
-        GBRM1	1	resources/reads_mixed/GBRM1.1_1.fq.gz	resources/reads_mixed/GBRM1.1_2.fq.gz
+        GBRF1	1	resources/reads/GBRF1.1_1.fq.gz	resources/reads_mixed/GBRF1.1_2.fq.gz
+        GBRM1	1	resources/reads/GBRM1.1_1.fq.gz	resources/reads_mixed/GBRM1.1_2.fq.gz
         ```
 
       2. Edit `config/features.yml` with your reference hosts, mags and external databases. You can have multiple hosts and multiple catalogues. You can even have no host files in case you are analyzing environmental samples.
