@@ -1,76 +1,90 @@
 # Snakemake workflow: `Bioinfo_Macro_Microbial_Metatranscriptomics`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/<owner>/<repo>/workflows/Tests/badge.svg?branch=main)](https://github.com/<owner>/<repo>/actions?query=branch%3Amain+workflow%3ATests)
+[![GitHub actions status](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/workflows/Tests/badge.svg?branch=devel)](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/actions?query=branch%3Amain+workflow%3ATests)
 
 
-A Snakemake workflow for `<description>`
+A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
+- Preprocessing:
+  - Trim reads with `fastp`
+  - Remove rRNAs with `ribodetector`
+  - Remove host RNA with `STAR`
+  - Screen your reads with `kraken2`
+- Quantification:
+  - Map reads to a MAG catalogue with `bowtie2`
+  - Get count tables with `CoverM`
+- Report
+  - Get a gazillion of reports with `samtools`, `fastqc` and `multiqc`
+
+![rulegraph](rulegraph_simple.svg)
 
 
 ## Usage
 
-The usage of this workflow is described in the [Snakemake Workflow Catalog](https://snakemake.github.io/snakemake-workflow-catalog/?usage=<owner>%2F<repo>).
+1. Make sure you have `conda`, `mamba` and `snakemake` installed.
+    ```bash
+    conda --version
+    mamba --version
+    snakemake --version
+    ```
 
-If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) <repo>sitory and its DOI (see above).
+2. Clone this git repository and get it
+    ```bash
+    git clone https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics
+    cd Bioinfo_Macro_Microbial_Metatranscriptomics
+    ```
 
-# TODO
+3. Test your installation by running the pipeline with test data. It will download all the necessary software through conda / mamba. It should take less than five minutes.
+    ```bash
+    ./run
+    ```
 
-* Replace `<owner>` and `<repo>` everywhere in the template (also under .github/workflows) with the correct `<repo>` name and owning user or organization.
-* Replace `<name>` with the workflow name (can be the same as `<repo>`).
-* Replace `<description>` with a description of what the workflow does.
-* The workflow will occur in the snakemake-workflow-catalog once it has been made public. Then the link under "Usage" will point to the usage instructions if `<owner>` and `<repo>` were correctly set.
+4. Run it with your own data:
 
-##Set up required softwares
+     1. Edit `config/samples.tsv` and add your sample names, a library identifier in case you have more than one file per sample, their paths and adapters used. If no adapters are specified, the pipeline assumes that they are the current Nextera ones:  `AGATCGGAAGAGCACACGTCTGAACTCCAGTCA` and `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT` for forward and reverse, respectively.
 
-## Usage
-  ```
-  #Clone the git repository in your terminal
-  git clone git@github.com:3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics.git
-  #Change directory to the one you cloned in the previous step
-  cd Bioinfo_Macro_Microbial_Metatranscriptomics
-  #Activate conda environment where you have snakemake
-  conda activte Snakemake
-  #run the pipeline with the test data, it will download all the necesary software through conda. It should take less than 5 minutes.
-  snakemake --use-conda --jobs 8 all
-  ```
+        ```tsv
+        sample_id	library_id	forward_filename	reverse_filename	forward_adapter	reverse_adapter
+        GBRF1	1	resources/reads_mixed/GBRF1.1_1.fq.gz	resources/reads_mixed/GBRF1.1_2.fq.gz
+        # GBRF2	1	resources/reads_mixed/GBRF2.1_1.fq.gz	resources/reads_mixed/GBRF2.1_2.fq.gz
+        # GBRF3	1	resources/reads_mixed/GBRF3.1_1.fq.gz	resources/reads_mixed/GBRF3.1_2.fq.gz
+        GBRM1	1	resources/reads_mixed/GBRM1.1_1.fq.gz	resources/reads_mixed/GBRM1.1_2.fq.gz
+        ```
 
-- Run it with your own data:
-  - Edit `config/samples.tsv` and add your samples and where are they located. Here is an example of the tsv table filled with the information
+      2. Edit `config/features.yml` with your reference hosts, mags and external databases. You can have multiple hosts and multiple catalogues. You can even have no host files in case you are analyzing environmental samples.
 
-    <img width="828" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/1afac14d-8bc5-47da-b154-6e0c75f0e255">
+          ```yaml
+          # features.yml: paths and parameters for the features
+          ---
+          hosts:  # Comment the next lines of no host
+              human:
+                  genome: resources/reference/chrX_sub.fa.gz
+                  gtf: resources/reference/chrX_sub.gtf.gz
 
+          mag_catalogues:
+              mag1: resources/mags_mock.fa.gz
 
-  - Edit `config/features.yml` with information regarding the reference and the mags you are
-    using like in this example.
+          kraken2_databases:  # Comment the next lines if no database
+              mock: resources/kraken_mock
+          ```
 
-    <img width="476" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/99af1063-9a25-4ef8-adab-1a7af1df4e64">
+      3. Edit `config/params.yml` with the execution parameters. The defaults are reasonable.
 
+  5. Run the pipeline
 
-  - Edit `config/params.yml` to change the execution of the steps like in this example
-
-    <img width="548" alt="image" src="https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/33187236-3b46-40ac-997a-2d1b49466c60">
-
-
-## Features
-- FASTQ processing with `fastp`
-- taxonomic classification of preprocessed reads with `kraken2`
-- detection of ribosomes with `ribodetector`
-- allignment of reads to the host with `star`
-- allignment of non host reads to mag catalogue with `bowtie2`
-- SAM/BAM/CRAM processing with `samtools`
-- coverage eveluation with `coverm`
-- Reports with `multiqc` and `FastQC`
-
-## DAG
-
-![image](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/assets/103645443/59fb81c6-47a8-4307-9056-1eab5f180303)
-
+      ```bash
+      ./run -j8  # locally with 8 cpus
+      ./run_slurm  # on a cluster with slurm
+      ```
 
 
 ## References
 
 - [`fastp`](https://github.com/OpenGene/fastp)
+- [`ribodetector`](https://github.com/hzi-bifo/RiboDetector)
 - [`STAR`](https://github.com/alexdobin/STAR)
+- [`bowtie2`](https://github.com/BenLangmead/bowtie2)
 - [`samtools`](https://github.com/samtools/samtools)
+- [`CoverM`](https://github.com/wwood/CoverM)
 - [`FastQC`](https://github.com/s-andrews/FastQC)
 - [`multiqc`](https://github.com/ewels/MultiQC)
