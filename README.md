@@ -1,7 +1,7 @@
 # Snakemake workflow: `Bioinfo_Macro_Microbial_Metatranscriptomics`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/workflows/Tests/badge.svg?branch=devel)](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/actions?query=branch%3Amain+workflow%3ATests)
+[![GitHub actions status](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/workflows/Tests/badge.svg?branch=devel)](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/actions?query=branch%3Adevel+workflow%3ATests)
 
 
 A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
