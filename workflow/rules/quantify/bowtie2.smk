@@ -8,7 +8,7 @@ rule _quantify__bowtie2__build:
     log:
         BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
     threads: 24
@@ -55,7 +55,7 @@ rule _quantify__bowtie2__map:
         rg_extra=compose_rg_extra,
     threads: 24
     conda:
-        "_env.yml"
+        "__environment__.yml"
     resources:
         mem_mb=double_ram(32),
         runtime=1440,
