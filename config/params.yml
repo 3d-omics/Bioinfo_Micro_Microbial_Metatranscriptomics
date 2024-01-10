@@ -25,7 +25,7 @@ quantify:
       mem_per_thread: 1G
 
   coverm:
-    separator: "^"
+    separator: "@"
     genome:
       methods: ["relative_abundance"]
       min_covered_fraction: 0.0
