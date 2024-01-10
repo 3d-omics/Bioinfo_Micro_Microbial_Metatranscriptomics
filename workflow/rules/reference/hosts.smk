@@ -10,7 +10,7 @@ rule _reference__hosts__decompress_fa:
     log:
         HOSTS / "{host_name}.fa.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     shell:
         """
         gzip \
@@ -34,7 +34,7 @@ rule _reference__hosts__decompress_gtf:
     log:
         HOSTS / "{host_name}.gtf.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     shell:
         """
         gzip \

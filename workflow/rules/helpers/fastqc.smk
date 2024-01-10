@@ -6,7 +6,7 @@ rule _fastqc:
         html="{prefix}_fastqc.html",
         zip="{prefix}_fastqc.zip",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     log:
         "{prefix}_fastqc.log",
     shell:

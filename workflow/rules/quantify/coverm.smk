@@ -16,7 +16,7 @@ rule _quantify__coverm__cram_to_bam:
     log:
         COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     resources:
         runtime=1 * 60,
         mem_mb=4 * 1024,
@@ -63,7 +63,7 @@ rule _quantify__coverm__genome:
         / "{method}"
         / "{sample_id}.{library_id}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         method=get_method,
         min_covered_fraction=get_min_covered_fraction,
@@ -92,7 +92,7 @@ rule _quantify__coverm__genome_aggregate:
     log:
         COVERM / "genome.{mag_catalogue}.{method}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_genome_aggregate,
     resources:
@@ -139,7 +139,7 @@ rule _quantify__coverm__contig:
         / "{method}"
         / "{sample_id}.{library_id}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         method=get_method,
     shell:
@@ -162,7 +162,7 @@ rule _quantify__coverm__contig_aggregate:
     log:
         COVERM / "contig.{mag_catalogue}.{method}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_contig_aggregate,
     resources:

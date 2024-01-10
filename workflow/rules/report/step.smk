@@ -7,7 +7,7 @@ rule report__step__reads:
     log:
         REPORT_STEP / "reads.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:
@@ -31,7 +31,7 @@ rule report__step__fastp:
     log:
         REPORT_STEP / "fastp.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:
@@ -55,7 +55,7 @@ rule report__step__ribodetector:
     log:
         REPORT_STEP / "ribodetector.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:
@@ -79,7 +79,7 @@ rule report__step__kraken2:
     log:
         REPORT_STEP / "kraken2.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:
@@ -103,7 +103,7 @@ rule report__step__star:
     log:
         REPORT_STEP / "star.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:
@@ -127,7 +127,7 @@ rule report__step__bowtie2:
     log:
         REPORT_STEP / "bowtie2.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     params:
         dir=REPORT_STEP,
     shell:

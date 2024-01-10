@@ -7,7 +7,7 @@ rule _reference__mags:
     log:
         MAGS / "{mag_catalogue}.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     threads: 24
     shell:
         """

@@ -16,7 +16,7 @@ rule _preprocess__ribodetector__filter:
         average_length=params["preprocess"]["ribodetector"]["average_length"],
         chunk_size=params["preprocess"]["ribodetector"]["chunk_size"],
     conda:
-        "_env.yml"
+        "__environment__.yml"
     resources:
         mem_mb=32 * 1024,
         runtime=6 * 60,

@@ -8,7 +8,7 @@ rule _preprocess__star__index:
     params:
         sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
     conda:
-        "_env.yml"
+        "__environment__.yml"
     log:
         STAR_INDEX / "{host_name}.log",
     threads: 24
@@ -58,7 +58,7 @@ rule _preprocess__star__align:
         u1=get_star_output_r1,
         u2=get_star_output_r2,
     conda:
-        "_env.yml"
+        "__environment__.yml"
     threads: 24
     resources:
         mem_mb=double_ram(32),
@@ -123,7 +123,7 @@ rule _preprocess__star__cram:
         / "{host_name}"
         / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.cram.log",
     conda:
-        "_env.yml"
+        "__environment__.yml"
     threads: 24
     resources:
         mem_mb=double_ram(32),
