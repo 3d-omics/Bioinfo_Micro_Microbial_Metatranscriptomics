@@ -1,10 +1,10 @@
-# Snakemake workflow: `Bioinfo_Macro_Microbial_Metatranscriptomics`
+# Snakemake workflow: `ht_quant`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/workflows/Tests/badge.svg?branch=devel)](https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics/actions?query=branch%3Adevel+workflow%3ATests)
+[![GitHub actions status](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)
 
 
-A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
+A Snakemake workflow for `ht_quant`:
 - Preprocessing:
   - Trim reads with `fastp`
   - Remove rRNAs with `ribodetector`
@@ -30,8 +30,8 @@ A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
 
 2. Clone this git repository and get it
     ```bash
-    git clone https://github.com/3d-omics/Bioinfo_Macro_Microbial_Metatranscriptomics
-    cd Bioinfo_Macro_Microbial_Metatranscriptomics
+    git clone https://github.com/3d-omics/ht_quant
+    cd ht_quant
     ```
 
 3. Test your installation by running the pipeline with test data. It will download all the necessary software through conda / mamba. It should take less than five minutes.
@@ -62,8 +62,9 @@ A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
           mag_catalogues:
               mag1: resources/mags_mock.fa.gz
 
-          kraken2_databases:  # Comment the next lines if no database
-              mock: resources/kraken_mock
+          databases:
+              kraken2:  # Comment the next lines if no database
+                mock: resources/kraken_mock
           ```
 
       3. Edit `config/params.yml` with the execution parameters. The defaults are reasonable.
