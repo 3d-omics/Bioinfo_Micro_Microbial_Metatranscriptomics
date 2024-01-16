@@ -46,6 +46,7 @@ rule _quantify__bowtie2__map:
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
+        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     params:
@@ -76,6 +77,7 @@ rule _quantify__bowtie2__map:
             -o {output.cram} \
             --reference {input.reference} \
             --threads {threads} \
+            --write-index \
         ) 2> {log} 1>&2
         """
 
