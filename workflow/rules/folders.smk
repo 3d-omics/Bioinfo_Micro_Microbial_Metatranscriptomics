@@ -4,7 +4,7 @@ HOSTS = REFERENCE / "hosts"
 MAGS = REFERENCE / "mags"
 
 
-PRE = Path("results/preprocessing")
+PRE = Path("results/preprocess")
 FASTP = PRE / "fastp"
 KRAKEN2 = PRE / "kraken2"
 RIBODETECTOR = PRE / "ribodetector/"
