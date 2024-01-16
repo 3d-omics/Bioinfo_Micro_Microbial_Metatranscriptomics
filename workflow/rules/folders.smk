@@ -11,7 +11,7 @@ RIBODETECTOR = PRE / "ribodetector/"
 STAR_INDEX = PRE / "index"
 STAR = PRE / "star"
 
-QUANT = Path("results/quantification")
+QUANT = Path("results/quantify")
 BOWTIE2_INDEX = QUANT / "index"
 BOWTIE2 = QUANT / "bowtie2"
 COVERM = QUANT / "coverm"
