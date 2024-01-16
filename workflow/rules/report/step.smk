@@ -63,6 +63,8 @@ rule report__step__quantify:
         "__environment__.yml"
     params:
         dir=REPORT_STEP,
+    resources:
+        mem_mb=8 * 1024,
     shell:
         """
         multiqc \
