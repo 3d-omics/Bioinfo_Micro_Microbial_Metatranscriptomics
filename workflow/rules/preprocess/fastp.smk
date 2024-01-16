@@ -27,13 +27,14 @@ rule _preprocess__fastp__trim:
         fastp \
             --in1 {input.forward_} \
             --in2 {input.reverse_} \
-            --out1 >(pigz -11 > {output.forward_}) \
-            --out2 >(pigz -11 > {output.reverse_}) \
-            --unpaired1 >(pigz -11 > {output.unpaired1}) \
-            --unpaired2 >(pigz -11 > {output.unpaired2}) \
+            --out1 {output.forward_} \
+            --out2 {output.reverse_} \
+            --unpaired1 {output.unpaired1} \
+            --unpaired2 {output.unpaired2} \
             --html {output.html} \
             --json {output.json} \
             --verbose \
+            --compression 9 \
             --adapter_sequence {params.adapter_forward} \
             --adapter_sequence_r2 {params.adapter_reverse} \
             --thread {threads} \
