@@ -41,14 +41,13 @@ rule _preprocess__star__align:
         forward_=get_input_forward_for_host_mapping,
         reverse_=get_input_reverse_for_host_mapping,
         index=STAR_INDEX / "{host_name}",
+        reference=HOSTS / "{host_name}.fa",
+        fai=HOSTS / "{host_name}.fa.fai",
     output:
-        bam=temp(
-            STAR
-            / "{host_name}"
-            / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
-        ),
-        u1=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1.gz"),
-        u2=temp(STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2.gz"),
+        cram=STAR / "{host_name}" / "{sample_id}.{library_id}.cram",
+        crai=STAR / "{host_name}" / "{sample_id}.{library_id}.cram.crai",
+        u1=STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1.gz",
+        u2=STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2.gz",
         report=STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
         counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
@@ -57,6 +56,7 @@ rule _preprocess__star__align:
         out_prefix=get_star_out_prefix,
         u1=get_star_output_r1,
         u2=get_star_output_r2,
+        bam=get_star_output_bam,
     conda:
         "__environment__.yml"
     threads: 24
@@ -86,10 +86,22 @@ rule _preprocess__star__align:
         pigz \
             --processes {threads} \
             --verbose \
-            --fast \
+            --best \
             {params.u1} \
             {params.u2} \
         2>> {log} 1>&2
+
+        samtools view \
+            --output-fmt CRAM \
+            --output-fmt-option level=9 \
+            --reference {input.reference} \
+            --threads {threads} \
+            --write-index \
+            --output {output.cram} \
+            {params.bam} \
+        2>> {log} 1>&2
+
+        rm --verbose --force {params.bam} 2>> {log} 1>&2
         """
 
 
@@ -98,58 +110,6 @@ rule preprocess__star__align:
     input:
         [
             STAR / host_name / f"{sample_id}.{library_id}.ReadsPerGene.out.tab"
-            for sample_id, library_id in SAMPLE_LIBRARY
-            for host_name in HOST_NAMES
-        ],
-
-
-rule _preprocess__star__cram:
-    """Convert to cram one library
-
-    NOTE: we use samtools sort when it is already sorted because there is no
-    other way to use minimizers on the unmapped fraction.
-    """
-    input:
-        bam=STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        reference=HOSTS / "{host_name}.fa",
-        fai=HOSTS / "{host_name}.fa.fai",
-    output:
-        cram=STAR / "{host_name}" / "{sample_id}.{library_id}.cram",
-        crai=STAR / "{host_name}" / "{sample_id}.{library_id}.cram.crai",
-    log:
-        STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.cram.log",
-    conda:
-        "__environment__.yml"
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=24 * 60,
-    retries: 5
-    shell:
-        """
-        samtools sort \
-            -l 9 \
-            -m 1G \
-            -M \
-            -o {output.cram} \
-            --output-fmt CRAM \
-            --reference {input.reference} \
-            -@ {threads} \
-            --write-index \
-            {input.bam} \
-        2> {log} 1>&2
-        """
-
-
-rule preprocess__star__cram:
-    """Convert to cram all libraries"""
-    input:
-        [
-            STAR / host_name / f"{sample_id}.{library_id}.cram"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
@@ -169,5 +129,4 @@ rule preprocess__star:
     """Run all the elements in the star subworkflow"""
     input:
         rules.preprocess__star__align.input,
-        rules.preprocess__star__cram.input,
         rules.preprocess__star__report.input,
