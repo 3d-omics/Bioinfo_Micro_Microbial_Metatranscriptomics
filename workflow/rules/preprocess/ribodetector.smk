@@ -7,8 +7,8 @@ rule _preprocess__ribodetector__filter:
         forward_=FASTP / "{sample_id}.{library_id}_1.fq.gz",
         reverse_=FASTP / "{sample_id}.{library_id}_2.fq.gz",
     output:
-        forward_=temp(RIBODETECTOR / "{sample_id}.{library_id}_1.fq.gz"),
-        reverse_=temp(RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz"),
+        forward_=RIBODETECTOR / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz",
     log:
         RIBODETECTOR / "{sample_id}.{library_id}.log",
     threads: 24
