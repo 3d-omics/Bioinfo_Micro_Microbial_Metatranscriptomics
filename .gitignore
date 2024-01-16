@@ -2,3 +2,8 @@ results/**
 .snakemake
 .snakemake/**
 reports/**
+.Rproj.user
+.Rprofile
+mt_quant.Rproj
+renv.lock
+renv/**
