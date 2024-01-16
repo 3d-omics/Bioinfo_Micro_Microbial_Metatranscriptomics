@@ -1,10 +1,10 @@
-# Snakemake workflow: `ht_quant`
+# Snakemake workflow: `mt_quant`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)
+[![GitHub actions status](https://github.com/3d-omics/mt_quant/actions/workflows/main.yml/badge.svg)](https://github.com/3d-omics/mt_quant/actions/workflows/main.yml/badge.svg)
 
 
-A Snakemake workflow for `ht_quant`:
+A Snakemake workflow for `mt_quant`:
 - Preprocessing:
   - Trim reads with `fastp`
   - Remove rRNAs with `ribodetector`
@@ -30,8 +30,8 @@ A Snakemake workflow for `ht_quant`:
 
 2. Clone this git repository and get it
     ```bash
-    git clone https://github.com/3d-omics/ht_quant
-    cd ht_quant
+    git clone https://github.com/3d-omics/mt_quant
+    cd mt_quant
     ```
 
 3. Test your installation by running the pipeline with test data. It will download all the necessary software through conda / mamba. It should take less than five minutes.
