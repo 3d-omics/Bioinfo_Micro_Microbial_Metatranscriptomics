@@ -27,7 +27,7 @@ quantify:
   coverm:
     separator: "@"
     genome:
-      methods: ["relative_abundance"]
+      methods: ["count", "covered_bases", "length"]
       min_covered_fraction: 0.0
     contig:
-      methods: ["count"]
+      methods: ["count", "covered_bases", "length"]
