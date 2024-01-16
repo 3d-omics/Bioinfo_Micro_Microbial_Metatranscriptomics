@@ -77,6 +77,18 @@ def get_star_output_r2_gz(wildcards):
     return get_star_output_r2(wildcards) + ".gz"
 
 
+def get_star_output_bam(wildcards):
+    """Get the star generated bam"""
+    host_name = wildcards.host_name
+    sample_id = wildcards.sample_id
+    library_id = wildcards.library_id
+    return (
+        STAR
+        / f"{host_name}"
+        / f"{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
+    )
+
+
 def get_kraken2_database(wildcards):
     """Get the path to the kraken2 database to be used"""
     return features["databases"]["kraken2"][wildcards.kraken2_db]
