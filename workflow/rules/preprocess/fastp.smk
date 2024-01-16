@@ -25,8 +25,8 @@ rule _preprocess__fastp__trim:
     shell:
         """
         fastp \
-            --in1 <(gzip --decompress --stdout {input.forward_}) \
-            --in2 <(gzip --decompress --stdout {input.reverse_}) \
+            --in1 {input.forward_} \
+            --in2 {input.reverse_} \
             --out1 >(pigz -11 > {output.forward_}) \
             --out2 >(pigz -11 > {output.reverse_}) \
             --unpaired1 >(pigz -11 > {output.unpaired1}) \
