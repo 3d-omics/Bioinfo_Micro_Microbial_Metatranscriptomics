@@ -1,10 +1,10 @@
-# Snakemake workflow: `Bioinfo_Macro_Microbial_Metatranscriptomics`
+# Snakemake workflow: `ht_quant`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/3d-omics/mt_quant/workflows/Tests/badge.svg?branch=devel)](https://github.com/3d-omics/mt_quant/actions?query=branch%3Adevel+workflow%3ATests)
+[![GitHub actions status](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)](https://github.com/3d-omics/ht_quant/actions/workflows/main.yml/badge.svg)
 
 
-A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
+A Snakemake workflow for `ht_quant`:
 - Preprocessing:
   - Trim reads with `fastp`
   - Remove rRNAs with `ribodetector`
@@ -30,8 +30,8 @@ A Snakemake workflow for `Bioinfo_Macro_Microbial_Metatranscriptomics`:
 
 2. Clone this git repository and get it
     ```bash
-    git clone https://github.com/3d-omics/mt_quant
-    cd mt_quant
+    git clone https://github.com/3d-omics/ht_quant
+    cd ht_quant
     ```
 
 3. Test your installation by running the pipeline with test data. It will download all the necessary software through conda / mamba. It should take less than five minutes.
