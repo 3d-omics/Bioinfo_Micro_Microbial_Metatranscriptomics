@@ -1,49 +1,3 @@
-# # CRAM to BAM
-# rule _quantify__coverm__cram_to_bam:
-#     """Convert cram to bam
-
-#     Note: this step is needed because coverm probably does not support cram. The
-#     log from coverm shows failures to get the reference online, but nonetheless
-#     it works.
-#     """
-#     input:
-#         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-#         crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-#         reference=MAGS / "{mag_catalogue}.fa.gz",
-#         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
-#     output:
-#         bam=temp(COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam"),
-#     log:
-#         COVERM / "bams" / "{mag_catalogue}.{sample_id}.{library_id}.bam.log",
-#     conda:
-#         "__environment__.yml"
-#     resources:
-#         runtime=1 * 60,
-#         mem_mb=4 * 1024,
-#     shell:
-#         """
-#         samtools view \
-#             -F 4 \
-#             --reference {input.reference} \
-#             --output {output.bam} \
-#             --fast \
-#             {input.cram} \
-#         2> {log} 1>&2
-#         """
-
-
-# rule quantify__coverm__cram_to_bam:
-#     """
-#     Convert the CRAMs to BAMs for coverm
-#     """
-#     input:
-#         [
-#             COVERM / "bams" / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
-#             for mag_catalogue in MAG_CATALOGUES
-#             for sample_id, library_id in SAMPLE_LIBRARY
-#         ],
-
-
 # CoverM Contig
 rule _quantify__coverm__genome:
     """calculation of MAG-wise coverage"""
@@ -78,6 +32,7 @@ rule _quantify__coverm__genome:
         (samtools view \
             --with-header \
             --reference {input.reference} \
+            --exclude-flags 4 \
             {input.cram} \
         | coverm genome \
             --bam-files /dev/stdin \
