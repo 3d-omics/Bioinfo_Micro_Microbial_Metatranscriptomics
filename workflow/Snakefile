@@ -17,8 +17,8 @@ SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
 BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
 KRAKEN2_DBS = (
     []
-    if features["kraken2_databases"] is None
-    else list(features["kraken2_databases"].keys())
+    if features["databases"]["kraken2"] is None
+    else list(features["databases"]["kraken2"].keys())
 )
 MAG_CATALOGUES = features["mag_catalogues"]
 COVERM_GENOME_METHODS = params["quantify"]["coverm"]["genome"]["methods"]

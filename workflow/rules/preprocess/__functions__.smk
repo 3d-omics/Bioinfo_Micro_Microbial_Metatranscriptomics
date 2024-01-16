@@ -79,7 +79,7 @@ def get_star_output_r2_gz(wildcards):
 
 def get_kraken2_database(wildcards):
     """Get the path to the kraken2 database to be used"""
-    return features["kraken2_databases"][wildcards.kraken2_db]
+    return features["databases"]["kraken2"][wildcards.kraken2_db]
 
 
 def compose_out_folder_for_eval_kraken2_assign_all(wildcards):
