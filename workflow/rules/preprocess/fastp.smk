@@ -4,10 +4,10 @@ rule _preprocess__fastp__trim:
         forward_=READS / "{sample_id}.{library_id}_1.fq.gz",
         reverse_=READS / "{sample_id}.{library_id}_2.fq.gz",
     output:
-        forward_=temp(FASTP / "{sample_id}.{library_id}_1.fq.gz"),
-        reverse_=temp(FASTP / "{sample_id}.{library_id}_2.fq.gz"),
-        unpaired1=temp(FASTP / "{sample_id}.{library_id}_u1.fq.gz"),
-        unpaired2=temp(FASTP / "{sample_id}.{library_id}_u2.fq.gz"),
+        forward_=FASTP / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=FASTP / "{sample_id}.{library_id}_2.fq.gz",
+        unpaired1=FASTP / "{sample_id}.{library_id}_u1.fq.gz",
+        unpaired2=FASTP / "{sample_id}.{library_id}_u2.fq.gz",
         html=FASTP / "{sample_id}.{library_id}.html",
         json=FASTP / "{sample_id}.{library_id}_fastp.json",
     log:
@@ -25,8 +25,8 @@ rule _preprocess__fastp__trim:
     shell:
         """
         fastp \
-            --in1 <(gzip --decompress --stdout {input.forward_}) \
-            --in2 <(gzip --decompress --stdout {input.reverse_}) \
+            --in1 {input.forward_} \
+            --in2 {input.reverse_} \
             --out1 >(pigz -11 > {output.forward_}) \
             --out2 >(pigz -11 > {output.reverse_}) \
             --unpaired1 >(pigz -11 > {output.unpaired1}) \
@@ -38,7 +38,7 @@ rule _preprocess__fastp__trim:
             --adapter_sequence_r2 {params.adapter_reverse} \
             --thread {threads} \
             {params.extra} \
-        2> {log} 1>&2
+        2> {log}
         """
 
 
