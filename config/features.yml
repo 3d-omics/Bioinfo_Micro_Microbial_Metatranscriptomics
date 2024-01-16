@@ -18,6 +18,7 @@ mag_catalogues:
     mag1: resources/reference/mags_mock.fa.gz
     # mag2: resources/reference/mags_mock.fa.gz
 
-kraken2_databases:  # Comment the next lines if no database
-    mock: resources/databases/kraken2/kraken_mock
-    # mock2: resources/databases/kraken2/kraken_mock
+databases:
+    kraken2:  # Comment the next lines if no database
+        mock: resources/databases/kraken2/kraken_mock
+        # mock2: resources/databases/kraken2/kraken_mock

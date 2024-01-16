@@ -26,7 +26,7 @@ rule report__step__preprocess:
     """Collect all reports for the preprocess step"""
     input:
         rules.preprocess__fastp__report.input,
-        rules.preprocess__kraken2__report.input,
+        rules.preprocess__kraken2.input,
         rules.preprocess__ribodetector__fastqc.input,
         rules.preprocess__star__report.input,
     output:
@@ -80,6 +80,4 @@ rule report__step:
     input:
         rules.report__step__reads.output,
         rules.report__step__preprocess.output,
-        # rules.report__step__kraken2.output if features["kraken2_databases"] else [],
-        # rules.report__step__star.output if features["hosts"] else [],  # No point if no hosts
         rules.report__step__quantify.output,
