@@ -16,7 +16,7 @@ rule _preprocess__fastp__trim:
         adapter_forward=get_forward_adapter,
         adapter_reverse=get_reverse_adapter,
         extra=params["preprocess"]["fastp"]["extra"],
-    threads: 16
+    threads: 24
     resources:
         mem_mb=4 * 1024,
         runtime=240,
@@ -25,15 +25,14 @@ rule _preprocess__fastp__trim:
     shell:
         """
         fastp \
-            --in1 {input.forward_} \
-            --in2 {input.reverse_} \
-            --out1 {output.forward_} \
-            --out2 {output.reverse_} \
-            --unpaired1 {output.unpaired1} \
-            --unpaired2 {output.unpaired2} \
+            --in1 <(gzip --decompress --stdout {input.forward_}) \
+            --in2 <(gzip --decompress --stdout {input.reverse_}) \
+            --out1 >(pigz -11 > {output.forward_}) \
+            --out2 >(pigz -11 > {output.reverse_}) \
+            --unpaired1 >(pigz -11 > {output.unpaired1}) \
+            --unpaired2 >(pigz -11 > {output.unpaired2}) \
             --html {output.html} \
             --json {output.json} \
-            --compression 1 \
             --verbose \
             --adapter_sequence {params.adapter_forward} \
             --adapter_sequence_r2 {params.adapter_reverse} \
