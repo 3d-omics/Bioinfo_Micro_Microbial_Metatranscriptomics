@@ -35,7 +35,20 @@ sample_names <-
 
 files %>%
   set_names(sample_names) %>%
-  map(function(x) read_tsv(x, col_types = cols(), col_names = c("sequence_id", "counts"), skip = 1)) %>%
+  map(
+    function(x) {
+      read_tsv(
+        file = x,
+        col_types = cols(),
+        col_names = c("sequence_id", "counts"),
+        skip = 1
+      )
+    }
+  ) %>%
   bind_rows(.id = "sample_id") %>%
-  pivot_wider(names_from = "sample_id", values_from = "counts", values_fill = NA) %>%
+  pivot_wider(
+    names_from = "sample_id",
+    values_from = "counts",
+    values_fill = NA
+  ) %>%
   write_tsv(output_file)
