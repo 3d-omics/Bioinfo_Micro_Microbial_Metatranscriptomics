@@ -1,25 +1,24 @@
-def get_forward_adapter(wildcards):
-    """Get forward adapter for a sample and library."""
-    forward_adapter = samples[
+# fastp ----
+def get_adapter(wildcards, forward_or_reverse):
+    """Get forward or reverse adapter"""
+    assert forward_or_reverse in ["forward_adapter", "reverse_adapter"]
+    return samples[
         (samples["sample_id"] == wildcards.sample_id)
         & (samples["library_id"] == wildcards.library_id)
-    ]["forward_adapter"].tolist()[0]
-    if pd.isna(forward_adapter):
-        return "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"
-    return forward_adapter
+    ][forward_or_reverse].tolist()[0]
+
+
+def get_forward_adapter(wildcards):
+    """Get forward adapter for a sample and library."""
+    return get_adapter(wildcards, "forward_adapter")
 
 
 def get_reverse_adapter(wildcards):
     """Get reverse adapter for a sample and library."""
-    reverse_adapter = samples[
-        (samples["sample_id"] == wildcards.sample_id)
-        & (samples["library_id"] == wildcards.library_id)
-    ]["reverse_adapter"].tolist()[0]
-    if pd.isna(reverse_adapter):
-        return "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
-    return reverse_adapter
+    return get_adapter(wildcards, "reverse_adapter")
 
 
+#
 def get_input_forward_for_host_mapping(wildcards):
     """Compose the forward input file"""
     host_name = wildcards.host_name
@@ -44,6 +43,7 @@ def get_input_reverse_for_host_mapping(wildcards):
     return [STAR / prev_genome / f"{sample_id}.{library_id}.Unmapped.out.mate2.gz"]
 
 
+# star ----
 def get_star_out_prefix(wildcards):
     """Get the star output folder from the library wildcards"""
     return STAR / wildcards.host_name / f"{wildcards.sample_id}.{wildcards.library_id}."
@@ -89,6 +89,7 @@ def get_star_output_bam(wildcards):
     )
 
 
+# kraken2 ----
 def get_kraken2_database(wildcards):
     """Get the path to the kraken2 database to be used"""
     return features["databases"]["kraken2"][wildcards.kraken2_db]
