@@ -41,35 +41,35 @@ A Snakemake workflow for `mt_quant`:
 
 4. Run it with your own data:
 
-     1. Edit `config/samples.tsv` and add your sample names, a library identifier in case you have more than one file per sample, their paths and adapters used. If no adapters are specified, the pipeline assumes that they are the current Nextera ones:  `AGATCGGAAGAGCACACGTCTGAACTCCAGTCA` and `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT` for forward and reverse, respectively.
+     1. Edit `config/samples.tsv` and add your sample names, a library identifier in case you have more than one file per sample, their paths and adapters used.
 
         ```tsv
         sample_id	library_id	forward_filename	reverse_filename	forward_adapter	reverse_adapter
-        GBRF1	1	resources/reads/GBRF1.1_1.fq.gz	resources/reads_mixed/GBRF1.1_2.fq.gz
-        GBRM1	1	resources/reads/GBRM1.1_1.fq.gz	resources/reads_mixed/GBRM1.1_2.fq.gz
+        sample1	1	resources/reads/GBRF1.1_1.fq.gz	resources/reads/GBRF1.1_2.fq.gz	AGATCGGAAGAGCACACGTCTGAACTCCAGTCA	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+        sample2	1	resources/reads/GBRM1.1_1.fq.gz	resources/reads/GBRM1.1_2.fq.gz	AGATCGGAAGAGCACACGTCTGAACTCCAGTCA	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
         ```
 
       2. Edit `config/features.yml` with your reference hosts, mags and external databases. You can have multiple hosts and multiple catalogues. You can even have no host files in case you are analyzing environmental samples.
 
           ```yaml
-          # features.yml: paths and parameters for the features
-          ---
           hosts:  # Comment the next lines of no host
               human:
                   genome: resources/reference/chrX_sub.fa.gz
                   gtf: resources/reference/chrX_sub.gtf.gz
 
           mag_catalogues:
-              mag1: resources/mags_mock.fa.gz
+              mag1: resources/reference/mags_mock.fa.gz
+              # mag2: resources/reference/mags_mock.fa.gz
 
           databases:
               kraken2:  # Comment the next lines if no database
-                  mock: resources/kraken_mock
+                  mock: resources/databases/kraken2/kraken_mock
+                  # mock2: resources/databases/kraken2/kraken_mock
           ```
 
       3. Edit `config/params.yml` with the execution parameters. The defaults are reasonable.
 
-  5. Run the pipeline
+  1. Run the pipeline
 
       ```bash
       ./run -j8  # locally with 8 cpus

@@ -40,12 +40,5 @@ include: "rules/report/__main__.smk"
 rule all:
     """Default pipeline"""
     input:
-        # rules.reads.input,
-        # rules.reference.input,
-        # rules.fastp.input,
-        # rules.preprocess__kraken2.input,
-        # rules.star.input,
-        # rules.bowtie2.input,
-        rules.report__step.input,
-        rules.report__library.input,
-        rules.quantify__coverm.input,
+        rules.quantify.input,
+        rules.report.input,
