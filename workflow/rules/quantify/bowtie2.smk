@@ -72,7 +72,6 @@ rule _quantify__bowtie2__map:
             {params.extra} \
         | samtools sort \
             -l 9 \
-            -M \
             -m {params.samtools_mem} \
             -o {output.cram} \
             --reference {input.reference} \

@@ -1,8 +1,6 @@
-# samtools.yml: conda environment file for samtools
----
 channels:
   - conda-forge
   - bioconda
   - nodefaults
 dependencies:
-  - coreutils=9.3
+  - coreutils =9.5

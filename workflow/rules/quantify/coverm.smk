@@ -29,10 +29,9 @@ rule _quantify__coverm__genome:
         mem_mb=32 * 1024,
     shell:
         """
-        (samtools view \
+        ( samtools view \
             --with-header \
             --reference {input.reference} \
-            --exclude-flags 4 \
             {input.cram} \
         | coverm genome \
             --bam-files /dev/stdin \
