@@ -1,4 +1,4 @@
-rule _quantify__samtools__stats_cram:
+rule quantify__samtools__stats_cram__:
     """Compute stats for a cram"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram",

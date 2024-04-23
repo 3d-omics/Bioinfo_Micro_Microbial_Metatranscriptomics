@@ -1,4 +1,4 @@
-rule _preprocess__ribodetector__filter:
+rule preprocess__ribodetector__filter__:
     """Run ribodetector on one library
 
     ribodetector filters out rRNA reads from a library

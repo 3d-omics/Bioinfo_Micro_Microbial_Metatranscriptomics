@@ -1,4 +1,4 @@
-rule _preprocess__star__index:
+rule preprocess__star__index__:
     """Index the genome for STAR"""
     input:
         genome=HOSTS / "{host_name}.fa",
@@ -35,7 +35,7 @@ rule preprocess__star__index:
         [STAR_INDEX / f"{host_name}" for host_name in HOST_NAMES],
 
 
-rule _preprocess__star__align:
+rule preprocess__star__align__:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
         forward_=get_input_forward_for_host_mapping,

@@ -1,5 +1,5 @@
 # CoverM Contig
-rule _quantify__coverm__genome:
+rule quantify__coverm__genome__:
     """calculation of MAG-wise coverage"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -43,7 +43,7 @@ rule _quantify__coverm__genome:
         """
 
 
-rule _quantify__coverm__genome_aggregate:
+rule quantify__coverm__genome_aggregate__:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
         get_tsvs_for_assembly_coverm_genome,
@@ -79,7 +79,7 @@ rule quantify__coverm__genome:
 
 
 # CoverM contig ----
-rule _quantify__coverm__contig:
+rule quantify__coverm__contig__:
     """Run coverm genome for one library and one mag catalogue"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -117,7 +117,7 @@ rule _quantify__coverm__contig:
         """
 
 
-rule _quantify__coverm__contig_aggregate:
+rule quantify__coverm__contig_aggregate__:
     """Aggregate coverm contig results"""
     input:
         get_tsvs_for_assembly_coverm_contig,

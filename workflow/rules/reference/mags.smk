@@ -1,4 +1,4 @@
-rule _reference__mags:
+rule reference__mags__:
     """Recompress the MAGs into the results directory"""
     input:
         fna=get_mag_catalogue,

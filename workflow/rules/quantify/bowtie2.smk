@@ -1,4 +1,4 @@
-rule _quantify__bowtie2__build:
+rule quantify__bowtie2__build__:
     """Build bowtie2 index for the mags"""
     input:
         reference=MAGS / "{mag_catalogue}.fa.gz",
@@ -33,7 +33,7 @@ rule quantify__bowtie2__build:
         [BOWTIE2_INDEX / f"{mag_catalogue}" for mag_catalogue in MAG_CATALOGUES],
 
 
-rule _quantify__bowtie2__map:
+rule quantify__bowtie2__map__:
     """Map one library to reference genome using bowtie2
 
     Output SAM file is piped to samtools sort to generate a CRAM file.

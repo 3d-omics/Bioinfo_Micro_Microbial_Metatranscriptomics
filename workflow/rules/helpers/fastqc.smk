@@ -1,4 +1,4 @@
-rule _fastqc:
+rule fastqc__:
     """Run FastQC on a FASTQ file"""
     input:
         "{prefix}.fq.gz",

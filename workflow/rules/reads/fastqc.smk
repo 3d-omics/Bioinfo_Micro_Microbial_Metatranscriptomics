@@ -1,4 +1,4 @@
-rule reads__fastqc:
+rule reads__fastqc__:
     """Run fastqc on all raw reads"""
     input:
         [
