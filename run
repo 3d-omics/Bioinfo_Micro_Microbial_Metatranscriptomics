@@ -6,10 +6,9 @@ snakemake \
     --use-conda \
     --conda-frontend mamba \
     --rerun-incomplete \
-    --jobs 8 \
-    --cores 8 \
+    --jobs 100 \
     --keep-going \
     --notemp \
-    --profile config/profile \
+    --profile profile/default \
     --latency-wait 60 \
     "$@"

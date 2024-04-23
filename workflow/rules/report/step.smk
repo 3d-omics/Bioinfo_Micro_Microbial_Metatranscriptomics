@@ -80,6 +80,6 @@ rule report__step__quantify__:
 rule report__step:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__reads.output,
-        rules.report__step__preprocess.output,
-        rules.report__step__quantify.output,
+        rules.report__step__reads__.output,
+        rules.report__step__preprocess__.output,
+        rules.report__step__quantify__.output,

@@ -11,10 +11,6 @@ rule preprocess__star__index__:
         "__environment__.yml"
     log:
         STAR_INDEX / "{host_name}.log",
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=24 * 60,
     retries: 5
     shell:
         """
@@ -52,17 +48,13 @@ rule preprocess__star__align__:
         counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
         STAR / "{host_name}" / "{sample_id}.{library_id}.log",
+    conda:
+        "__environment__.yml"
     params:
         out_prefix=get_star_out_prefix,
         u1=get_star_output_r1,
         u2=get_star_output_r2,
         bam=get_star_output_bam,
-    conda:
-        "__environment__.yml"
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=24 * 60,
     retries: 5
     shell:
         """
@@ -93,7 +85,6 @@ rule preprocess__star__align__:
 
         samtools view \
             --output-fmt CRAM \
-            --output-fmt-option level=9 \
             --reference {input.reference} \
             --threads {threads} \
             --write-index \

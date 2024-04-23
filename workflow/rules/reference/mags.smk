@@ -8,7 +8,6 @@ rule reference__mags__:
         MAGS / "{mag_catalogue}.log",
     conda:
         "__environment__.yml"
-    threads: 24
     shell:
         """
         ( gzip \
@@ -17,7 +16,6 @@ rule reference__mags__:
             {input.fna} \
         | bgzip \
             -@ {threads} \
-            -l 9 \
         > {output.fna} \
         ) 2> {log}
         """

@@ -24,9 +24,6 @@ rule quantify__coverm__genome__:
         method=get_method,
         min_covered_fraction=get_min_covered_fraction,
         separator=get_separator,
-    resources:
-        runtime=24 * 60,
-        mem_mb=32 * 1024,
     shell:
         """
         ( samtools view \
@@ -55,8 +52,6 @@ rule quantify__coverm__genome_aggregate__:
         "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_genome_aggregate,
-    resources:
-        mem_mb=8 * 1024,
     shell:
         """
         Rscript --vanilla workflow/scripts/aggregate_coverm.R \
@@ -129,8 +124,6 @@ rule quantify__coverm__contig_aggregate__:
         "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_contig_aggregate,
-    resources:
-        mem_mb=8 * 1024,
     shell:
         """
         Rscript --vanilla workflow/scripts/aggregate_coverm.R \

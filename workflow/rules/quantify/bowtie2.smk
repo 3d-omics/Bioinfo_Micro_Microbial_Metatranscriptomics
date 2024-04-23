@@ -11,10 +11,6 @@ rule quantify__bowtie2__build__:
         "__environment__.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=6 * 60,
     retries: 5
     shell:
         """
@@ -49,17 +45,13 @@ rule quantify__bowtie2__map__:
         crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
+    conda:
+        "__environment__.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
-    threads: 24
-    conda:
-        "__environment__.yml"
-    resources:
-        mem_mb=double_ram(32),
-        runtime=1440,
     shell:
         """
         ( bowtie2 \
@@ -71,7 +63,6 @@ rule quantify__bowtie2__map__:
             --rg '{params.rg_extra}' \
             {params.extra} \
         | samtools sort \
-            -l 9 \
             -m {params.samtools_mem} \
             -o {output.cram} \
             --reference {input.reference} \
