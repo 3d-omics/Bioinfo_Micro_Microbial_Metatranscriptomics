@@ -30,7 +30,7 @@ rule _preprocess__kraken2__assign:
     params:
         in_folder=FASTP,
         out_folder=compose_out_folder_for_eval_kraken2_assign_all,
-        kraken_db_shm="/dev/shm/{kraken2_db}",
+        kraken_db_name="{kraken2_db}",
     conda:
         "__environment__.yml"
     shell:
@@ -48,7 +48,7 @@ rule _preprocess__kraken2__assign:
                 --times \
                 --verbose \
                 {input.database}/*.k2d \
-                {params.kraken_db_shm} \
+                /dev/shm/{params.kraken_db_name} \
             2>> {log} 1>&2
 
             for file in {input.forwards} ; do \
