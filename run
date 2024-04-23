@@ -11,4 +11,15 @@ snakemake \
     --notemp \
     --profile profile/default \
     --latency-wait 60 \
+    --cache \
+        reference__hosts__decompress_fa__ \
+        reference__hosts__decompress_gtf__ \
+        reference__mags__ \
+        preprocess__star__index__ \
+        quantify__bowtie2__build__ \
+    --groups \
+        preprocess__fastp__trim__="{sample_id}" \
+        preprocess__ribodetector__preprocess__ribodetector__filter__="{sample_id}" \
+        preprocess__star__align__="{sample_id}" \
+        quantify__bowtie2__map__="{sample_id}" \
     "$@"

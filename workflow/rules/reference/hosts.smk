@@ -11,6 +11,7 @@ rule reference__hosts__decompress_fa__:
         HOSTS / "{host_name}.fa.log",
     conda:
         "__environment__.yml"
+    cache: True
     shell:
         """
         gzip \
@@ -35,6 +36,7 @@ rule reference__hosts__decompress_gtf__:
         HOSTS / "{host_name}.gtf.log",
     conda:
         "__environment__.yml"
+    cache: True
     shell:
         """
         gzip \
@@ -55,7 +57,7 @@ rule reference__hosts__decompress_fa:
 rule reference__hosts__decompress_gtf:
     """Decompress all the host GTF annotations"""
     input:
-        [HOSTS / f"{host_name}.gtf.gz" for host_name in HOST_NAMES],
+        [HOSTS / f"{host_name}.gtf" for host_name in HOST_NAMES],
 
 
 rule reference__hosts:

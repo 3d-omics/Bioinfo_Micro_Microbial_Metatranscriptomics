@@ -1,34 +1,3 @@
-rule preprocess__star__index__:
-    """Index the genome for STAR"""
-    input:
-        genome=HOSTS / "{host_name}.fa",
-        annotation=HOSTS / "{host_name}.gtf",
-    output:
-        folder=directory(STAR_INDEX / "{host_name}"),
-    params:
-        sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
-    conda:
-        "__environment__.yml"
-    log:
-        STAR_INDEX / "{host_name}.log",
-    retries: 5
-    shell:
-        """
-        STAR \
-            --runMode genomeGenerate \
-            --runThreadN {threads} \
-            --genomeDir {output.folder} \
-            --genomeFastaFiles {input.genome} \
-            --sjdbGTFfile {input.annotation} \
-            --sjdbOverhang {params.sjdbOverhang} \
-        2> {log} 1>&2
-        """
-
-
-rule preprocess__star__index:
-    """Build all the STAR indexes"""
-    input:
-        [STAR_INDEX / f"{host_name}" for host_name in HOST_NAMES],
 
 
 rule preprocess__star__align__:
@@ -36,7 +5,25 @@ rule preprocess__star__align__:
     input:
         forward_=get_input_forward_for_host_mapping,
         reverse_=get_input_reverse_for_host_mapping,
-        index=STAR_INDEX / "{host_name}",
+        index=multiext(
+            str(STAR_INDEX) + "/{host_name}/",
+            "chrLength.txt",
+            "chrNameLength.txt",
+            "chrName.txt",
+            "chrStart.txt",
+            "exonGeTrInfo.tab",
+            "exonInfo.tab",
+            "geneInfo.tab",
+            "Genome",
+            "genomeParameters.txt",
+            "Log.out",
+            "SA",
+            "SAindex",
+            "sjdbInfo.txt",
+            "sjdbList.fromGTF.out.tab",
+            "sjdbList.out.tab",
+            "transcriptInfo.tab",
+        ),
         reference=HOSTS / "{host_name}.fa",
         fai=HOSTS / "{host_name}.fa.fai",
     output:
@@ -55,6 +42,7 @@ rule preprocess__star__align__:
         u1=get_star_output_r1,
         u2=get_star_output_r2,
         bam=get_star_output_bam,
+        index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     shell:
         """
@@ -63,7 +51,7 @@ rule preprocess__star__align__:
         STAR \
             --runMode alignReads \
             --runThreadN {threads} \
-            --genomeDir {input.index} \
+            --genomeDir {params.index} \
             --readFilesIn \
                 {input.forward_} \
                 {input.reverse_} \
