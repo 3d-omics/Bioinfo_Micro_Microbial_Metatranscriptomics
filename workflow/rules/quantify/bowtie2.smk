@@ -1,39 +1,4 @@
-rule _quantify__bowtie2__build:
-    """Build bowtie2 index for the mags"""
-    input:
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
-    output:
-        prefix=touch(BOWTIE2_INDEX / "{mag_catalogue}"),
-    log:
-        BOWTIE2_INDEX / "{mag_catalogue}.log",
-    conda:
-        "__environment__.yml"
-    params:
-        extra=params["quantify"]["bowtie2"]["extra"],
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=6 * 60,
-    retries: 5
-    shell:
-        """
-        bowtie2-build \
-            --threads {threads} \
-            {params.extra} \
-            {input.reference} \
-            {output.prefix} \
-        2> {log} 1>&2
-        """
-
-
-rule quantify__bowtie2__build:
-    """Build all the bowtie2 indexes"""
-    input:
-        [BOWTIE2_INDEX / f"{mag_catalogue}" for mag_catalogue in MAG_CATALOGUES],
-
-
-rule _quantify__bowtie2__map:
+rule quantify__bowtie2__map__:
     """Map one library to reference genome using bowtie2
 
     Output SAM file is piped to samtools sort to generate a CRAM file.
@@ -41,7 +6,15 @@ rule _quantify__bowtie2__map:
     input:
         forward_=get_forward_for_bowtie2,
         reverse_=get_reverse_for_bowtie2,
-        bowtie2_index=BOWTIE2_INDEX / "{mag_catalogue}",
+        bowtie2_index=multiext(
+            str(BOWTIE2_INDEX / "{mag_catalogue}"),
+            ".1.bt2l",
+            ".2.bt2l",
+            ".3.bt2l",
+            ".4.bt2l",
+            ".rev.1.bt2l",
+            ".rev.2.bt2l",
+        ),
         reference=MAGS / "{mag_catalogue}.fa.gz",
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
@@ -49,21 +22,18 @@ rule _quantify__bowtie2__map:
         crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
+    conda:
+        "__environment__.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
-    threads: 24
-    conda:
-        "__environment__.yml"
-    resources:
-        mem_mb=double_ram(32),
-        runtime=1440,
+        prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
     shell:
         """
         ( bowtie2 \
-            -x {input.bowtie2_index} \
+            -x {params.prefix} \
             -1 {input.forward_} \
             -2 {input.reverse_} \
             --threads {threads} \
@@ -71,8 +41,6 @@ rule _quantify__bowtie2__map:
             --rg '{params.rg_extra}' \
             {params.extra} \
         | samtools sort \
-            -l 9 \
-            -M \
             -m {params.samtools_mem} \
             -o {output.cram} \
             --reference {input.reference} \

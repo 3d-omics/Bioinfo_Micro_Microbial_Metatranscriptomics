@@ -1,4 +1,4 @@
-rule _reference__hosts__decompress_fa:
+rule reference__hosts__decompress_fa__:
     """Decompress the genome to its place
 
     Note: STAR requires the genome decompressed.
@@ -11,6 +11,7 @@ rule _reference__hosts__decompress_fa:
         HOSTS / "{host_name}.fa.log",
     conda:
         "__environment__.yml"
+    cache: True
     shell:
         """
         gzip \
@@ -22,7 +23,7 @@ rule _reference__hosts__decompress_fa:
         """
 
 
-rule _reference__hosts__decompress_gtf:
+rule reference__hosts__decompress_gtf__:
     """Decomplress the GTF annotation to its place
 
     Note: STAR requires the annotation decompressed
@@ -35,6 +36,7 @@ rule _reference__hosts__decompress_gtf:
         HOSTS / "{host_name}.gtf.log",
     conda:
         "__environment__.yml"
+    cache: True
     shell:
         """
         gzip \
@@ -55,7 +57,7 @@ rule reference__hosts__decompress_fa:
 rule reference__hosts__decompress_gtf:
     """Decompress all the host GTF annotations"""
     input:
-        [HOSTS / f"{host_name}.gtf.gz" for host_name in HOST_NAMES],
+        [HOSTS / f"{host_name}.gtf" for host_name in HOST_NAMES],
 
 
 rule reference__hosts:

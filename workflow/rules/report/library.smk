@@ -1,4 +1,4 @@
-rule _report__library:
+rule report__library__:
     """Make a MultiQC report for a single library"""
     input:
         READS / "{sample_id}.{library_id}_1_fastqc.zip",

@@ -1,4 +1,4 @@
-rule report__step__reads:
+rule report__step__reads__:
     """Collect all reports for the reads step"""
     input:
         rules.reads__fastqc.input,
@@ -22,7 +22,7 @@ rule report__step__reads:
         """
 
 
-rule report__step__preprocess:
+rule report__step__preprocess__:
     """Collect all reports for the preprocess step"""
     input:
         rules.preprocess__fastp__report.input,
@@ -51,7 +51,7 @@ rule report__step__preprocess:
         """
 
 
-rule report__step__quantify:
+rule report__step__quantify__:
     """Collect all reports for the quantify step"""
     input:
         rules.quantify__bowtie2__report.input,
@@ -80,6 +80,6 @@ rule report__step__quantify:
 rule report__step:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__reads.output,
-        rules.report__step__preprocess.output,
-        rules.report__step__quantify.output,
+        rules.report__step__reads__.output,
+        rules.report__step__preprocess__.output,
+        rules.report__step__quantify__.output,

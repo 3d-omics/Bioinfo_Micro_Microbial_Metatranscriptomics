@@ -1,46 +1,29 @@
-rule _preprocess__star__index:
-    """Index the genome for STAR"""
-    input:
-        genome=HOSTS / "{host_name}.fa",
-        annotation=HOSTS / "{host_name}.gtf",
-    output:
-        folder=directory(STAR_INDEX / "{host_name}"),
-    params:
-        sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
-    conda:
-        "__environment__.yml"
-    log:
-        STAR_INDEX / "{host_name}.log",
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=24 * 60,
-    retries: 5
-    shell:
-        """
-        STAR \
-            --runMode genomeGenerate \
-            --runThreadN {threads} \
-            --genomeDir {output.folder} \
-            --genomeFastaFiles {input.genome} \
-            --sjdbGTFfile {input.annotation} \
-            --sjdbOverhang {params.sjdbOverhang} \
-        2> {log} 1>&2
-        """
 
 
-rule preprocess__star__index:
-    """Build all the STAR indexes"""
-    input:
-        [STAR_INDEX / f"{host_name}" for host_name in HOST_NAMES],
-
-
-rule _preprocess__star__align:
+rule preprocess__star__align__:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
         forward_=get_input_forward_for_host_mapping,
         reverse_=get_input_reverse_for_host_mapping,
-        index=STAR_INDEX / "{host_name}",
+        index=multiext(
+            str(STAR_INDEX) + "/{host_name}/",
+            "chrLength.txt",
+            "chrNameLength.txt",
+            "chrName.txt",
+            "chrStart.txt",
+            "exonGeTrInfo.tab",
+            "exonInfo.tab",
+            "geneInfo.tab",
+            "Genome",
+            "genomeParameters.txt",
+            "Log.out",
+            "SA",
+            "SAindex",
+            "sjdbInfo.txt",
+            "sjdbList.fromGTF.out.tab",
+            "sjdbList.out.tab",
+            "transcriptInfo.tab",
+        ),
         reference=HOSTS / "{host_name}.fa",
         fai=HOSTS / "{host_name}.fa.fai",
     output:
@@ -52,17 +35,14 @@ rule _preprocess__star__align:
         counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
         STAR / "{host_name}" / "{sample_id}.{library_id}.log",
+    conda:
+        "__environment__.yml"
     params:
         out_prefix=get_star_out_prefix,
         u1=get_star_output_r1,
         u2=get_star_output_r2,
         bam=get_star_output_bam,
-    conda:
-        "__environment__.yml"
-    threads: 24
-    resources:
-        mem_mb=double_ram(32),
-        runtime=24 * 60,
+        index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     shell:
         """
@@ -71,7 +51,7 @@ rule _preprocess__star__align:
         STAR \
             --runMode alignReads \
             --runThreadN {threads} \
-            --genomeDir {input.index} \
+            --genomeDir {params.index} \
             --readFilesIn \
                 {input.forward_} \
                 {input.reverse_} \
@@ -93,7 +73,6 @@ rule _preprocess__star__align:
 
         samtools view \
             --output-fmt CRAM \
-            --output-fmt-option level=9 \
             --reference {input.reference} \
             --threads {threads} \
             --write-index \

@@ -1,4 +1,4 @@
-rule _preprocess__kraken2__assign:
+rule preprocess__kraken2__assign__:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.
 
@@ -23,14 +23,12 @@ rule _preprocess__kraken2__assign:
         ],
     log:
         KRAKEN2 / "{kraken2_db}.log",
-    threads: 8
     resources:
         mem_mb=params["preprocess"]["kraken2"]["memory_gb"] * 1024,
-        runtime=24 * 60,
     params:
         in_folder=FASTP,
         out_folder=compose_out_folder_for_eval_kraken2_assign_all,
-        kraken_db_shm="/dev/shm/{kraken2_db}",
+        kraken_db_name="{kraken2_db}",
     conda:
         "__environment__.yml"
     shell:
@@ -38,7 +36,7 @@ rule _preprocess__kraken2__assign:
         {{
             echo Running kraken2 in $(hostname) 2>> {log} 1>&2
 
-            mkdir --parents {params.kraken_db_shm}
+            mkdir --parents /dev/shm/{params.kraken_db_name}
             mkdir --parents {params.out_folder}
 
             rsync \
@@ -48,7 +46,7 @@ rule _preprocess__kraken2__assign:
                 --times \
                 --verbose \
                 {input.database}/*.k2d \
-                {params.kraken_db_shm} \
+                /dev/shm/{params.kraken_db_name} \
             2>> {log} 1>&2
 
             for file in {input.forwards} ; do \
@@ -63,7 +61,7 @@ rule _preprocess__kraken2__assign:
                 echo $(date) Processing $sample_id 2>> {log} 1>&2
 
                 kraken2 \
-                    --db {params.kraken_db_shm} \
+                    --db /dev/shm/{params.kraken_db_name} \
                     --threads {threads} \
                     --gzip-compressed \
                     --paired \
@@ -79,7 +77,7 @@ rule _preprocess__kraken2__assign:
             echo "Failed job" 2>> {log} 1>&2
         }}
 
-        rm --force --recursive --verbose {params.kraken_db_shm} 2>>{log} 1>&2
+        rm --force --recursive --verbose /dev/shm/{params.kraken_db_name} 2>>{log} 1>&2
         """
 
 

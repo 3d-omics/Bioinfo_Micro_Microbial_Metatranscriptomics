@@ -1,4 +1,4 @@
-rule _preprocess__ribodetector__filter:
+rule preprocess__ribodetector__filter__:
     """Run ribodetector on one library
 
     ribodetector filters out rRNA reads from a library
@@ -11,15 +11,11 @@ rule _preprocess__ribodetector__filter:
         reverse_=RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz",
     log:
         RIBODETECTOR / "{sample_id}.{library_id}.log",
-    threads: 24
+    conda:
+        "__environment__.yml"
     params:
         average_length=params["preprocess"]["ribodetector"]["average_length"],
         chunk_size=params["preprocess"]["ribodetector"]["chunk_size"],
-    conda:
-        "__environment__.yml"
-    resources:
-        mem_mb=32 * 1024,
-        runtime=6 * 60,
     shell:
         """
         ribodetector_cpu \

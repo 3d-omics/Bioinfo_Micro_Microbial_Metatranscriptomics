@@ -1,4 +1,4 @@
-rule _reference__mags:
+rule reference__mags__:
     """Recompress the MAGs into the results directory"""
     input:
         fna=get_mag_catalogue,
@@ -8,7 +8,7 @@ rule _reference__mags:
         MAGS / "{mag_catalogue}.log",
     conda:
         "__environment__.yml"
-    threads: 24
+    cache: True
     shell:
         """
         ( gzip \
@@ -17,7 +17,6 @@ rule _reference__mags:
             {input.fna} \
         | bgzip \
             -@ {threads} \
-            -l 9 \
         > {output.fna} \
         ) 2> {log}
         """

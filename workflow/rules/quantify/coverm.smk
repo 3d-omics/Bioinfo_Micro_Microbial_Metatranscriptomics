@@ -1,5 +1,5 @@
 # CoverM Contig
-rule _quantify__coverm__genome:
+rule quantify__coverm__genome__:
     """calculation of MAG-wise coverage"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -24,15 +24,11 @@ rule _quantify__coverm__genome:
         method=get_method,
         min_covered_fraction=get_min_covered_fraction,
         separator=get_separator,
-    resources:
-        runtime=24 * 60,
-        mem_mb=32 * 1024,
     shell:
         """
-        (samtools view \
+        ( samtools view \
             --with-header \
             --reference {input.reference} \
-            --exclude-flags 4 \
             {input.cram} \
         | coverm genome \
             --bam-files /dev/stdin \
@@ -44,7 +40,7 @@ rule _quantify__coverm__genome:
         """
 
 
-rule _quantify__coverm__genome_aggregate:
+rule quantify__coverm__genome_aggregate__:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
         get_tsvs_for_assembly_coverm_genome,
@@ -56,8 +52,6 @@ rule _quantify__coverm__genome_aggregate:
         "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_genome_aggregate,
-    resources:
-        mem_mb=8 * 1024,
     shell:
         """
         Rscript --vanilla workflow/scripts/aggregate_coverm.R \
@@ -80,7 +74,7 @@ rule quantify__coverm__genome:
 
 
 # CoverM contig ----
-rule _quantify__coverm__contig:
+rule quantify__coverm__contig__:
     """Run coverm genome for one library and one mag catalogue"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -118,7 +112,7 @@ rule _quantify__coverm__contig:
         """
 
 
-rule _quantify__coverm__contig_aggregate:
+rule quantify__coverm__contig_aggregate__:
     """Aggregate coverm contig results"""
     input:
         get_tsvs_for_assembly_coverm_contig,
@@ -130,8 +124,6 @@ rule _quantify__coverm__contig_aggregate:
         "__environment__.yml"
     params:
         input_dir=compose_input_dir_for_coverm_contig_aggregate,
-    resources:
-        mem_mb=8 * 1024,
     shell:
         """
         Rscript --vanilla workflow/scripts/aggregate_coverm.R \

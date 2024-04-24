@@ -1,4 +1,4 @@
-rule _preprocess__fastp__trim:
+rule preprocess__fastp__trim__:
     """Run fastp on one library"""
     input:
         forward_=READS / "{sample_id}.{library_id}_1.fq.gz",
@@ -16,10 +16,6 @@ rule _preprocess__fastp__trim:
         adapter_forward=get_forward_adapter,
         adapter_reverse=get_reverse_adapter,
         extra=params["preprocess"]["fastp"]["extra"],
-    threads: 24
-    resources:
-        mem_mb=4 * 1024,
-        runtime=240,
     conda:
         "__environment__.yml"
     shell:
@@ -34,7 +30,6 @@ rule _preprocess__fastp__trim:
             --html {output.html} \
             --json {output.json} \
             --verbose \
-            --compression 9 \
             --adapter_sequence {params.adapter_forward} \
             --adapter_sequence_r2 {params.adapter_reverse} \
             --thread {threads} \
