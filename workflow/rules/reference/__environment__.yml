@@ -3,5 +3,6 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
+  - bedtools =2.31.0
   - coreutils =9.5
   - samtools =1.20

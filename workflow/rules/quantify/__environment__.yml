@@ -3,6 +3,7 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
+  - bedtools = 2.31.0
   - bowtie2 =2.5.3
   - coverm =0.7.0
   - r-argparse =2.2.3

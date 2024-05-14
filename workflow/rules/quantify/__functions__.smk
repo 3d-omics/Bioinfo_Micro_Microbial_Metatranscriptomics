@@ -78,3 +78,13 @@ def compose_input_dir_for_coverm_contig_aggregate(wildcards):
 
 def compose_input_dir_for_coverm_genome_aggregate(wildcards):
     return COVERM / "genome" / wildcards.mag_catalogue / wildcards.method
+
+
+# Bedtools
+def get_tsvs_for_bedtools(wildcards):
+    mag_catalogue = wildcards.mag_catalogue
+    tsv_files = [
+        BEDTOOLS / mag_catalogue / f"{sample_id}.{library_id}.tsv"
+        for sample_id, library_id in SAMPLE_LIBRARY
+    ]
+    return tsv_files
