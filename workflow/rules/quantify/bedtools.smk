@@ -4,7 +4,7 @@ rule quantify__bedtools__:
         crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
         reference=MAGS / "{mag_catalogue}.fa.gz",
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
-        annotation=MAGS / "{mag_catalogue}.bed6",
+        annotation=MAGS / "{mag_catalogue}.gtf",
     output:
         BEDTOOLS / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv",
     log:

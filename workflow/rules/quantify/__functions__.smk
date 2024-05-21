@@ -88,3 +88,13 @@ def get_tsvs_for_bedtools(wildcards):
         for sample_id, library_id in SAMPLE_LIBRARY
     ]
     return tsv_files
+
+
+# htseq
+def get_tsvs_for_htseq(wildcards):
+    mag_catalogue = wildcards.mag_catalogue
+    tsv_files = [
+        HTSEQ / mag_catalogue / f"{sample_id}.{library_id}.tsv"
+        for sample_id, library_id in SAMPLE_LIBRARY
+    ]
+    return tsv_files

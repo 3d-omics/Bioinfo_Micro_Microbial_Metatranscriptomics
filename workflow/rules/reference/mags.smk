@@ -22,12 +22,12 @@ rule reference__mags__fasta__:
         """
 
 
-rule reference__mags__annotation__:
+rule reference__mags__annotation_bed6__:
     """Link annotation to the mags"""
     input:
-        bed6=get_mags_annotation,
+        get_mags_bed6,
     output:
-        bed6=MAGS / "{mag_catalogue}.bed6",
+        MAGS / "{mag_catalogue}.bed6",
     log:
         MAGS / "{mag_catalogue}.bed6.log",
     conda:
@@ -35,7 +35,24 @@ rule reference__mags__annotation__:
     cache: True
     shell:
         """
-        bedtools sort -i {input.bed6} > {output.bed6} 2> {log}
+        bedtools sort -i {input} > {output} 2> {log}
+        """
+
+
+rule reference__mags__annotation_gtf__:
+    """Link annotation to the mags"""
+    input:
+        get_mags_gtf,
+    output:
+        MAGS / "{mag_catalogue}.gtf",
+    log:
+        MAGS / "{mag_catalogue}.gtf.log",
+    conda:
+        "__environment__.yml"
+    cache: True
+    shell:
+        """
+        ln --symbolic $(readlink --canonicalize {input}) {output} 2> {log}
         """
 
 

@@ -3,7 +3,8 @@ include: "index.smk"
 include: "bowtie2.smk"
 include: "coverm.smk"
 include: "samtools.smk"
-include: "bedtools.smk"
+# include: "bedtools.smk"
+include: "htseq.smk"
 
 
 rule quantify:
@@ -14,4 +15,5 @@ rule quantify:
     """
     input:
         rules.quantify__coverm.input,
-        rules.quantify__bedtools.input,
+        # rules.quantify__bedtools.input,
+        rules.quantify__htseq.input,
