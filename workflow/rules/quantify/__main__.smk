@@ -5,6 +5,7 @@ include: "coverm.smk"
 include: "samtools.smk"
 # include: "bedtools.smk"
 include: "htseq.smk"
+include: "subread.smk"
 
 
 rule quantify:
@@ -17,3 +18,4 @@ rule quantify:
         rules.quantify__coverm.input,
         # rules.quantify__bedtools.input,
         rules.quantify__htseq.input,
+        rules.quantify__subread.input,
