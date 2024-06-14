@@ -15,8 +15,13 @@ hosts:  # Comment the next lines of no host
     #     gtf: resources/references/GCF_000001405.40_GRCh38.p14/genomic.gtf.gz
 
 mag_catalogues:
-    mag1: resources/reference/mags_mock.fa.gz
-    # mag2: resources/reference/mags_mock.fa.gz
+    mag1:
+        fasta: resources/reference/mags_mock.fa.gz
+        gtf: resources/reference/mags_mock.gtf
+        bed6: resources/reference/mags_mock.bed6
+    # mag2:
+    #     fasta: resources/reference/mags_mock.fa.gz
+    #     bed6: resources/reference/mags_mock.bed6
 
 databases:
     kraken2:  # Comment the next lines if no database

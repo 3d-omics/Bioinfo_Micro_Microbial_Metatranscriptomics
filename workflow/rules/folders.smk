@@ -15,6 +15,9 @@ QUANT = Path("results/quantify")
 BOWTIE2_INDEX = QUANT / "index"
 BOWTIE2 = QUANT / "bowtie2"
 COVERM = QUANT / "coverm"
+BEDTOOLS = QUANT / "bedtools"
+HTSEQ = QUANT / "htseq"
+SUBREAD = QUANT / "subread"
 
 REPORT_STEP = Path("reports/by_step/")
 REPORT_LIBRARY = Path("reports/by_library/")

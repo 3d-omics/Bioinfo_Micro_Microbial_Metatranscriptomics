@@ -56,7 +56,7 @@ def get_tsvs_for_assembly_coverm(wildcards, genome_or_contig):
         / genome_or_contig
         / mag_catalogue
         / method
-        / f"{sample_id}.{library_id}.tsv"
+        / f"{sample_id}.{library_id}.tsv.gz"
         for sample_id, library_id in SAMPLE_LIBRARY
     ]
     return tsv_files
@@ -78,3 +78,32 @@ def compose_input_dir_for_coverm_contig_aggregate(wildcards):
 
 def compose_input_dir_for_coverm_genome_aggregate(wildcards):
     return COVERM / "genome" / wildcards.mag_catalogue / wildcards.method
+
+
+# Bedtools
+def get_tsvs_for_bedtools(wildcards):
+    mag_catalogue = wildcards.mag_catalogue
+    tsv_files = [
+        BEDTOOLS / mag_catalogue / f"{sample_id}.{library_id}.tsv"
+        for sample_id, library_id in SAMPLE_LIBRARY
+    ]
+    return tsv_files
+
+
+# htseq
+def get_tsvs_for_htseq(wildcards):
+    mag_catalogue = wildcards.mag_catalogue
+    tsv_files = [
+        HTSEQ / mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+        for sample_id, library_id in SAMPLE_LIBRARY
+    ]
+    return tsv_files
+
+
+def get_tsvs_for_subread(wildcards):
+    mag_catalogue = wildcards.mag_catalogue
+    tsv_files = [
+        SUBREAD / mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+        for sample_id, library_id in SAMPLE_LIBRARY
+    ]
+    return tsv_files

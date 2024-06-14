@@ -11,7 +11,7 @@ rule quantify__coverm__genome__:
         / "genome"
         / "{mag_catalogue}"
         / "{method}"
-        / "{sample_id}.{library_id}.tsv",
+        / "{sample_id}.{library_id}.tsv.gz",
     log:
         COVERM
         / "genome"
@@ -35,7 +35,9 @@ rule quantify__coverm__genome__:
             --methods {params.method} \
             --separator "{params.separator}" \
             --min-covered-fraction {params.min_covered_fraction} \
-            --output-file {output.tsv} \
+            --output-file /dev/stdout \
+        | gzip \
+        > {output.tsv}
         ) 2> {log} 1>&2
         """
 
@@ -45,7 +47,7 @@ rule quantify__coverm__genome_aggregate__:
     input:
         get_tsvs_for_assembly_coverm_genome,
     output:
-        tsv=COVERM / "genome.{mag_catalogue}.{method}.tsv",
+        tsv=COVERM / "genome.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "genome.{mag_catalogue}.{method}.log",
     conda:
@@ -67,7 +69,7 @@ rule quantify__coverm__genome:
     """
     input:
         [
-            COVERM / f"genome.{mag_catalogue}.{method}.tsv"
+            COVERM / f"genome.{mag_catalogue}.{method}.tsv.gz"
             for method in COVERM_CONTIG_METHODS
             for mag_catalogue in MAG_CATALOGUES
         ],
@@ -86,7 +88,7 @@ rule quantify__coverm__contig__:
         / "contig"
         / "{mag_catalogue}"
         / "{method}"
-        / "{sample_id}.{library_id}.tsv",
+        / "{sample_id}.{library_id}.tsv.gz",
     log:
         COVERM
         / "contig"
@@ -107,7 +109,9 @@ rule quantify__coverm__contig__:
             --bam-files /dev/stdin \
             --methods {params.method} \
             --proper-pairs-only \
-            --output-file {output.tsv} \
+            --output-file /dev/stdout \
+        | gzip \
+        > {output.tsv}
         ) 2> {log} 1>&2
         """
 
@@ -117,7 +121,7 @@ rule quantify__coverm__contig_aggregate__:
     input:
         get_tsvs_for_assembly_coverm_contig,
     output:
-        tsv=COVERM / "contig.{mag_catalogue}.{method}.tsv",
+        tsv=COVERM / "contig.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "contig.{mag_catalogue}.{method}.log",
     conda:
@@ -139,7 +143,7 @@ rule quantify__coverm__contig:
     """
     input:
         [
-            COVERM / f"contig.{mag_catalogue}.{method}.tsv"
+            COVERM / f"contig.{mag_catalogue}.{method}.tsv.gz"
             for method in COVERM_CONTIG_METHODS
             for mag_catalogue in MAG_CATALOGUES
         ],
