@@ -38,7 +38,7 @@ jobs:
         with:
           path: |
             .snakemake/conda
-            ~/.cache/pre-commit/
+            # ~/.cache/pre-commit/
           key: snakemake-conda-${{ env.CACHE_NUMBER }}
 
       - name: Download environments
