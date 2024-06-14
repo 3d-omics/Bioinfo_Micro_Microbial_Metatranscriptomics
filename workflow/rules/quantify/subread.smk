@@ -6,7 +6,7 @@ rule quantify__subread__feature_counts__:
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
         annotation=MAGS / "{mag_catalogue}.gtf",
     output:
-        counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv",
+        counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
         summary=temp(
             SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.summary"
         ),
@@ -32,6 +32,7 @@ rule quantify__subread__feature_counts__:
 
         ( grep -v ^# {output.counts} \
         | cut -f 1,7 \
+        | gzip \
         > {output.counts}.tmp \
         ) 2>> {log}
 
@@ -43,7 +44,7 @@ rule quantify__subread__aggregate__:
     input:
         tsvs=get_tsvs_for_subread,
     output:
-        SUBREAD / "{mag_catalogue}.tsv",
+        SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
         SUBREAD / "{mag_catalogue}.log",
     conda:

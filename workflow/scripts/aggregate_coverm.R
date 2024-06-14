@@ -9,7 +9,7 @@ parser$add_argument(
   "-i", "--input-folder",
   type = "character",
   dest = "input_folder",
-  help = "Folder containing the *.tsv files"
+  help = "Folder containing the *.tsv.gz files"
 )
 
 parser$add_argument(
@@ -26,7 +26,7 @@ output_folder <- dirname(output_file)
 
 dir.create(output_folder, showWarnings = FALSE, recursive = TRUE)
 
-files <- list.files(args$input_folder, pattern = "*.tsv", full.names = TRUE)
+files <- list.files(args$input_folder, pattern = "*.tsv.gz", full.names = TRUE)
 
 sample_names <-
   files %>%

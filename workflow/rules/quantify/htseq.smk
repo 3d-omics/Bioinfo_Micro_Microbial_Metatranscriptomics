@@ -6,7 +6,7 @@ rule quantify__htseq__count__:
         fai=MAGS / "{mag_catalogue}.fa.gz.fai",
         annotation=MAGS / "{mag_catalogue}.gtf",
     output:
-        counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv",
+        counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
     log:
         HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
@@ -15,16 +15,20 @@ rule quantify__htseq__count__:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
     shell:
         """
-        echo -E "gene_id\t{params.sample_library}" > {output.counts} 2> {log}
+        ( echo -E "gene_id\t{params.sample_library}" \
+        | gzip \
+        > {output.counts} )
+        2> {log}
 
-        htseq-count \
+        ( htseq-count \
             --order pos \
             --type CDS \
             --idattr gene_id \
             {input.cram} \
             {input.annotation} \
-        >> {output.counts} \
-        2>> {log}
+        | gzip \
+        > {output.counts} \
+        ) 2>> {log}
         """
 
 
@@ -32,7 +36,7 @@ rule quantify__htseq__count__aggregate__:
     input:
         tsvs=get_tsvs_for_htseq,
     output:
-        HTSEQ / "{mag_catalogue}.tsv",
+        HTSEQ / "{mag_catalogue}.tsv.gz",
     log:
         HTSEQ / "{mag_catalogue}.log",
     conda:
@@ -50,4 +54,4 @@ rule quantify__htseq__count__aggregate__:
 
 rule quantify__htseq:
     input:
-        [HTSEQ / f"{mag_catalogue}.tsv" for mag_catalogue in MAG_CATALOGUES],
+        [HTSEQ / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],

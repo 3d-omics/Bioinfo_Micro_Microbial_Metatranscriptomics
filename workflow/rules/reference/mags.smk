@@ -61,3 +61,4 @@ rule reference__mags:
     input:
         [MAGS / f"{mag_catalogue}.fa.gz" for mag_catalogue in MAG_CATALOGUES],
         [MAGS / f"{mag_catalogue}.bed6" for mag_catalogue in MAG_CATALOGUES],
+        [MAGS / f"{mag_catalogue}.gtf" for mag_catalogue in MAG_CATALOGUES],
