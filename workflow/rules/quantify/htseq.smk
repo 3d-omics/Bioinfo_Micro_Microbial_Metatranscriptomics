@@ -36,9 +36,9 @@ rule quantify__htseq__count__aggregate__:
     input:
         tsvs=get_tsvs_for_htseq,
     output:
-        HTSEQ / "{mag_catalogue}.tsv.gz",
+        HTSEQ / "htseq.{mag_catalogue}.tsv.gz",
     log:
-        HTSEQ / "{mag_catalogue}.log",
+        HTSEQ / "htseq.{mag_catalogue}.log",
     conda:
         "__environment__.yml"
     params:
@@ -54,4 +54,4 @@ rule quantify__htseq__count__aggregate__:
 
 rule quantify__htseq:
     input:
-        [HTSEQ / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],
+        [HTSEQ / f"htseq.{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],

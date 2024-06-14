@@ -16,6 +16,9 @@ rule quantify__subread__feature_counts__:
         "__environment__.yml"
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
+        tmp_out=lambda w: SUBREAD
+        / w.mag_catalogue
+        / f"{w.sample_id}.{w.library_id}.tsv",
     shell:
         """
         ( samtools view \
@@ -27,16 +30,16 @@ rule quantify__subread__feature_counts__:
             -g gene_id \
             -p \
             -a {input.annotation} \
-            -o {output.counts} \
+            -o {params.tmp_out} \
         ) 2> {log} 1>&2
 
-        ( grep -v ^# {output.counts} \
+        ( grep -v ^# {params.tmp_out} \
         | cut -f 1,7 \
         | gzip \
-        > {output.counts}.tmp \
+        > {output.counts} \
         ) 2>> {log}
 
-        mv {output.counts}.tmp {output.counts} 2>> {log}
+        rm -rfv {params.tmp_out} 2>> {log} 1>&2
         """
 
 
@@ -44,9 +47,9 @@ rule quantify__subread__aggregate__:
     input:
         tsvs=get_tsvs_for_subread,
     output:
-        SUBREAD / "{mag_catalogue}.tsv.gz",
+        SUBREAD / "subread.{mag_catalogue}.tsv.gz",
     log:
-        SUBREAD / "{mag_catalogue}.log",
+        SUBREAD / "subread.{mag_catalogue}.log",
     conda:
         "__environment__.yml"
     params:
@@ -62,4 +65,7 @@ rule quantify__subread__aggregate__:
 
 rule quantify__subread:
     input:
-        [SUBREAD / f"{mag_catalogue}.tsv" for mag_catalogue in MAG_CATALOGUES],
+        [
+            SUBREAD / f"subread.{mag_catalogue}.tsv.gz"
+            for mag_catalogue in MAG_CATALOGUES
+        ],
