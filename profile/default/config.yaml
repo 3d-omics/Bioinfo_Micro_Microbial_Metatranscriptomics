@@ -11,7 +11,7 @@ set-threads:
     reference__mags__: 8
     preprocess__fastp__trim__: 24
     preprocess__ribodetector__filter__: 24
-    preprocess__star__index__: 24
+    preprocess__index__: 24
     preprocess__star__align__: 24
     preprocess__kraken2__assign__: 8
     quantify__bowtie2__build__: 24
@@ -24,8 +24,8 @@ set-resources:
         runtime: 4 * 60
     preprocess__ribodetector__filter__:
         mem_mb: 32 * 1024
-        runtime: 6 * 60
-    preprocess__star__index__:
+        runtime: 1d
+    preprocess__index__:
         mem_mb: 32 * 1024 * 2 ** (attempt - 1)
         runtime: 24 * 60
     preprocess__star__align__:
@@ -33,8 +33,8 @@ set-resources:
         runtime: 24 * 60
     preprocess__kraken2__assign__:
         runtime: 24 * 60
-        # mem_mb: config file
-    quantify__bowtie2__build__:
+        mem_mb: 500G
+    quantify__index___:
         mem_mb: 32 * 1024 * 2 ** (attempt - 1)
         runtime: 6 * 60
     quantify__bowtie2__map__:
@@ -47,3 +47,19 @@ set-resources:
         mem_mb: 8 * 1024
     quantify__coverm__contig_aggregate__:
         mem_mb: 8 * 1024
+    quantify__bedtools__:
+        mem_mb: 16G
+    quantify__htseq__count__:
+        runtime: 1d
+        mem_mb: 8G
+    quantify__htseq__count__aggregate__:
+        runtime: 1h
+        mem_mb: 16G
+    quantify__subread__feature_counts__:
+        mem_mb: 4G
+    quantify__subread__aggregate__:
+        mem_mb: 16G
+    report__step__reads__:
+        mem_mb: 4G
+    report__step__preprocess__:
+        mem_mb: 64G
