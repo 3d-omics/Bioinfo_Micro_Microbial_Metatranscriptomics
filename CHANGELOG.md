@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/3d-omics/mt_quant/compare/v1.0.0...v1.0.1) (2024-06-17)
+
+
+### Performance Improvements
+
+* raise ram for aggregators ([258ec0f](https://github.com/3d-omics/mt_quant/commit/258ec0f5e3066ffa680247cf6766239f5c3e4116))
+
 ## [1.0.0](https://github.com/3d-omics/mt_quant/compare/0.0.1...v1.0.0) (2024-06-14)
 
 
