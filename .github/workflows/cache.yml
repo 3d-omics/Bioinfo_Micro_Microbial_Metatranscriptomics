@@ -13,7 +13,7 @@ jobs:
   weekly-cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@4.1.7
+      - uses: actions/checkout@v4.1.7
         with:
           lfs: 'true'
       - name: Set up cache
@@ -21,6 +21,7 @@ jobs:
         with:
           path: |
             .snakemake/conda
+            # ~/.cache/pre-commit/
           key: snakemake-conda-${{ env.CACHE_NUMBER }}
         id: cache
       - name: Download environments
