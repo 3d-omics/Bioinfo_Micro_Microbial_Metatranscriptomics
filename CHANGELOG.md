@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/3d-omics/mt_quant/compare/v1.0.1...v1.1.0) (2024-08-06)
+
+
+### Features
+
+* pin dependencies ([1d39136](https://github.com/3d-omics/mt_quant/commit/1d3913637838651520d2a5f7c69820ea1e017b10))
+
 ## [1.0.1](https://github.com/3d-omics/mt_quant/compare/v1.0.0...v1.0.1) (2024-06-17)
 
 
