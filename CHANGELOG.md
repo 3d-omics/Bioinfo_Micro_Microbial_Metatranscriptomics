@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/3d-omics/mt_quant/compare/v1.1.0...v1.1.1) (2024-10-01)
+
+
+### Bug Fixes
+
+* **preprocess/index:** make params.prefix str so caching works ([2a8a205](https://github.com/3d-omics/mt_quant/commit/2a8a205bb9f506c0716ab954bee1e90db7e3056d))
+
 ## [1.1.0](https://github.com/3d-omics/mt_quant/compare/v1.0.1...v1.1.0) (2024-08-06)
 
 
