@@ -29,7 +29,7 @@ rule preprocess__index__:
         STAR_INDEX / "{host_name}.log",
     params:
         sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
-        prefix=lambda w: STAR_INDEX / w.host_name,
+        prefix=lambda w: str(STAR_INDEX / w.host_name),
     retries: 5
     cache: True
     shell:
