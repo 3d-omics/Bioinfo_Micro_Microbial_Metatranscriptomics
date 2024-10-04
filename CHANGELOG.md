@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/3d-omics/mt_quant/compare/v1.1.1...v1.1.2) (2024-10-04)
+
+
+### Bug Fixes
+
+* decompress mag gtf ([db32655](https://github.com/3d-omics/mt_quant/commit/db326551766029df7006b34f6637a85f4e3e868e))
+
 ## [1.1.1](https://github.com/3d-omics/mt_quant/compare/v1.1.0...v1.1.1) (2024-10-01)
 
 
