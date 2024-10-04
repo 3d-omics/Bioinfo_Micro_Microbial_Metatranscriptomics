@@ -52,7 +52,7 @@ rule reference__mags__annotation_gtf__:
     cache: True
     shell:
         """
-        ln --symbolic $(readlink --canonicalize {input}) {output} 2> {log}
+        gzip -dc {input} > {output} 2> {log}
         """
 
 
