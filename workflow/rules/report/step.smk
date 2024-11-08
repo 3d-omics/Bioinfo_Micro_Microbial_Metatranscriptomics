@@ -8,7 +8,11 @@ rule report__step__preprocess__:
         ],
         kraken2=rules.preprocess__kraken2__all.input,
         ribodetector=rules.preprocess__ribodetector__fastqc__all.input,
-        star=rules.preprocess__star__report.input,
+        star=[
+            STAR / host_name / f"{sample_id}.{library_id}.Log.final.out"
+            for sample_id, library_id in SAMPLE_LIBRARY
+            for host_name in HOST_NAMES
+        ],
     output:
         html=REPORT_STEP / "preprocess.html",
     log:

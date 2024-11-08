@@ -1,7 +1,7 @@
 include: "star_functions.smk"
 
 
-rule preprocess__index__:
+rule preprocess__star__index:
     """Index the genome for STAR"""
     input:
         genome=HOSTS / "{host_name}.fa",
@@ -48,13 +48,13 @@ rule preprocess__index__:
         """
 
 
-rule preprocess__index:
+rule preprocess__star__index__all:
     """Build all the STAR indexes"""
     input:
         [STAR_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
 
 
-rule preprocess__star__align__:
+rule preprocess__star__align:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
         forward_=get_input_forward_for_host_mapping,
@@ -138,7 +138,7 @@ rule preprocess__star__align__:
         """
 
 
-rule preprocess__star__align:
+rule preprocess__star__align__all:
     """Get all the STAR counts for all hosts"""
     input:
         [
@@ -148,18 +148,8 @@ rule preprocess__star__align:
         ],
 
 
-rule preprocess__star__report:
-    """Collect star reports"""
-    input:
-        [
-            STAR / host_name / f"{sample_id}.{library_id}.Log.final.out"
-            for sample_id, library_id in SAMPLE_LIBRARY
-            for host_name in HOST_NAMES
-        ],
-
-
 rule preprocess__star:
     """Run all the elements in the star subworkflow"""
     input:
-        rules.preprocess__star__align.input,
-        rules.preprocess__star__report.input,
+        rules.preprocess__star__index__all.input,
+        rules.preprocess__star__align__all.input,
