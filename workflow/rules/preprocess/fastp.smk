@@ -1,7 +1,7 @@
 include: "fastp_functions.smk"
 
 
-rule preprocess__fastp__trim__:
+rule preprocess__fastp:
     """Run fastp on one library"""
     input:
         forward_=READS / "{sample_id}.{library_id}_1.fq.gz",
@@ -41,7 +41,7 @@ rule preprocess__fastp__trim__:
         """
 
 
-rule preprocess__fastp__trim:
+rule preprocess__fastp__all:
     """Run fastp over all libraries"""
     input:
         [
@@ -49,31 +49,3 @@ rule preprocess__fastp__trim:
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in "1 2 u1 u2".split(" ")
         ],
-
-
-rule preprocess__fastp__fastqc:
-    """Run fastqc over all libraries"""
-    input:
-        [
-            FASTP / f"{sample_id}.{library_id}_{end}_fastqc.{extension}"
-            for sample_id, library_id in SAMPLE_LIBRARY
-            for end in ["1", "2"]
-            for extension in ["html", "zip"]
-        ],
-
-
-rule preprocess__fastp__report:
-    """Collect fastp and fastqc reports"""
-    input:
-        [
-            FASTP / f"{sample_id}.{library_id}_fastp.json"
-            for sample_id, library_id in SAMPLE_LIBRARY
-        ],
-        rules.preprocess__fastp__fastqc.input,
-
-
-rule preprocess__fastp:
-    """Run fastp and collect reports"""
-    input:
-        rules.preprocess__fastp__trim.input,
-        rules.preprocess__fastp__report.input,

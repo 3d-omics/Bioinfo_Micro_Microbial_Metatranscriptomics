@@ -1,11 +1,14 @@
 rule report__step__preprocess__:
     """Collect all reports for the preprocess step"""
     input:
-        rules.preprocess__reads__fastqc__all.input,
-        rules.preprocess__fastp__report.input,
-        rules.preprocess__kraken2.input,
-        rules.preprocess__ribodetector__fastqc.input,
-        rules.preprocess__star__report.input,
+        fastqc=rules.preprocess__reads__fastqc__all.input,
+        fastp=[
+            FASTP / f"{sample_id}.{library_id}_fastp.json"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
+        kraken2=rules.preprocess__kraken2.input,
+        ribodetector=rules.preprocess__ribodetector__fastqc.input,
+        star=rules.preprocess__star__report.input,
     output:
         html=REPORT_STEP / "preprocess.html",
     log:
