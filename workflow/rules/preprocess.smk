@@ -15,6 +15,7 @@ rule preprocess__all:
     - ribodetector: removal of rRNAs
     - kraken2: screening of sequences
     - star: remove host RNA (if host is present)
+    - multiqc: summary of the preprocessing steps
     """
     input:
         rules.preprocess__fastp__all.input,
