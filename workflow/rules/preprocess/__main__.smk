@@ -1,6 +1,7 @@
 
 
 include: "reads.smk"
+include: "hosts.smk"
 include: "fastp.smk"
 include: "ribodetector.smk"
 include: "kraken2.smk"
