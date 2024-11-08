@@ -4,7 +4,6 @@ include: "reads.smk"
 include: "fastp.smk"
 include: "ribodetector.smk"
 include: "kraken2.smk"
-include: "index.smk"
 include: "star.smk"
 
 
