@@ -16,7 +16,7 @@ rule quantify__bowtie2__build:
     log:
         BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bowtie2_samtools.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
@@ -75,7 +75,7 @@ rule quantify__bowtie2__map:
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bowtie2_samtools.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],
