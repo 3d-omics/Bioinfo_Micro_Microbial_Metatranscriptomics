@@ -13,6 +13,8 @@ rule preprocess__hosts__decompress_fa:
     log:
         HOSTS / "{host_name}.fa.log",
     cache: True
+    conda:
+        "base"
     shell:
         """
         gzip \
@@ -36,6 +38,8 @@ rule preprocess__hosts__decompress_gtf:
     log:
         HOSTS / "{host_name}.gtf.log",
     cache: True
+    conda:
+        "base"
     shell:
         """
         gzip \

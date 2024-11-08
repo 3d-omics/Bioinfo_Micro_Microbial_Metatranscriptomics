@@ -1,7 +1,6 @@
 channels:
   - conda-forge
   - bioconda
-  - nodefaults
 dependencies:
   - r-argparse =2.2.3
   - r-tidyverse =2.0.0

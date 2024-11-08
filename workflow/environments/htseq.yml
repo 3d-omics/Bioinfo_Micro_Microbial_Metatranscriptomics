@@ -1,7 +1,6 @@
 channels:
   - conda-forge
   - bioconda
-  - nodefaults
 dependencies:
   - htseq =2.0.5
   - r-argparse =2.2.3

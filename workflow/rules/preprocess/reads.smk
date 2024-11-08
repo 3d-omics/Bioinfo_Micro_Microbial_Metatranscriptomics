@@ -11,6 +11,8 @@ rule preprocess__reads:
         reverse_=READS / "{sample_id}.{library_id}_2.fq.gz",
     log:
         READS / "{sample_id}.{library_id}.log",
+    conda:
+        "base"
     shell:
         """
         ln --symbolic $(readlink --canonicalize {input.forward_}) {output.forward_}
