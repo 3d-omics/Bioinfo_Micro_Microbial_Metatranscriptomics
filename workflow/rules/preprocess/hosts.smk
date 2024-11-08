@@ -12,8 +12,6 @@ rule preprocess__hosts__decompress_fa:
         HOSTS / "{host_name}.fa",
     log:
         HOSTS / "{host_name}.fa.log",
-    conda:
-        "__environment__.yml"
     cache: True
     shell:
         """
@@ -37,8 +35,6 @@ rule preprocess__hosts__decompress_gtf:
         HOSTS / "{host_name}.gtf",
     log:
         HOSTS / "{host_name}.gtf.log",
-    conda:
-        "__environment__.yml"
     cache: True
     shell:
         """
