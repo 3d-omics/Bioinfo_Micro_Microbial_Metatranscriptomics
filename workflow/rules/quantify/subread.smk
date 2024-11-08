@@ -1,4 +1,4 @@
-rule quantify__subread__feature_counts__:
+rule quantify__subread__feature_counts:
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
         crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
@@ -13,7 +13,7 @@ rule quantify__subread__feature_counts__:
     log:
         SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/subread.yml"
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
         tmp_out=lambda w: SUBREAD
@@ -43,15 +43,15 @@ rule quantify__subread__feature_counts__:
         """
 
 
-rule quantify__subread__aggregate__:
+rule quantify__subread__aggregate:
     input:
         tsvs=get_tsvs_for_subread,
     output:
-        SUBREAD / "subread.{mag_catalogue}.tsv.gz",
+        SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
-        SUBREAD / "subread.{mag_catalogue}.log",
+        SUBREAD / "{mag_catalogue}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/subread.yml"
     params:
         input_folder=lambda w: SUBREAD / f"{w.mag_catalogue}",
     shell:
@@ -63,9 +63,6 @@ rule quantify__subread__aggregate__:
         """
 
 
-rule quantify__subread:
+rule quantify__subread__all:
     input:
-        [
-            SUBREAD / f"subread.{mag_catalogue}.tsv.gz"
-            for mag_catalogue in MAG_CATALOGUES
-        ],
+        [SUBREAD / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],

@@ -3,9 +3,7 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - bedtools = 2.31.0
-  - coverm =0.7.0
-  - htseq =2.0.5
   - r-argparse =2.2.3
   - r-tidyverse =2.0.0
   - subread =2.0.6
+  - samtools =1.20

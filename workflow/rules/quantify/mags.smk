@@ -10,7 +10,7 @@ rule quantify__mags__recompress_fa:
     log:
         MAGS / "{mag_catalogue}.fa.log",
     conda:
-        "__environment__.yml"
+        "../../environments/htslib.yml"
     cache: True
     shell:
         """
@@ -25,23 +25,6 @@ rule quantify__mags__recompress_fa:
         """
 
 
-rule quantify__mags__annotation_bed6:
-    """Link annotation to the mags"""
-    input:
-        get_mags_bed6,
-    output:
-        MAGS / "{mag_catalogue}.bed6",
-    log:
-        MAGS / "{mag_catalogue}.bed6.log",
-    conda:
-        "__environment__.yml"
-    cache: True
-    shell:
-        """
-        bedtools sort -i {input} > {output} 2> {log}
-        """
-
-
 rule quantify__mags__annotation_gtf:
     """Link annotation to the mags"""
     input:
@@ -51,7 +34,7 @@ rule quantify__mags__annotation_gtf:
     log:
         MAGS / "{mag_catalogue}.gtf.log",
     conda:
-        "__environment__.yml"
+        "../../environments/htslib.yml"
     cache: True
     shell:
         """

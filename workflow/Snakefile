@@ -51,4 +51,4 @@ rule all:
     """Default pipeline"""
     input:
         rules.preprocess__all.input,
-        rules.quantify.input,
+        rules.quantify__all.input,
