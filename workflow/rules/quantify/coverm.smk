@@ -5,10 +5,7 @@ include: "coverm_functions.smk"
 rule quantify__coverm__genome:
     """calculation of MAG-wise coverage"""
     input:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
     output:
         tsv=COVERM
         / "genome"
@@ -29,12 +26,8 @@ rule quantify__coverm__genome:
         separator=get_separator,
     shell:
         """
-        ( samtools view \
-            --with-header \
-            --reference {input.reference} \
-            {input.cram} \
-        | coverm genome \
-            --bam-files /dev/stdin \
+        ( coverm genome \
+            --bam-files {input.bam} \
             --methods {params.method} \
             --separator "{params.separator}" \
             --min-covered-fraction {params.min_covered_fraction} \
@@ -82,10 +75,7 @@ rule quantify__coverm__genome__all:
 rule quantify__coverm__contig:
     """Run coverm genome for one library and one mag catalogue"""
     input:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
     output:
         tsv=COVERM
         / "contig"
@@ -104,12 +94,8 @@ rule quantify__coverm__contig:
         method=get_method,
     shell:
         """
-        ( samtools view \
-            --with-header \
-            --reference {input.reference} \
-            {input.cram} \
-        | coverm contig \
-            --bam-files /dev/stdin \
+        ( coverm contig \
+            --bam-files {input.bam} \
             --methods {params.method} \
             --proper-pairs-only \
             --output-file /dev/stdout \

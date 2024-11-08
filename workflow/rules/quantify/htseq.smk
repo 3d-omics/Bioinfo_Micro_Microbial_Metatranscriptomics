@@ -3,10 +3,7 @@ include: "htseq_functions.smk"
 
 rule quantify__htseq__count:
     input:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
         annotation=MAGS / "{mag_catalogue}.gtf",
     output:
         counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
@@ -27,7 +24,7 @@ rule quantify__htseq__count:
             --order pos \
             --type CDS \
             --idattr gene_id \
-            {input.cram} \
+            {input.bam} \
             {input.annotation} \
         | gzip \
         > {output.counts} \

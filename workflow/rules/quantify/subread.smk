@@ -1,9 +1,6 @@
 rule quantify__subread__feature_counts:
     input:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
         annotation=MAGS / "{mag_catalogue}.gtf",
     output:
         counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
@@ -21,17 +18,15 @@ rule quantify__subread__feature_counts:
         / f"{w.sample_id}.{w.library_id}.tsv",
     shell:
         """
-        ( samtools view \
-            --reference {input.reference} \
-            {input.cram} \
-        | featureCounts \
+        featureCounts \
             -F GTF \
             -t CDS \
             -g gene_id \
             -p \
             -a {input.annotation} \
             -o {params.tmp_out} \
-        ) 2> {log} 1>&2
+            {input.bam} \
+        2> {log} 1>&2
 
         ( grep -v ^# {params.tmp_out} \
         | cut -f 1,7 \

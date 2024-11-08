@@ -70,11 +70,8 @@ rule quantify__bowtie2__map:
             ".rev.1.bt2l",
             ".rev.2.bt2l",
         ),
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     conda:
@@ -97,8 +94,7 @@ rule quantify__bowtie2__map:
             {params.extra} \
         | samtools sort \
             -m {params.samtools_mem} \
-            -o {output.cram} \
-            --reference {input.reference} \
+            -o {output.bam} \
             --threads {threads} \
             --write-index \
         ) 2> {log} 1>&2
@@ -109,7 +105,7 @@ rule quantify__bowtie2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.cram"
+            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],

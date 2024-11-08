@@ -1,7 +1,6 @@
 include: "quantify/mags.smk"
 include: "quantify/bowtie2.smk"
 include: "quantify/coverm.smk"
-include: "quantify/samtools.smk"
 include: "quantify/htseq.smk"
 include: "quantify/subread.smk"
 include: "quantify/multiqc.smk"
