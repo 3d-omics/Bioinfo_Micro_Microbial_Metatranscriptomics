@@ -44,7 +44,7 @@ use rule * from helpers exclude test as helpers__*
 # Import subworkflows
 include: "rules/folders.smk"
 include: "rules/preprocess/__main__.smk"
-include: "rules/quantify/__main__.smk"
+include: "rules/quantify.smk"
 
 
 rule all:

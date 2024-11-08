@@ -1,3 +1,6 @@
+include: "coverm_functions.smk"
+
+
 # CoverM Contig
 rule quantify__coverm__genome:
     """calculation of MAG-wise coverage"""

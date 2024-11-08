@@ -1,11 +1,10 @@
-include: "__functions__.smk"
-include: "mags.smk"
-include: "bowtie2.smk"
-include: "coverm.smk"
-include: "samtools.smk"
-include: "htseq.smk"
-include: "subread.smk"
-include: "multiqc.smk"
+include: "quantify/mags.smk"
+include: "quantify/bowtie2.smk"
+include: "quantify/coverm.smk"
+include: "quantify/samtools.smk"
+include: "quantify/htseq.smk"
+include: "quantify/subread.smk"
+include: "quantify/multiqc.smk"
 
 
 rule quantify__all:
@@ -19,5 +18,5 @@ rule quantify__all:
         rules.quantify__bowtie2__all.input,
         rules.quantify__coverm__all.input,
         rules.quantify__htseq__all.input,
-        rules.quantify__subread.input,
+        rules.quantify__subread__all.input,
         rules.quantify__multiqc__all.input,

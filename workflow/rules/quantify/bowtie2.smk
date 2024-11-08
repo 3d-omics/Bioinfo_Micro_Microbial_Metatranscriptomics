@@ -1,3 +1,6 @@
+include: "bowtie2_functions.smk"
+
+
 rule quantify__bowtie2__build:
     """Build bowtie2 index for the mags"""
     input:

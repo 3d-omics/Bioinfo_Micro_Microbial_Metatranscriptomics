@@ -1,3 +1,6 @@
+include: "htseq_functions.smk"
+
+
 rule quantify__htseq__count:
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
