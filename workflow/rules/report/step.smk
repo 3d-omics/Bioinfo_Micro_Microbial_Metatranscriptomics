@@ -1,30 +1,7 @@
-rule report__step__reads__:
-    """Collect all reports for the reads step"""
-    input:
-        rules.reads__fastqc.input,
-    output:
-        html=REPORT_STEP / "reads.html",
-    log:
-        REPORT_STEP / "reads.log",
-    conda:
-        "__environment__.yml"
-    params:
-        dir=REPORT_STEP,
-    shell:
-        """
-        multiqc \
-            --filename reads \
-            --title reads \
-            --force \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
-
-
 rule report__step__preprocess__:
     """Collect all reports for the preprocess step"""
     input:
+        rules.preprocess__reads__fastqc__all.input,
         rules.preprocess__fastp__report.input,
         rules.preprocess__kraken2.input,
         rules.preprocess__ribodetector__fastqc.input,
@@ -80,6 +57,5 @@ rule report__step__quantify__:
 rule report__step:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__reads__.output,
         rules.report__step__preprocess__.output,
         rules.report__step__quantify__.output,

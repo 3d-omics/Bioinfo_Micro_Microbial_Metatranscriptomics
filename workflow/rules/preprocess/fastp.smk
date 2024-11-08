@@ -1,3 +1,6 @@
+include: "fastp_functions.smk"
+
+
 rule preprocess__fastp__trim__:
     """Run fastp on one library"""
     input:

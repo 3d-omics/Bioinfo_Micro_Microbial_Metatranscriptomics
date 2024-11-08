@@ -1,3 +1,5 @@
+include: "reads_functions.smk"
+include: "reads.smk"
 include: "__functions__.smk"
 include: "fastp.smk"
 include: "ribodetector.smk"
