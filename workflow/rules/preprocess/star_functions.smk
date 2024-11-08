@@ -1,4 +1,3 @@
-# star ----
 def get_input_for_host_mapping(wildcards, forward_or_reverse):
     """Get the forward or reverse file for host mapping"""
     assert forward_or_reverse in ["forward", "reverse"]
@@ -64,14 +63,3 @@ def get_star_output_bam(wildcards):
     library_id = wildcards.library_id
     suffix = "Aligned.sortedByCoord.out.bam"
     return STAR / host_name / f"{sample_id}.{library_id}.{suffix}"
-
-
-# kraken2 ----
-def get_kraken2_database(wildcards):
-    """Get the path to the kraken2 database to be used"""
-    return features["databases"]["kraken2"][wildcards.kraken2_db]
-
-
-def compose_out_folder_for_eval_kraken2_assign_all(wildcards):
-    """Just compose the output folder"""
-    return KRAKEN2 / wildcards.kraken2_db

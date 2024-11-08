@@ -7,7 +7,7 @@ rule report__step__preprocess__:
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
         kraken2=rules.preprocess__kraken2.input,
-        ribodetector=rules.preprocess__ribodetector__fastqc.input,
+        ribodetector=rules.preprocess__ribodetector__fastqc__all.input,
         star=rules.preprocess__star__report.input,
     output:
         html=REPORT_STEP / "preprocess.html",

@@ -1,3 +1,6 @@
+include: "kraken2_functions.smk"
+
+
 rule preprocess__kraken2__assign__:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.

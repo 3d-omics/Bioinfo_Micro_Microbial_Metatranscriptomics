@@ -1,3 +1,4 @@
+include: "star_functions.smk"
 
 
 rule preprocess__star__align__:

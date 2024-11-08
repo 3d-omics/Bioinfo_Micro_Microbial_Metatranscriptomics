@@ -1,6 +1,6 @@
-include: "reads_functions.smk"
+
+
 include: "reads.smk"
-include: "__functions__.smk"
 include: "fastp.smk"
 include: "ribodetector.smk"
 include: "kraken2.smk"
@@ -16,7 +16,7 @@ rule preprocess:
     - star: remove host RNA (if host is present)
     """
     input:
-        rules.preprocess__fastp.input,
-        rules.preprocess__ribodetector.input,
+        rules.preprocess__fastp__all.input,
+        rules.preprocess__ribodetector__all.input,
         rules.preprocess__kraken2.input,
         rules.preprocess__star.input,
