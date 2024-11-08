@@ -9,7 +9,7 @@ rule preprocess__multiqc__all:
         kraken2=rules.preprocess__kraken2__all.input,
         ribodetector=rules.preprocess__ribodetector__fastqc__all.input,
         star=[
-            STAR / host_name / f"{sample_id}.{library_id}.Log.final.out"
+            STAR / f"{host_name}.{sample_id}.{library_id}.Log.final.out"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],

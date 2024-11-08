@@ -48,5 +48,5 @@ rule quantify__mags__all:
         [
             MAGS / f"{mag_catalogue}.{extension}"
             for mag_catalogue in MAG_CATALOGUES
-            for extension in ["fa.gz", "bed6", "gtf"]
+            for extension in ["fa.gz", "gtf"]
         ],

@@ -19,7 +19,7 @@ rule quantify__bowtie2__build:
     log:
         BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
-        "../../environments/bowtie2_samtools.yml"
+        "../../environments/bowtie2.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
@@ -59,8 +59,8 @@ rule quantify__bowtie2__map:
     Output SAM file is piped to samtools sort to generate a CRAM file.
     """
     input:
-        forward_=get_forward_for_bowtie2,
-        reverse_=get_reverse_for_bowtie2,
+        forward_=CLEAN / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=CLEAN / "{sample_id}.{library_id}_2.fq.gz",
         bowtie2_index=multiext(
             str(BOWTIE2_INDEX / "{mag_catalogue}"),
             ".1.bt2l",
@@ -78,7 +78,7 @@ rule quantify__bowtie2__map:
     log:
         BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
     conda:
-        "../../environments/bowtie2_samtools.yml"
+        "../../environments/bowtie2.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
         samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],

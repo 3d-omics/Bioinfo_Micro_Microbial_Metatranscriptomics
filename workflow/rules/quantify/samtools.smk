@@ -10,6 +10,6 @@ rule quantify__samtools__stats_cram:
     log:
         BOWTIE2 / "{mag_catalogue}.{sample}.{library}.stats.log",
     conda:
-        "../../environments/bowtie2_samtools.yml"
+        "../../environments/bowtie2.yml"
     shell:
         "samtools stats --reference {input.reference} {input.cram} > {output.tsv} 2> {log}"

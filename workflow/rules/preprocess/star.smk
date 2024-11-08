@@ -8,7 +8,7 @@ rule preprocess__star__index:
         annotation=HOSTS / "{host_name}.gtf",
     output:
         multiext(
-            str(STAR_INDEX) + "/{host_name}/",
+            str(STAR_INDEX / "{host_name}") + "/",
             "chrLength.txt",
             "chrNameLength.txt",
             "chrName.txt",
@@ -81,21 +81,15 @@ rule preprocess__star__align:
         reference=HOSTS / "{host_name}.fa",
         fai=HOSTS / "{host_name}.fa.fai",
     output:
-        cram=STAR / "{host_name}" / "{sample_id}.{library_id}.cram",
-        crai=STAR / "{host_name}" / "{sample_id}.{library_id}.cram.crai",
-        u1=STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate1.gz",
-        u2=STAR / "{host_name}" / "{sample_id}.{library_id}.Unmapped.out.mate2.gz",
-        report=STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
-        counts=STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
+        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        report=STAR / "{host_name}.{sample_id}.{library_id}.Log.final.out",
+        counts=STAR / "{host_name}.{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
-        STAR / "{host_name}" / "{sample_id}.{library_id}.log",
+        STAR / "{host_name}.{sample_id}.{library_id}.log",
     conda:
         "../../environments/star.yml"
     params:
         out_prefix=get_star_out_prefix,
-        u1=get_star_output_r1,
-        u2=get_star_output_r2,
-        bam=get_star_output_bam,
         index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     shell:
@@ -116,25 +110,6 @@ rule preprocess__star__align:
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
         2>> {log} 1>&2
-
-        pigz \
-            --processes {threads} \
-            --verbose \
-            --best \
-            {params.u1} \
-            {params.u2} \
-        2>> {log} 1>&2
-
-        samtools view \
-            --output-fmt CRAM \
-            --reference {input.reference} \
-            --threads {threads} \
-            --write-index \
-            --output {output.cram} \
-            {params.bam} \
-        2>> {log} 1>&2
-
-        rm --verbose --force {params.bam} 2>> {log} 1>&2
         """
 
 
@@ -142,10 +117,61 @@ rule preprocess__star__align__all:
     """Get all the STAR counts for all hosts"""
     input:
         [
-            STAR / host_name / f"{sample_id}.{library_id}.ReadsPerGene.out.tab"
+            STAR
+            / f"{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
+
+
+rule preprocess__star__fastq:
+    """Convert BAM to FASTQ using samtools and using the correct reference
+
+    NOTE: bowtie2 does not like CRAM files, and although can use a BAM file as an input,
+    bowtie2 fails to receive a piped SAM input. Therefore, we need to convert the CRAM file to a physical FASTQ file.
+    """
+    input:
+        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bai=STAR
+        / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
+    output:
+        forward_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u1.fq.gz"),
+        reverse_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u2.fq.gz"),
+    log:
+        STAR / "{host_name}.{sample_id}.{library_id}.unaligned.log",
+    conda:
+        "../../environments/star.yml"
+    shell:
+        """
+        rm \
+            --recursive \
+            --force \
+            {output.forward_}.collate
+
+        ( samtools view \
+            -f 12 \
+            -u \
+            --threads {threads} \
+            {input} \
+            "*" \
+        | samtools collate \
+            -O \
+            -u \
+            -f \
+            -r 1e6 \
+            -T {output.forward_}.collate \
+            --threads {threads} \
+            - \
+        | samtools fastq \
+            -1 {output.forward_} \
+            -2 {output.reverse_} \
+            -0 /dev/null \
+            -s /dev/null \
+            --threads {threads} \
+            -c 1 \
+            /dev/stdin \
+        ) 2> {log} 1>&2
+        """
 
 
 rule preprocess__star__all:

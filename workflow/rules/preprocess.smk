@@ -6,6 +6,7 @@ include: "preprocess/fastp.smk"
 include: "preprocess/ribodetector.smk"
 include: "preprocess/kraken2.smk"
 include: "preprocess/star.smk"
+include: "preprocess/clean.smk"
 include: "preprocess/multiqc.smk"
 
 
@@ -22,4 +23,5 @@ rule preprocess__all:
         rules.preprocess__ribodetector__all.input,
         rules.preprocess__kraken2__all.input,
         rules.preprocess__star__all.input,
+        rules.preprocess__clean__all.input,
         rules.preprocess__multiqc__all.output,

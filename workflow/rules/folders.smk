@@ -9,6 +9,7 @@ KRAKEN2 = PRE / "kraken2"
 RIBODETECTOR = PRE / "ribodetector/"
 STAR_INDEX = PRE / "index"
 STAR = PRE / "star"
+CLEAN = PRE / "clean"
 
 QUANT = Path("results/quantify")
 MAGS = QUANT / "mags"
