@@ -11,13 +11,3 @@ def get_mags_bed6(wildcards):
 def get_mags_gtf(wildcards):
     """Get the path to the mag annotation in GTF format"""
     return features["mag_catalogues"][wildcards.mag_catalogue]["gtf"]
-
-
-def get_host_genome(wildcards):
-    """Get the path to the host reference genome"""
-    return features["hosts"][wildcards.host_name]["genome"]
-
-
-def get_host_annotation(wildcards):
-    """Get the path to the host annotation in GTF format"""
-    return features["hosts"][wildcards.host_name]["gtf"]

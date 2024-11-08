@@ -27,7 +27,7 @@ rule preprocess__star__index:
             "transcriptInfo.tab",
         ),
     conda:
-        "__environment__.yml"
+        "../../environments/star.yml"
     log:
         STAR_INDEX / "{host_name}.log",
     params:
@@ -90,7 +90,7 @@ rule preprocess__star__align:
     log:
         STAR / "{host_name}" / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/star.yml"
     params:
         out_prefix=get_star_out_prefix,
         u1=get_star_output_r1,
