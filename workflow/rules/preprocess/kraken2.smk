@@ -1,7 +1,7 @@
 include: "kraken2_functions.smk"
 
 
-rule preprocess__kraken2__assign__:
+rule preprocess__kraken2__assign:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.
 
@@ -86,7 +86,7 @@ rule preprocess__kraken2__assign__:
         """
 
 
-rule preprocess__kraken2:
+rule preprocess__kraken2__all:
     """Run kraken2 over all samples at once using the /dev/shm/ trick."""
     input:
         [

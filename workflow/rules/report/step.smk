@@ -6,7 +6,7 @@ rule report__step__preprocess__:
             FASTP / f"{sample_id}.{library_id}_fastp.json"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
-        kraken2=rules.preprocess__kraken2.input,
+        kraken2=rules.preprocess__kraken2__all.input,
         ribodetector=rules.preprocess__ribodetector__fastqc__all.input,
         star=rules.preprocess__star__report.input,
     output:

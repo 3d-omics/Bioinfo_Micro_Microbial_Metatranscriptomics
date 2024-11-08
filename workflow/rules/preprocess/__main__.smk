@@ -18,5 +18,5 @@ rule preprocess:
     input:
         rules.preprocess__fastp__all.input,
         rules.preprocess__ribodetector__all.input,
-        rules.preprocess__kraken2.input,
+        rules.preprocess__kraken2__all.input,
         rules.preprocess__star.input,
