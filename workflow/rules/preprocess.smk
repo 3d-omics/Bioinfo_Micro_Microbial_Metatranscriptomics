@@ -1,12 +1,12 @@
 
 
-include: "reads.smk"
-include: "hosts.smk"
-include: "fastp.smk"
-include: "ribodetector.smk"
-include: "kraken2.smk"
-include: "star.smk"
-include: "multiqc.smk"
+include: "preprocess/reads.smk"
+include: "preprocess/hosts.smk"
+include: "preprocess/fastp.smk"
+include: "preprocess/ribodetector.smk"
+include: "preprocess/kraken2.smk"
+include: "preprocess/star.smk"
+include: "preprocess/multiqc.smk"
 
 
 rule preprocess__all:
