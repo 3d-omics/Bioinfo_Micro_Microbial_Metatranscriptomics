@@ -14,8 +14,8 @@ rule preprocess__ribodetector__cpu:
     conda:
         "../../environments/ribodetector.yml"
     params:
-        average_length=params["preprocess"]["ribodetector"]["average_length"],
-        chunk_size=params["preprocess"]["ribodetector"]["chunk_size"],
+        read_length=params["preprocess"]["ribodetector"]["read_length"],
+        extra=params["preprocess"]["ribodetector"]["extra"],
     shell:
         """
         ribodetector_cpu \
@@ -25,10 +25,9 @@ rule preprocess__ribodetector__cpu:
             --output \
                 {output.forward_} \
                 {output.reverse_} \
-            --len {params.average_length} \
-            --ensure rrna \
+            --len {params.read_length} \
             --threads {threads} \
-            --chunk_size {params.chunk_size} \
+            {params.extra} \
         2> {log} 1>&2
         """
 
