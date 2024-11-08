@@ -1,20 +1,20 @@
 
-rule report__step__quantify__:
+rule quantify__multiqc:
     """Collect all reports for the quantify step"""
     input:
-        [
+        samtools_stats=[
             BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.stats.tsv"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
-        html=REPORT_STEP / "quantify.html",
+        html=QUANT / "quantify.html",
     log:
-        REPORT_STEP / "quantify.log",
+        QUANT / "quantify.log",
     conda:
-        "__environment__.yml"
+        "../../environments/multiqc.yml"
     params:
-        dir=REPORT_STEP,
+        dir=QUANT,
     resources:
         mem_mb=8 * 1024,
     shell:
@@ -29,7 +29,7 @@ rule report__step__quantify__:
         """
 
 
-rule report__step:
+rule quantify__multiqc__all:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__quantify__.output,
+        rules.quantify__multiqc.output,

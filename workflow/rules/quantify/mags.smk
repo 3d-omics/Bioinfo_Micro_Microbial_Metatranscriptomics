@@ -62,5 +62,8 @@ rule quantify__mags__annotation_gtf:
 rule quantify__mags__all:
     """Prepare all the MAG catalogues"""
     input:
-        [MAGS / f"{mag_catalogue}.{extension}" for mag_catalogue in MAG_CATALOGUES]
-        for extension in ["fa.gz", "bed6", "gtf"],
+        [
+            MAGS / f"{mag_catalogue}.{extension}"
+            for mag_catalogue in MAG_CATALOGUES
+            for extension in ["fa.gz", "bed6", "gtf"]
+        ],

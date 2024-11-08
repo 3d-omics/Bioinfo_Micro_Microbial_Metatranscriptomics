@@ -9,7 +9,7 @@ include: "star.smk"
 include: "multiqc.smk"
 
 
-rule preprocess:
+rule preprocess__all:
     """Run the preprocessing steps:
     - fastp: trimming and adapter removal
     - ribodetector: removal of rRNAs

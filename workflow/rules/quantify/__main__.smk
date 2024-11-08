@@ -6,6 +6,7 @@ include: "samtools.smk"
 # include: "bedtools.smk"
 include: "htseq.smk"
 include: "subread.smk"
+include: "multiqc.smk"
 
 
 rule quantify:
@@ -21,3 +22,4 @@ rule quantify:
         # rules.quantify__bedtools.input,
         rules.quantify__htseq.input,
         rules.quantify__subread.input,
+        rules.quantify__multiqc__all.input,
