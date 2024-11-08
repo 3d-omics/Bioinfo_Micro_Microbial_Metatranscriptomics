@@ -1,5 +1,5 @@
 # CoverM Contig
-rule quantify__coverm__genome__:
+rule quantify__coverm__genome:
     """calculation of MAG-wise coverage"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -19,7 +19,7 @@ rule quantify__coverm__genome__:
         / "{method}"
         / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/coverm.yml"
     params:
         method=get_method,
         min_covered_fraction=get_min_covered_fraction,
@@ -42,7 +42,7 @@ rule quantify__coverm__genome__:
         """
 
 
-rule quantify__coverm__genome_aggregate__:
+rule quantify__coverm__genome__aggregate:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
         get_tsvs_for_assembly_coverm_genome,
@@ -51,7 +51,7 @@ rule quantify__coverm__genome_aggregate__:
     log:
         COVERM / "genome.{mag_catalogue}.{method}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/coverm.yml"
     params:
         input_dir=compose_input_dir_for_coverm_genome_aggregate,
     shell:
@@ -63,7 +63,7 @@ rule quantify__coverm__genome_aggregate__:
         """
 
 
-rule quantify__coverm__genome:
+rule quantify__coverm__genome__all:
     """
     Get the MAG-wise count tables
     """
@@ -76,7 +76,7 @@ rule quantify__coverm__genome:
 
 
 # CoverM contig ----
-rule quantify__coverm__contig__:
+rule quantify__coverm__contig:
     """Run coverm genome for one library and one mag catalogue"""
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
@@ -96,7 +96,7 @@ rule quantify__coverm__contig__:
         / "{method}"
         / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/coverm.yml"
     params:
         method=get_method,
     shell:
@@ -116,7 +116,7 @@ rule quantify__coverm__contig__:
         """
 
 
-rule quantify__coverm__contig_aggregate__:
+rule quantify__coverm__contig_aggregate:
     """Aggregate coverm contig results"""
     input:
         get_tsvs_for_assembly_coverm_contig,
@@ -125,7 +125,7 @@ rule quantify__coverm__contig_aggregate__:
     log:
         COVERM / "contig.{mag_catalogue}.{method}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/coverm.yml"
     params:
         input_dir=compose_input_dir_for_coverm_contig_aggregate,
     shell:
@@ -137,7 +137,7 @@ rule quantify__coverm__contig_aggregate__:
         """
 
 
-rule quantify__coverm__contig:
+rule quantify__coverm__contig__all:
     """
     Get the contig-wise count table
     """
@@ -149,10 +149,10 @@ rule quantify__coverm__contig:
         ],
 
 
-rule quantify__coverm:
+rule quantify__coverm__all:
     """
     Get the MAG- and contig-wise count tables
     """
     input:
-        rules.quantify__coverm__genome.input,
-        rules.quantify__coverm__contig.input,
+        rules.quantify__coverm__genome__all.input,
+        rules.quantify__coverm__contig__all.input,

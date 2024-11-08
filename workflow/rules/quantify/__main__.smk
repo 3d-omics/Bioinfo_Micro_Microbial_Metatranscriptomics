@@ -18,7 +18,7 @@ rule quantify:
     input:
         rules.quantify__mags__all.input,
         rules.quantify__bowtie2__all.input,
-        rules.quantify__coverm.input,
+        rules.quantify__coverm__all.input,
         # rules.quantify__bedtools.input,
         rules.quantify__htseq.input,
         rules.quantify__subread.input,
