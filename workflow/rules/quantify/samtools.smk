@@ -3,8 +3,8 @@ rule quantify__samtools__stats_cram__:
     input:
         cram=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram",
         crai=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.cram.crai",
-        reference=REFERENCE / "mags" / "{mag_catalogue}.fa.gz",
-        fai=REFERENCE / "mags" / "{mag_catalogue}.fa.gz.fai",
+        reference=MAGS / "{mag_catalogue}.fa.gz",
+        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
     output:
         tsv=BOWTIE2 / "{mag_catalogue}.{sample}.{library}.stats.tsv",
     log:

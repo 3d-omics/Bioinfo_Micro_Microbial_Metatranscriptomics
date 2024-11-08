@@ -1,5 +1,5 @@
 include: "__functions__.smk"
-include: "index.smk"
+include: "mags.smk"
 include: "bowtie2.smk"
 include: "coverm.smk"
 include: "samtools.smk"
@@ -15,6 +15,8 @@ rule quantify:
     - coverm: Get the count tables
     """
     input:
+        rules.quantify__mags__all.input,
+        rules.quantify__bowtie2__all.input,
         rules.quantify__coverm.input,
         # rules.quantify__bedtools.input,
         rules.quantify__htseq.input,

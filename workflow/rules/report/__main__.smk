@@ -1,4 +1,3 @@
-include: "__functions__.smk"
 include: "step.smk"
 
 

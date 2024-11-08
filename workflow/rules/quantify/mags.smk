@@ -1,4 +1,7 @@
-rule reference__mags__fasta__:
+include: "mags_functions.smk"
+
+
+rule quantify__mags__recompress_fa:
     """Recompress the MAGs into the results directory"""
     input:
         fna=get_mags_fasta,
@@ -22,7 +25,7 @@ rule reference__mags__fasta__:
         """
 
 
-rule reference__mags__annotation_bed6__:
+rule quantify__mags__annotation_bed6:
     """Link annotation to the mags"""
     input:
         get_mags_bed6,
@@ -39,7 +42,7 @@ rule reference__mags__annotation_bed6__:
         """
 
 
-rule reference__mags__annotation_gtf__:
+rule quantify__mags__annotation_gtf:
     """Link annotation to the mags"""
     input:
         get_mags_gtf,
@@ -56,9 +59,8 @@ rule reference__mags__annotation_gtf__:
         """
 
 
-rule reference__mags:
+rule quantify__mags__all:
     """Prepare all the MAG catalogues"""
     input:
-        [MAGS / f"{mag_catalogue}.fa.gz" for mag_catalogue in MAG_CATALOGUES],
-        [MAGS / f"{mag_catalogue}.bed6" for mag_catalogue in MAG_CATALOGUES],
-        [MAGS / f"{mag_catalogue}.gtf" for mag_catalogue in MAG_CATALOGUES],
+        [MAGS / f"{mag_catalogue}.{extension}" for mag_catalogue in MAG_CATALOGUES]
+        for extension in ["fa.gz", "bed6", "gtf"],
