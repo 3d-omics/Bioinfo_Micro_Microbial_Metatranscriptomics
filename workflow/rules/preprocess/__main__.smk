@@ -20,5 +20,5 @@ rule preprocess__all:
         rules.preprocess__fastp__all.input,
         rules.preprocess__ribodetector__all.input,
         rules.preprocess__kraken2__all.input,
-        rules.preprocess__star.input,
-        rules.preprocess__multiqc.output,
+        rules.preprocess__star__all.input,
+        rules.preprocess__multiqc__all.output,

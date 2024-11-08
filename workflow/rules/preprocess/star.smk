@@ -148,7 +148,7 @@ rule preprocess__star__align__all:
         ],
 
 
-rule preprocess__star:
+rule preprocess__star__all:
     """Run all the elements in the star subworkflow"""
     input:
         rules.preprocess__star__index__all.input,

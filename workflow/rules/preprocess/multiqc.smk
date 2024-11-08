@@ -1,4 +1,4 @@
-rule preprocess__multiqc:
+rule preprocess__multiqc__all:
     """Collect all reports for the preprocess step"""
     input:
         fastqc=rules.preprocess__reads__fastqc__all.input,
