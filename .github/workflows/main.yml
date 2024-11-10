@@ -40,16 +40,16 @@ jobs:
             .snakemake/conda
           key: snakemake-conda-${{ env.CACHE_NUMBER }}
 
-      - name: Download environments
-        uses: snakemake/snakemake-github-action@v1.25.1
-        with:
-          directory: .
-          snakefile: workflow/Snakefile
-          args: >
-            --use-conda
-            --conda-create-envs-only
-            --conda-frontend mamba
-            --cores 1
+      # - name: Download environments
+      #   uses: snakemake/snakemake-github-action@v1.25.1
+      #   with:
+      #     directory: .
+      #     snakefile: workflow/Snakefile
+      #     args: >
+      #       --use-conda
+      #       --conda-create-envs-only
+      #       --conda-frontend mamba
+      #       --cores 1
 
       - name: Test workflow
         uses: snakemake/snakemake-github-action@v1.25.1
