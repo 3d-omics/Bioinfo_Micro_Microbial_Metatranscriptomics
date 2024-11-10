@@ -18,10 +18,9 @@ mag_catalogues:
     mag1:
         fasta: resources/reference/mags_mock.fa.gz
         gtf: resources/reference/mags_mock.gtf.gz
-        bed6: resources/reference/mags_mock.bed6
     # mag2:
     #     fasta: resources/reference/mags_mock.fa.gz
-    #     bed6: resources/reference/mags_mock.bed6
+    #     gtf: resources/reference/mags_mock.gtf.gz
 
 databases:
     kraken2:  # Comment the next lines if no database
