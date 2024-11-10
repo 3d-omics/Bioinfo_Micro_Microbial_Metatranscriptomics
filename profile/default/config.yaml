@@ -43,7 +43,7 @@ set-resources:
         runtime: 1 * 60
     preprocess__kraken2__assign:
         runtime: 24 * 60
-        mem_mb: 500G
+        mem_mb: 800G
     preprocess__multiqc:
         mem_mb: 4 * 1024
         runtime: 1 * 60
