@@ -21,7 +21,7 @@ rule preprocess__fastp:
         adapters=compose_adapters,
         extra=params["preprocess"]["fastp"]["extra"],
     group:
-        "{sample_id}_{library_id}"
+        "{sample_id}.{library_id}"
     wrapper:
         "v5.0.1/bio/fastp"
 
