@@ -4,6 +4,9 @@ hosts:  # Comment the next lines of no host
     human:
         genome: resources/reference/chrX_sub.fa.gz
         gtf: resources/reference/chrX_sub.gtf.gz
+    human2:
+        genome: resources/reference/chrX_sub.fa.gz
+        gtf: resources/reference/chrX_sub.gtf.gz
     # GRCg7b:
     #     genome: resources/references/REF0003-GRCg7b/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b_genomic.fna.gz
     #     gtf: resources/references/REF0003-GRCg7b/genomic.gtf.gz
