@@ -17,8 +17,8 @@ set-threads:
     preprocess__clean: 24
     preprocess__kraken2__assign: 8
     # quantify
-    quantify__bowtie2__build__: 24
-    quantify__bowtie2__map__: 24
+    quantify__bowtie2__build: 24
+    quantify__bowtie2__map: 24
 
 
 set-resources:
@@ -48,36 +48,29 @@ set-resources:
         mem_mb: 4 * 1024
         runtime: 1 * 60
     # quantify
-    quantify__index___:
+    quantify__bowtie2__build:
         mem_mb: 32 * 1024 * 2 ** (attempt - 1)
         runtime: 6 * 60
-    quantify__bowtie2__map__:
+    quantify__bowtie2__map:
         mem_mb: 32 * 1024 * 2 ** (attempt - 1)
         runtime: 24 * 60
-    quantify__coverm__genome__:
-        mem_mb: 32 * 1024
-        runtime: 24 * 60
-    quantify__coverm__genome_aggregate__:
+    quantify__coverm__genome__aggregate:
         mem_mb: 8 * 1024
-    quantify__coverm__contig_aggregate__:
+    quantify__coverm__contig_aggregate:
         mem_mb: 8 * 1024
-    quantify__bedtools__:
-        mem_mb: 16G
-    quantify__htseq__count__:
-        runtime: 1d
-        mem_mb: 8G
-    quantify__htseq__count__aggregate__:
+    quantify__htseq__count__aggregate:
         runtime: 1h
-        mem_mb: 16G
-    quantify__subread__feature_counts__:
+        mem_mb: 8G
+    quantify__subread__feature_counts:
         mem_mb: 4G
-    quantify__subread__aggregate__:
+    quantify__subread__aggregate:
         mem_mb: 16G
-    report__step__reads__:
-        mem_mb: 4G
-    report__step__preprocess__:
-        mem_mb: 64G
+    quantify__multiqc:
+        mem_mb: 4 * 1024
+
 
 cache:
     preprocess__hosts__decompress_fa,
     preprocess__hosts__decompress_gtf,
+    preprocess__star__index,
+    quantify__bowtie2__build,

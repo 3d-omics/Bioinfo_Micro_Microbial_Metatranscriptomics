@@ -8,13 +8,13 @@ rule quantify__multiqc:
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
-        html=QUANT / "quantify.html",
+        html=RESULTS / "quantify.html",
     log:
-        QUANT / "quantify.log",
+        RESULTS / "quantify.log",
     conda:
         "../../environments/multiqc.yml"
     params:
-        dir=QUANT,
+        dir=RESULTS,
     resources:
         mem_mb=8 * 1024,
     shell:
