@@ -63,6 +63,7 @@ jobs:
             --conda-cleanup-pkgs cache
             --all-temp
             --latency-wait 20
+            --cache False
 
       - uses: actions/upload-artifact@v4.3.3
         if: failure()
