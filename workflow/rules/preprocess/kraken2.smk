@@ -26,8 +26,6 @@ rule preprocess__kraken2__assign:
         ],
     log:
         KRAKEN2 / "{kraken2_db}.log",
-    resources:
-        mem_mb=params["preprocess"]["kraken2"]["memory_gb"] * 1024,
     params:
         in_folder=FASTP,
         out_folder=compose_out_folder_for_eval_kraken2_assign_all,
