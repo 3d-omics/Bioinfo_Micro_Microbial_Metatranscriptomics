@@ -64,6 +64,8 @@ jobs:
             --all-temp
             --latency-wait 20
             --cache False
+            --printshellcmds
+            --dry-run
 
       - uses: actions/upload-artifact@v4.3.3
         if: failure()
