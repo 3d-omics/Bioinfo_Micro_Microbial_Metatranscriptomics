@@ -12,6 +12,8 @@ rule preprocess__clean:
         CLEAN / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/star.yml"
+    group:
+        "{sample_id}.{library_id}"
     shell:
         """
         ( gzip \

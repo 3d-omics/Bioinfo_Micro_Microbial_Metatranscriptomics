@@ -54,7 +54,7 @@ rule preprocess__star__index__all:
         [STAR_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
 
 
-rule preprocess__star__align:
+rule preprocess__star__map:
     """Align one library to the host genome with STAR to discard host RNA"""
     input:
         forward_=get_input_forward_for_host_mapping,
@@ -92,6 +92,8 @@ rule preprocess__star__align:
         out_prefix=get_star_out_prefix,
         index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
+    group:
+        "{sample_id}.{library_id}"
     shell:
         """
         ulimit -n 90000 2> {log} 1>&2

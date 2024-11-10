@@ -82,6 +82,8 @@ rule quantify__bowtie2__map:
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
         prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
+    group:
+        "{sample_id}.{library_id}"
     shell:
         """
         ( bowtie2 \

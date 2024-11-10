@@ -16,6 +16,8 @@ rule preprocess__ribodetector__cpu:
     params:
         read_length=params["preprocess"]["ribodetector"]["read_length"],
         extra=params["preprocess"]["ribodetector"]["extra"],
+    group:
+        "{sample_id}.{library_id}"
     shell:
         """
         ribodetector_cpu \

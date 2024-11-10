@@ -45,3 +45,7 @@ rule preprocess__reads__all:
     input:
         rules.preprocess__reads__link__all.input,
         rules.preprocess__reads__fastqc__all.input,
+
+
+localrules:
+    preprocess__reads,
