@@ -143,6 +143,8 @@ rule preprocess__star__fastq:
         STAR / "{host_name}.{sample_id}.{library_id}.unaligned.log",
     conda:
         "../../environments/star.yml"
+    group:
+        "{sample_id}.{library_id}"
     shell:
         """
         rm \
