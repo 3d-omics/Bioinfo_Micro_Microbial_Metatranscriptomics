@@ -5,9 +5,6 @@ preprocess:
   fastp:
     extra: ""
 
-  kraken2:
-    memory_gb: 4  # approx same memory as database size in disk
-
   ribodetector:
     extra: "--ensure rrna --chunk_size 1024"
     # chunk_size: 2 * 150 bp reads * 1024 * 1024 (chunk size) * 24 threads ~ 22 GB of RAM
