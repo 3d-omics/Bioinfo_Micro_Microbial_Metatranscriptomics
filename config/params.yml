@@ -3,7 +3,7 @@
 preprocess:
 
   fastp:
-    extra: ""
+    extra:  "--length_required 75 --trim_poly_g --trim_poly_x"
 
   ribodetector:
     extra: "--ensure rrna --chunk_size 1024"
