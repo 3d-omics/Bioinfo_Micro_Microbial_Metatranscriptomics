@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-argparse =2.2.3
+  - r-tidyverse =2.0.0
+  - subread =2.0.6
+  - samtools =1.21

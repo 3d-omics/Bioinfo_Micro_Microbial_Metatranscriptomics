@@ -33,23 +33,23 @@ jobs:
         with:
           lfs: 'true'
 
-      - name: Set up caches
-        uses: actions/cache@v4.0.2
-        with:
-          path: |
-            .snakemake/conda
-          key: snakemake-conda-${{ env.CACHE_NUMBER }}
+      # - name: Set up caches
+      #   uses: actions/cache@v4.0.2
+      #   with:
+      #     path: |
+      #       .snakemake/conda
+      #     key: snakemake-conda-${{ env.CACHE_NUMBER }}
 
-      - name: Download environments
-        uses: snakemake/snakemake-github-action@v1.25.1
-        with:
-          directory: .
-          snakefile: workflow/Snakefile
-          args: >
-            --use-conda
-            --conda-create-envs-only
-            --conda-frontend mamba
-            --cores 1
+      # - name: Download environments
+      #   uses: snakemake/snakemake-github-action@v1.25.1
+      #   with:
+      #     directory: .
+      #     snakefile: workflow/Snakefile
+      #     args: >
+      #       --use-conda
+      #       --conda-create-envs-only
+      #       --conda-frontend mamba
+      #       --cores 1
 
       - name: Test workflow
         uses: snakemake/snakemake-github-action@v1.25.1
@@ -63,6 +63,8 @@ jobs:
             --conda-cleanup-pkgs cache
             --all-temp
             --latency-wait 20
+            --printshellcmds
+            --dry-run
 
       - uses: actions/upload-artifact@v4.3.3
         if: failure()

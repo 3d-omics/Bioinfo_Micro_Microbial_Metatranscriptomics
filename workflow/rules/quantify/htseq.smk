@@ -1,16 +1,16 @@
-rule quantify__htseq__count__:
+include: "htseq_functions.smk"
+
+
+rule quantify__htseq__count:
     input:
-        cram=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram",
-        crai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.cram.crai",
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
         annotation=MAGS / "{mag_catalogue}.gtf",
     output:
         counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
     log:
         HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/htseq.yml"
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
     shell:
@@ -24,7 +24,7 @@ rule quantify__htseq__count__:
             --order pos \
             --type CDS \
             --idattr gene_id \
-            {input.cram} \
+            {input.bam} \
             {input.annotation} \
         | gzip \
         > {output.counts} \
@@ -32,15 +32,15 @@ rule quantify__htseq__count__:
         """
 
 
-rule quantify__htseq__count__aggregate__:
+rule quantify__htseq__count__aggregate:
     input:
         tsvs=get_tsvs_for_htseq,
     output:
-        HTSEQ / "htseq.{mag_catalogue}.tsv.gz",
+        HTSEQ / "{mag_catalogue}.tsv.gz",
     log:
-        HTSEQ / "htseq.{mag_catalogue}.log",
+        HTSEQ / "{mag_catalogue}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/htseq.yml"
     params:
         input_folder=lambda w: HTSEQ / f"{w.mag_catalogue}",
     shell:
@@ -52,6 +52,6 @@ rule quantify__htseq__count__aggregate__:
         """
 
 
-rule quantify__htseq:
+rule quantify__htseq__all:
     input:
-        [HTSEQ / f"htseq.{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],
+        [HTSEQ / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],

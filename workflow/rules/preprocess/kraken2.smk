@@ -1,4 +1,7 @@
-rule preprocess__kraken2__assign__:
+include: "kraken2_functions.smk"
+
+
+rule preprocess__kraken2__assign:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.
 
@@ -23,14 +26,12 @@ rule preprocess__kraken2__assign__:
         ],
     log:
         KRAKEN2 / "{kraken2_db}.log",
-    resources:
-        mem_mb=params["preprocess"]["kraken2"]["memory_gb"] * 1024,
     params:
         in_folder=FASTP,
         out_folder=compose_out_folder_for_eval_kraken2_assign_all,
         kraken_db_name="{kraken2_db}",
     conda:
-        "__environment__.yml"
+        "../../environments/kraken2.yml"
     shell:
         """
         {{
@@ -83,7 +84,7 @@ rule preprocess__kraken2__assign__:
         """
 
 
-rule preprocess__kraken2:
+rule preprocess__kraken2__all:
     """Run kraken2 over all samples at once using the /dev/shm/ trick."""
     input:
         [

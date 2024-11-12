@@ -4,26 +4,29 @@ hosts:  # Comment the next lines of no host
     human:
         genome: resources/reference/chrX_sub.fa.gz
         gtf: resources/reference/chrX_sub.gtf.gz
-    # Sscrofa11.1:
-    #     genome: resources/references/GCF_000003025.6_Sscrofa11.1/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz
-    #     gtf: resources/references/GCF_000003025.6_Sscrofa11.1/genomic.gtf.gz
+    human2:
+        genome: resources/reference/chrX_sub.fa.gz
+        gtf: resources/reference/chrX_sub.gtf.gz
     # GRCg7b:
-    #     genome: resources/references/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b_genomic.fna.gz
-    #     gtf: resources/references/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b/genomic.gtf.gz
+    #     genome: resources/references/REF0003-GRCg7b/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b_genomic.fna.gz
+    #     gtf: resources/references/REF0003-GRCg7b/genomic.gtf.gz
     # GRCh38.p14:
-    #     genome: resources/references/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.fna.gz
-    #     gtf: resources/references/GCF_000001405.40_GRCh38.p14/genomic.gtf.gz
+    #     genome: resources/references/REF0001-GRC38/GCF_000001405.40_GRCh38.p14_genomic.fna.gz
+    #     gtf: resources/references/REF0003-GRCg7b/genomic.gtf.gz
+    # Sscrofa11.1:
+    #     genome: resources/references/REF0002-Sscrofa11.1/GCF_000003025.6_Sscrofa11.1_genomic.fna.gz
+    #     gtf: resources/references/REF0002-Sscrofa11.1/genomic.gtf.gz
 
 mag_catalogues:
     mag1:
         fasta: resources/reference/mags_mock.fa.gz
         gtf: resources/reference/mags_mock.gtf.gz
-        bed6: resources/reference/mags_mock.bed6
     # mag2:
     #     fasta: resources/reference/mags_mock.fa.gz
-    #     bed6: resources/reference/mags_mock.bed6
+    #     gtf: resources/reference/mags_mock.gtf.gz
 
 databases:
     kraken2:  # Comment the next lines if no database
         mock: resources/databases/kraken2/kraken_mock
         # mock2: resources/databases/kraken2/kraken_mock
+        # nt_20231129: /datasets/globe_databases/kraken2/kraken2_nt/20231129/
