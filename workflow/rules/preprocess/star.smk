@@ -108,7 +108,6 @@ rule preprocess__star__map:
             --outFileNamePrefix {params.out_prefix} \
             --outSAMtype BAM SortedByCoordinate \
             --outSAMunmapped Within KeepPairs \
-            --outReadsUnmapped Fastx \
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
         2>> {log} 1>&2
