@@ -1,5 +1,45 @@
 # Changelog
 
+## [1.2.0](https://github.com/3d-omics/mt_quant/compare/v1.1.2...v1.2.0) (2024-11-12)
+
+
+### Features
+
+* coverm++ ([4b170ac](https://github.com/3d-omics/mt_quant/commit/4b170ac9d0053b08a2effae8666fde34cd78f7c1))
+* demand snakemake 8 ([5cec580](https://github.com/3d-omics/mt_quant/commit/5cec58083427c5154cd995b8f0a0254d6d885238))
+* disable crams in prerpocessing ([f329758](https://github.com/3d-omics/mt_quant/commit/f329758bd7520a1d1be4e2d9fbd6d1a168684256))
+* disable crams in quantify ([c618038](https://github.com/3d-omics/mt_quant/commit/c61803828b8730bbdc8c4037293cfe104491f1bb))
+* group jobs by sample, update profile ([658ae38](https://github.com/3d-omics/mt_quant/commit/658ae386e3a9859f650d8cc590419018e8eeea75))
+* import helpers. insert reads into prerpocess. remove per library report ([af3f230](https://github.com/3d-omics/mt_quant/commit/af3f230292480d39c56b9250e60722686b6a9a9a))
+* insert hosts into preprocess ([4c285c0](https://github.com/3d-omics/mt_quant/commit/4c285c0d51aa621273adb67d9c5a790511a9c6e2))
+* multqc handles more files ([4d44cad](https://github.com/3d-omics/mt_quant/commit/4d44cad32c5260c2b055a10f575bbe99e8c45216))
+* point to base env and clean other ([b1b34e0](https://github.com/3d-omics/mt_quant/commit/b1b34e07b33f9d414687428f94d17e6c2b9ccb50))
+* refactor fastp. use wrappers ([da1a88d](https://github.com/3d-omics/mt_quant/commit/da1a88d286fb01ad024e802fbc8468eb367d442f))
+* refactor quantify ([e63eca6](https://github.com/3d-omics/mt_quant/commit/e63eca681e4017f41b729bd615371e350479b1e8))
+* refactor quantify ([d59ce09](https://github.com/3d-omics/mt_quant/commit/d59ce099c04918e617ab238f78d64a9730d54b3d))
+* refactor ribodetector ([cee57ef](https://github.com/3d-omics/mt_quant/commit/cee57ef4f58868b568384cd736166091addb4605))
+* refactor ribodetector ([bc4f921](https://github.com/3d-omics/mt_quant/commit/bc4f921f6f9333e3fa742a00136ad50432615dd8))
+* remove fastp fastqcs from report ([9323aec](https://github.com/3d-omics/mt_quant/commit/9323aeca487543bcc2cd30f5700533a4fb3238a5))
+* remove fastp functions ([5eda525](https://github.com/3d-omics/mt_quant/commit/5eda52533d23fe86beee81f0c58ea25aa70e7f42))
+* separate bowtie2 env from quant ([71a54a6](https://github.com/3d-omics/mt_quant/commit/71a54a634636a2e72fea9759b5914d3b5c07e2e4))
+* update quantify rule names, fix multiqc output ([96cb3e8](https://github.com/3d-omics/mt_quant/commit/96cb3e8436d9bacf88751e2cd5839787c7a7c6fc))
+
+
+### Bug Fixes
+
+* **fastp:** correct group name ([2751414](https://github.com/3d-omics/mt_quant/commit/2751414963620108d653dfddde90bd8461192346))
+* remove mention to ram ([e009781](https://github.com/3d-omics/mt_quant/commit/e009781995dc198d4e910f86fcf13035cf406f0d))
+* **star:** point to u1, u2 ([f6344f1](https://github.com/3d-omics/mt_quant/commit/f6344f13b8bd4e807fa340d72d50ae2ec2f9343b))
+* **star:** point to u1, u2 .fq ([fb68d67](https://github.com/3d-omics/mt_quant/commit/fb68d676317fcd2056f95958cd5ef1fc1006d4c5))
+
+
+### Performance Improvements
+
+* add fastq to group ([ee27676](https://github.com/3d-omics/mt_quant/commit/ee27676af4c3d44f385eb37e1064f9aa12e684e6))
+* disable group in bowtie2 ([e3a26e1](https://github.com/3d-omics/mt_quant/commit/e3a26e1cbb911b0921f015cd775284399e2d6e3e))
+* **fastp:** default extra string ([1c9dfc4](https://github.com/3d-omics/mt_quant/commit/1c9dfc417a04b806c023c8f33664da457840be99))
+* **profile:** increase ram for star index ([06bc617](https://github.com/3d-omics/mt_quant/commit/06bc617046a5c868ac8127649c7f0c8eff9cd176))
+
 ## [1.1.2](https://github.com/3d-omics/mt_quant/compare/v1.1.1...v1.1.2) (2024-10-04)
 
 
