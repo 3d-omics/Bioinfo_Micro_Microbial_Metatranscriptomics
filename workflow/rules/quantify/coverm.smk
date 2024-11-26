@@ -4,7 +4,9 @@ rule quantify__coverm__genome:
     input:
         BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        COVERM / "genome" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv",
+        temp(
+            COVERM / "genome" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv"
+        ),
     log:
         COVERM / "genome" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.log",
     conda:
@@ -67,7 +69,9 @@ rule quantify__coverm__contig:
     input:
         BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        COVERM / "contig" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv",
+        temp(
+            COVERM / "contig" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv"
+        ),
     log:
         COVERM / "contig" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.log",
     conda:
