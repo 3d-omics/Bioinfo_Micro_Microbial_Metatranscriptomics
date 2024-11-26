@@ -15,7 +15,7 @@ rule quantify__htseq__count:
         """
         ( echo -E "gene_id\t{params.sample_library}" \
         | gzip \
-        > {output.counts} )
+        > {output} )
         2> {log}
 
         htseq-count \
@@ -24,7 +24,7 @@ rule quantify__htseq__count:
             --idattr ID \
             {input.bam} \
             {input.annotation} \
-        > {output.counts} \
+        > {output} \
         2>> {log}
         """
 
