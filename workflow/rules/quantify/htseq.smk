@@ -35,7 +35,10 @@ rule quantify__htseq__count:
 
 rule quantify__htseq__count__aggregate:
     input:
-        tsvs=get_tsvs_for_htseq,
+        lambda w: [
+            HTSEQ / w.mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         HTSEQ / "{mag_catalogue}.tsv.gz",
     log:
