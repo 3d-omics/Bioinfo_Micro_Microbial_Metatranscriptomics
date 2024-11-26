@@ -4,7 +4,7 @@ rule quantify__htseq__count:
         bai=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam.bai",
         annotation=MAGS / "{mag_catalogue}.gff",
     output:
-        counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
+        temp(HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv"),
     log:
         HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
@@ -18,22 +18,21 @@ rule quantify__htseq__count:
         > {output.counts} )
         2> {log}
 
-        ( htseq-count \
+        htseq-count \
             --order pos \
             --type CDS,tRNA,rRNA \
             --idattr ID \
             {input.bam} \
             {input.annotation} \
-        | gzip \
         > {output.counts} \
-        ) 2>> {log}
+        2>> {log}
         """
 
 
 rule quantify__htseq__count__aggregate:
     input:
         lambda w: [
-            HTSEQ / w.mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+            HTSEQ / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
