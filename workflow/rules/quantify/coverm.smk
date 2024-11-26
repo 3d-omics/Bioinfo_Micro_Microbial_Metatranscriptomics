@@ -1,13 +1,10 @@
-include: "coverm_functions.smk"
-
-
-# CoverM Contig
+# CoverM Genome ----
 rule quantify__coverm__genome:
     """calculation of MAG-wise coverage"""
     input:
-        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        tsv=COVERM
+        COVERM
         / "genome"
         / "{mag_catalogue}"
         / "{method}"
@@ -21,13 +18,15 @@ rule quantify__coverm__genome:
     conda:
         "../../environments/coverm.yml"
     params:
-        method=get_method,
-        min_covered_fraction=get_min_covered_fraction,
-        separator=get_separator,
+        method=lambda w: w.method,
+        min_covered_fraction=params["quantify"]["coverm"]["genome"][
+            "min_covered_fraction"
+        ],
+        separator=params["quantify"]["coverm"]["separator"],
     shell:
         """
         ( coverm genome \
-            --bam-files {input.bam} \
+            --bam-files {input} \
             --methods {params.method} \
             --separator "{params.separator}" \
             --min-covered-fraction {params.min_covered_fraction} \
@@ -35,7 +34,7 @@ rule quantify__coverm__genome:
         | sed '1 s/Genome/sequence_id/' \
         | cut -f 1 -d " " \
         | gzip \
-        > {output.tsv}
+        > {output}
         ) 2> {log} 1>&2
         """
 
@@ -43,7 +42,14 @@ rule quantify__coverm__genome:
 rule quantify__coverm__genome__aggregate:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
-        get_tsvs_for_assembly_coverm_genome,
+        lambda w: [
+            COVERM
+            / "genome"
+            / w.mag_catalogue
+            / w.method
+            / f"{sample_id}.{library_id}.tsv.gz"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         tsv=COVERM / "genome.{mag_catalogue}.{method}.tsv.gz",
     log:
@@ -70,9 +76,9 @@ rule quantify__coverm__genome__all:
 rule quantify__coverm__contig:
     """Run coverm genome for one library and one mag catalogue"""
     input:
-        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        tsv=COVERM
+        COVERM
         / "contig"
         / "{mag_catalogue}"
         / "{method}"
@@ -86,18 +92,18 @@ rule quantify__coverm__contig:
     conda:
         "../../environments/coverm.yml"
     params:
-        method=get_method,
+        method=lambda w: w.method,
     shell:
         """
         ( coverm contig \
-            --bam-files {input.bam} \
+            --bam-files {input} \
             --methods {params.method} \
             --proper-pairs-only \
             --output-file /dev/stdout \
         | sed '1 s/Contig/sequence_id/' \
         | cut -f 1 -d " " \
         | gzip \
-        > {output.tsv}
+        > {output}
         ) 2> {log} 1>&2
         """
 
@@ -105,7 +111,14 @@ rule quantify__coverm__contig:
 rule quantify__coverm__contig_aggregate:
     """Aggregate coverm contig results"""
     input:
-        get_tsvs_for_assembly_coverm_contig,
+        lambda w: [
+            COVERM
+            / "genome"
+            / w.mag_catalogue
+            / w.method
+            / f"{sample_id}.{library_id}.tsv.gz"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         tsv=COVERM / "contig.{mag_catalogue}.{method}.tsv.gz",
     log:
