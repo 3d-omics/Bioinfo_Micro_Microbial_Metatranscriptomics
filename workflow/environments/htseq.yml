@@ -3,5 +3,3 @@ channels:
   - bioconda
 dependencies:
   - htseq =2.0.5
-  - r-argparse =2.2.3
-  - r-tidyverse =2.0.0
