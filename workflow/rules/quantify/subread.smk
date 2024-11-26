@@ -3,10 +3,8 @@ rule quantify__subread__feature_counts:
         bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
         annotation=MAGS / "{mag_catalogue}.gff",
     output:
-        counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
-        summary=temp(
-            SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.summary"
-        ),
+        counts=temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv"),
+        summary=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.summary",
     log:
         SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
@@ -27,21 +25,31 @@ rule quantify__subread__feature_counts:
             -o {params.tmp_out} \
             {input.bam} \
         2> {log} 1>&2
+        """
 
-        ( grep -v ^# {params.tmp_out} \
+
+rule quantify__subread__parse_counts:
+    input:
+        SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv",
+    output:
+        temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.clean.tsv"),
+    log:
+        SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.clean.log",
+    conda:
+        "base"
+    shell:
+        """
+        ( grep -v ^# {input} \
         | cut -f 1,7 \
-        | gzip \
-        > {output.counts} \
-        ) 2>> {log}
-
-        rm -rfv {params.tmp_out} 2>> {log} 1>&2
+        > {output} \
+        ) 2> {log}
         """
 
 
 rule quantify__subread__join:
     input:
         lambda w: [
-            SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+            SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.clean.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
