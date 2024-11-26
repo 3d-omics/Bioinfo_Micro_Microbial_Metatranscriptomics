@@ -1,6 +1,6 @@
 rule quantify__subread__feature_counts:
     input:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
         annotation=MAGS / "{mag_catalogue}.gff",
     output:
         counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
@@ -45,17 +45,10 @@ rule quantify__subread__aggregate:
         SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
         SUBREAD / "{mag_catalogue}.log",
-    conda:
-        "../../environments/subread.yml"
     params:
-        input_folder=lambda w: SUBREAD / f"{w.mag_catalogue}",
-    shell:
-        """
-        Rscript --vanilla workflow/scripts/aggregate_coverm.R \
-            --input-folder {params.input_folder} \
-            --output-file {output} \
-        2> {log}
-        """
+        subcommand="join",
+    wrapper:
+        "v5.2.1/utils/csvtk"
 
 
 rule quantify__subread__all:

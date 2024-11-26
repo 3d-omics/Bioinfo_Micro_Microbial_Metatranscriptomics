@@ -3,8 +3,8 @@ include: "htseq_functions.smk"
 
 rule quantify__htseq__count:
     input:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
-        bai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam.bai",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        bai=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam.bai",
         annotation=MAGS / "{mag_catalogue}.gff",
     output:
         counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
@@ -40,17 +40,10 @@ rule quantify__htseq__count__aggregate:
         HTSEQ / "{mag_catalogue}.tsv.gz",
     log:
         HTSEQ / "{mag_catalogue}.log",
-    conda:
-        "../../environments/htseq.yml"
     params:
-        input_folder=lambda w: HTSEQ / f"{w.mag_catalogue}",
-    shell:
-        """
-        Rscript --vanilla workflow/scripts/aggregate_coverm.R \
-            --input-folder {params.input_folder} \
-            --output-file {output} \
-        2> {log}
-        """
+        subcommand="join",
+    wrapper:
+        "v5.2.1/utils/csvtk"
 
 
 rule quantify__htseq__all:
