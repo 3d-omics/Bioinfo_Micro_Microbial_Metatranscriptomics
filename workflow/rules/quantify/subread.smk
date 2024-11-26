@@ -1,7 +1,7 @@
 rule quantify__subread__feature_counts:
     input:
         bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
-        annotation=MAGS / "{mag_catalogue}.gtf",
+        annotation=MAGS / "{mag_catalogue}.gff",
     output:
         counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
         summary=temp(
@@ -19,9 +19,9 @@ rule quantify__subread__feature_counts:
     shell:
         """
         featureCounts \
-            -F GTF \
+            -F GFF \
             -t CDS \
-            -g gene_id \
+            -g ID \
             -p \
             -a {input.annotation} \
             -o {params.tmp_out} \

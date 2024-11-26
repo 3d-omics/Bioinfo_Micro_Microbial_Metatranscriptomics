@@ -8,6 +8,6 @@ def get_mags_bed6(wildcards):
     return features["mag_catalogues"][wildcards.mag_catalogue]["bed6"]
 
 
-def get_mags_gtf(wildcards):
+def get_mags_gff(wildcards):
     """Get the path to the mag annotation in GTF format"""
-    return features["mag_catalogues"][wildcards.mag_catalogue]["gtf"]
+    return features["mag_catalogues"][wildcards.mag_catalogue]["gff"]

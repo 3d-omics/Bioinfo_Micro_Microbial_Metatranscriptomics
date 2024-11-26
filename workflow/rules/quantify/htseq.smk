@@ -4,7 +4,8 @@ include: "htseq_functions.smk"
 rule quantify__htseq__count:
     input:
         bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
-        annotation=MAGS / "{mag_catalogue}.gtf",
+        bai=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam.bai",
+        annotation=MAGS / "{mag_catalogue}.gff",
     output:
         counts=HTSEQ / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
     log:
@@ -22,8 +23,8 @@ rule quantify__htseq__count:
 
         ( htseq-count \
             --order pos \
-            --type CDS \
-            --idattr gene_id \
+            --type CDS,tRNA,rRNA \
+            --idattr ID \
             {input.bam} \
             {input.annotation} \
         | gzip \

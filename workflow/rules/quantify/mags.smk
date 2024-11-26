@@ -25,14 +25,14 @@ rule quantify__mags__recompress_fa:
         """
 
 
-rule quantify__mags__annotation_gtf:
+rule quantify__mags__annotation_gff:
     """Link annotation to the mags"""
     input:
-        get_mags_gtf,
+        get_mags_gff,
     output:
-        MAGS / "{mag_catalogue}.gtf",
+        MAGS / "{mag_catalogue}.gff",
     log:
-        MAGS / "{mag_catalogue}.gtf.log",
+        MAGS / "{mag_catalogue}.gff.log",
     conda:
         "../../environments/htslib.yml"
     cache: True
@@ -48,5 +48,5 @@ rule quantify__mags__all:
         [
             MAGS / f"{mag_catalogue}.{extension}"
             for mag_catalogue in MAG_CATALOGUES
-            for extension in ["fa.gz", "gtf"]
+            for extension in ["fa.gz", "gff"]
         ],
