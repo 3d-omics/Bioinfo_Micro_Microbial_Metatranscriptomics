@@ -38,9 +38,12 @@ rule quantify__subread__feature_counts:
         """
 
 
-rule quantify__subread__aggregate:
+rule quantify__subread__join:
     input:
-        tsvs=get_tsvs_for_subread,
+        lambda w: [
+            SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv.gz"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
