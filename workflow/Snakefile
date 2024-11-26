@@ -38,7 +38,7 @@ module helpers:
         params
 
 
-use rule * from helpers exclude test as helpers__*
+use rule * from helpers as helpers__*
 
 
 # Import subworkflows
