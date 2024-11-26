@@ -1,6 +1,3 @@
-include: "htseq_functions.smk"
-
-
 rule quantify__htseq__count:
     input:
         bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
