@@ -71,9 +71,9 @@ rule quantify__bowtie2__map:
             ".rev.2.bt2l",
         ),
     output:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     log:
-        BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
+        BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/bowtie2.yml"
     params:
@@ -105,7 +105,7 @@ rule quantify__bowtie2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
+            BOWTIE2 / f"{mag_catalogue}" / f"{sample_id}.{library_id}.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],

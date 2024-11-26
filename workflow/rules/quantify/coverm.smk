@@ -5,7 +5,7 @@ include: "coverm_functions.smk"
 rule quantify__coverm__genome:
     """calculation of MAG-wise coverage"""
     input:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
         tsv=COVERM
         / "genome"
@@ -32,6 +32,8 @@ rule quantify__coverm__genome:
             --separator "{params.separator}" \
             --min-covered-fraction {params.min_covered_fraction} \
             --output-file /dev/stdout \
+        | sed '1 s/Genome/sequence_id/' \
+        | cut -f 1 -d " " \
         | gzip \
         > {output.tsv}
         ) 2> {log} 1>&2
@@ -46,17 +48,10 @@ rule quantify__coverm__genome__aggregate:
         tsv=COVERM / "genome.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "genome.{mag_catalogue}.{method}.log",
-    conda:
-        "../../environments/coverm.yml"
     params:
-        input_dir=compose_input_dir_for_coverm_genome_aggregate,
-    shell:
-        """
-        Rscript --vanilla workflow/scripts/aggregate_coverm.R \
-            --input-folder {params.input_dir} \
-            --output-file {output} \
-        2> {log} 1>&2
-        """
+        subcommand="join",
+    wrapper:
+        "v5.2.1/utils/csvtk"
 
 
 rule quantify__coverm__genome__all:
@@ -75,7 +70,7 @@ rule quantify__coverm__genome__all:
 rule quantify__coverm__contig:
     """Run coverm genome for one library and one mag catalogue"""
     input:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
         tsv=COVERM
         / "contig"
@@ -99,6 +94,8 @@ rule quantify__coverm__contig:
             --methods {params.method} \
             --proper-pairs-only \
             --output-file /dev/stdout \
+        | sed '1 s/Contig/sequence_id/' \
+        | cut -f 1 -d " " \
         | gzip \
         > {output.tsv}
         ) 2> {log} 1>&2
@@ -113,17 +110,10 @@ rule quantify__coverm__contig_aggregate:
         tsv=COVERM / "contig.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "contig.{mag_catalogue}.{method}.log",
-    conda:
-        "../../environments/coverm.yml"
     params:
-        input_dir=compose_input_dir_for_coverm_contig_aggregate,
-    shell:
-        """
-        Rscript --vanilla workflow/scripts/aggregate_coverm.R \
-            --input-folder {params.input_dir} \
-            --output-file {output} \
-        2> {log} 1>&2
-        """
+        subcommand="join",
+    wrapper:
+        "v5.2.1/utils/csvtk"
 
 
 rule quantify__coverm__contig__all:
