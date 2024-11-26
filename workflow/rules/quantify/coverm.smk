@@ -4,17 +4,9 @@ rule quantify__coverm__genome:
     input:
         BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        COVERM
-        / "genome"
-        / "{mag_catalogue}"
-        / "{method}"
-        / "{sample_id}.{library_id}.tsv.gz",
+        COVERM / "genome" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv",
     log:
-        COVERM
-        / "genome"
-        / "{mag_catalogue}"
-        / "{method}"
-        / "{sample_id}.{library_id}.log",
+        COVERM / "genome" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.log",
     conda:
         "../../environments/coverm.yml"
     params:
@@ -33,25 +25,22 @@ rule quantify__coverm__genome:
             --output-file /dev/stdout \
         | sed '1 s/Genome/sequence_id/' \
         | cut -f 1 -d " " \
-        | gzip \
-        > {output}
+        > {output} \
         ) 2> {log} 1>&2
         """
 
 
-rule quantify__coverm__genome__aggregate:
+rule quantify__coverm__genome__join:
     """Join all the results from coverm, for all assemblies and samples at once, but a single method"""
     input:
         lambda w: [
             COVERM
             / "genome"
-            / w.mag_catalogue
-            / w.method
-            / f"{sample_id}.{library_id}.tsv.gz"
+            / f"{w.mag_catalogue}.{w.method}.{sample_id}.{library_id}.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
-        tsv=COVERM / "genome.{mag_catalogue}.{method}.tsv.gz",
+        COVERM / "genome.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "genome.{mag_catalogue}.{method}.log",
     params:
@@ -78,17 +67,9 @@ rule quantify__coverm__contig:
     input:
         BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     output:
-        COVERM
-        / "contig"
-        / "{mag_catalogue}"
-        / "{method}"
-        / "{sample_id}.{library_id}.tsv.gz",
+        COVERM / "contig" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.tsv",
     log:
-        COVERM
-        / "contig"
-        / "{mag_catalogue}"
-        / "{method}"
-        / "{sample_id}.{library_id}.log",
+        COVERM / "contig" / "{mag_catalogue}.{method}.{sample_id}.{library_id}.log",
     conda:
         "../../environments/coverm.yml"
     params:
@@ -102,25 +83,22 @@ rule quantify__coverm__contig:
             --output-file /dev/stdout \
         | sed '1 s/Contig/sequence_id/' \
         | cut -f 1 -d " " \
-        | gzip \
-        > {output}
+        > {output} \
         ) 2> {log} 1>&2
         """
 
 
-rule quantify__coverm__contig_aggregate:
+rule quantify__coverm__contig__join:
     """Aggregate coverm contig results"""
     input:
         lambda w: [
             COVERM
-            / "genome"
-            / w.mag_catalogue
-            / w.method
-            / f"{sample_id}.{library_id}.tsv.gz"
+            / "contig"
+            / f"{w.mag_catalogue}.{w.method}.{sample_id}.{library_id}.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
-        tsv=COVERM / "contig.{mag_catalogue}.{method}.tsv.gz",
+        COVERM / "contig.{mag_catalogue}.{method}.tsv.gz",
     log:
         COVERM / "contig.{mag_catalogue}.{method}.log",
     params:
