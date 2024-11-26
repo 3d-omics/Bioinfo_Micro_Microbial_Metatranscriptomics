@@ -3,7 +3,7 @@ rule quantify__multiqc:
     """Collect all reports for the quantify step"""
     input:
         samtools_stats=[
-            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.stats.tsv"
+            BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.stats.tsv"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
