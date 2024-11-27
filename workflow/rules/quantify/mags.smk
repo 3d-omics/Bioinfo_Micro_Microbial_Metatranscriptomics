@@ -38,7 +38,7 @@ rule quantify__mags__annotation_gff:
     cache: True
     shell:
         """
-        gzip -dc {input} > {output} 2> {log}
+        gzip --decompress --stdout {input} > {output} 2> {log}
         """
 
 
