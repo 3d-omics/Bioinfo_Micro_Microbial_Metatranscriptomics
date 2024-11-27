@@ -1,4 +1,3 @@
-
 rule quantify__multiqc:
     """Collect all reports for the quantify step"""
     input:
@@ -9,24 +8,15 @@ rule quantify__multiqc:
         ],
     output:
         html=RESULTS / "quantify.html",
+        zip=RESULTS / "quantify.zip",
     log:
         RESULTS / "quantify.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
+        extra="--title quantify --dirs --dirs-depth 1 --fullnames --force",
     resources:
         mem_mb=8 * 1024,
-    shell:
-        """
-        multiqc \
-            --title quantify \
-            --force \
-            --filename quantify \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/multiqc"
 
 
 rule quantify__multiqc__all:

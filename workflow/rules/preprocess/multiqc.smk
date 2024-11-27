@@ -28,21 +28,12 @@ rule preprocess__multiqc__all:
         ],
     output:
         html=RESULTS / "preprocess.html",
+        zip=RESULTS / "preprocess.zip",
     log:
         RESULTS / "preprocess.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
+        extra="--title preprocess --dirs --dirs-depth 1 --fullnames --force",
     resources:
         mem_mb=8 * 1024,
-    shell:
-        """
-        multiqc \
-            --title preprocess \
-            --force \
-            --filename preprocess \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/multiqc"
