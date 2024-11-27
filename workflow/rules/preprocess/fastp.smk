@@ -22,6 +22,10 @@ rule preprocess__fastp:
         extra=params["preprocess"]["fastp"]["extra"],
     group:
         "{sample_id}.{library_id}"
+    threads: 24
+    resources:
+        mem_mb=4 * 1024,
+        runtime=1 * 60,
     wrapper:
         "v5.0.1/bio/fastp"
 

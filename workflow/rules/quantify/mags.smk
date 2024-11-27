@@ -12,6 +12,7 @@ rule quantify__mags__recompress_fa:
     conda:
         "../../environments/htslib.yml"
     cache: True
+    threads: 8
     shell:
         """
         ( gzip \
@@ -34,7 +35,7 @@ rule quantify__mags__annotation_gff:
     log:
         MAGS / "{mag_catalogue}.gff.log",
     conda:
-        "../../environments/htslib.yml"
+        "base"
     cache: True
     shell:
         """

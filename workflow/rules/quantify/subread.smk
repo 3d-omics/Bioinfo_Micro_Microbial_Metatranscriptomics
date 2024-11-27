@@ -14,6 +14,8 @@ rule quantify__subread__feature_counts:
         tmp_out=lambda w: SUBREAD
         / w.mag_catalogue
         / f"{w.sample_id}.{w.library_id}.tsv",
+    resources:
+        mem_mb=4 * 1024,
     shell:
         """
         featureCounts \

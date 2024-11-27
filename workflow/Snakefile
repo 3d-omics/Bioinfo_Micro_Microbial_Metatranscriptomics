@@ -43,6 +43,7 @@ use rule * from helpers as helpers__*
 
 # Import subworkflows
 include: "rules/folders.smk"
+include: "rules/functions.smk"
 include: "rules/preprocess.smk"
 include: "rules/quantify.smk"
 

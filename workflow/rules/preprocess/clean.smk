@@ -14,6 +14,9 @@ rule preprocess__clean:
         "../../environments/star.yml"
     group:
         "{sample_id}.{library_id}"
+    threads: 24
+    resources:
+        runtime=1 * 60,
     shell:
         """
         ( gzip \

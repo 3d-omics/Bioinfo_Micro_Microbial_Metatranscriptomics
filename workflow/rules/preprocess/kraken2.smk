@@ -29,6 +29,10 @@ rule preprocess__kraken2__assign:
         kraken_db_name="{kraken2_db}",
     conda:
         "../../environments/kraken2.yml"
+    threads: 8
+    resources:
+        mem_mb=800 * 1024,
+        runtime=24 * 60,
     shell:
         """
         {{
