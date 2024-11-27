@@ -89,7 +89,7 @@ rule preprocess__star__map:
     conda:
         "../../environments/star.yml"
     params:
-        out_prefix=get_star_out_prefix,
+        out_prefix=lambda w: STAR / f"{w.host_name}.{w.sample_id}.{w.library_id}.",
         index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     group:
