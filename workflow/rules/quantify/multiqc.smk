@@ -6,6 +6,11 @@ rule quantify__multiqc:
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
+        featurecounts=[
+            SUBREAD / f"{mag_catalogue}" / f"{sample_id}.{library_id}.summary"
+            for mag_catalogue in MAG_CATALOGUES
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         html=RESULTS / "quantify.html",
         zip=RESULTS / "quantify.zip",
