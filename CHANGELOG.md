@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.3.0](https://github.com/3d-omics/mt_quant/compare/v1.2.0...v1.3.0) (2024-11-29)
+
+
+### Features
+
+* **coverm:** mark individual files as temporary ([25e4c86](https://github.com/3d-omics/mt_quant/commit/25e4c8625e0d0eece98c16fb382356324edf01ac))
+* **coverm:** rearrange files again ([8058735](https://github.com/3d-omics/mt_quant/commit/8058735f11e9eac0cf20cc6eb66c30aff5c011d2))
+* **coverm:** remove functions ([015c4f8](https://github.com/3d-omics/mt_quant/commit/015c4f8a76254ab25219269ea50ba7e64b5aaff4))
+* **htseq:** do not compress output and make it temp ([6d9159c](https://github.com/3d-omics/mt_quant/commit/6d9159c12176d656edc03743ff4f66bbdddcc956))
+* remove r packages, update and pin environments ([5785f85](https://github.com/3d-omics/mt_quant/commit/5785f859524628689b1ae974c03f849e9743d738))
+* restructure bowtie and use csvtk to join files ([acc9ddf](https://github.com/3d-omics/mt_quant/commit/acc9ddfbf35704d709d67ec2cb431f026215f5b6))
+* **subread:** introduce middle step ([365d41e](https://github.com/3d-omics/mt_quant/commit/365d41e479b2ab552755e7dd12dcff410b1da50e))
+* **subread:** quantify trnas and rrnas too ([d459a74](https://github.com/3d-omics/mt_quant/commit/d459a7417ca304181383b4606909411a50349fb5))
+* **subread:** solve dependency; add reports to multiqc ([2b7b9a3](https://github.com/3d-omics/mt_quant/commit/2b7b9a385e4a34ff09a74b77cbf17085921f7374))
+* substitute custom r script for csvtk ([0cacb96](https://github.com/3d-omics/mt_quant/commit/0cacb9600d8ad4fcf4fba36b7461a9ed325303fa))
+
+
+### Bug Fixes
+
+* **bowtie2:** small index ([7f17e44](https://github.com/3d-omics/mt_quant/commit/7f17e447dd149e470d6659cd44e6bcb9c1ee1e9e))
+* give multiqc the correct files ([1f35182](https://github.com/3d-omics/mt_quant/commit/1f35182fdb440fe8b831ef3a2722c56deb276cdc))
+* **htseq:** remove mention to file ([53465d9](https://github.com/3d-omics/mt_quant/commit/53465d911bddcb66ccdde781e0246d5cbbf0f395))
+* remodel to take the gff from dram ([7a5d362](https://github.com/3d-omics/mt_quant/commit/7a5d362870f9f713473f6408789ab855e861e0c3))
+
 ## [1.2.0](https://github.com/3d-omics/mt_quant/compare/v1.1.2...v1.2.0) (2024-11-12)
 
 
