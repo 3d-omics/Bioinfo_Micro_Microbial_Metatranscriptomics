@@ -21,7 +21,7 @@ rule preprocess__fastp:
         adapters=compose_adapters,
         extra=params["preprocess"]["fastp"]["extra"],
     group:
-        "{sample_id}.{library_id}"
+        "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=4 * 1024,

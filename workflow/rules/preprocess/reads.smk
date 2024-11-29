@@ -13,6 +13,7 @@ rule preprocess__reads:
         READS / "{sample_id}.{library_id}.log",
     conda:
         "base"
+    localrule: True
     shell:
         """
         ln --symbolic $(readlink --canonicalize {input.forward_}) {output.forward_}
@@ -45,7 +46,3 @@ rule preprocess__reads__all:
     input:
         rules.preprocess__reads__link__all.input,
         rules.preprocess__reads__fastqc__all.input,
-
-
-localrules:
-    preprocess__reads,

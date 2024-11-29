@@ -97,7 +97,7 @@ rule preprocess__star__map:
         index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     group:
-        "{sample_id}.{library_id}"
+        "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
