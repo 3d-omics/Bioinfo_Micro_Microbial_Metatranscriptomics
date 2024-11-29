@@ -1,12 +1,9 @@
-include: "mags_functions.smk"
-
-
 rule quantify__mags__recompress_fa:
     """Recompress the MAGs into the results directory"""
     input:
-        fna=get_mags_fasta,
+        lambda w: features["mag_catalogues"][w.mag_catalogue]["fasta"],
     output:
-        fna=MAGS / "{mag_catalogue}.fa.gz",
+        MAGS / "{mag_catalogue}.fa.gz",
     log:
         MAGS / "{mag_catalogue}.fa.log",
     conda:
@@ -18,10 +15,10 @@ rule quantify__mags__recompress_fa:
         ( gzip \
             --decompress \
             --stdout \
-            {input.fna} \
+            {input} \
         | bgzip \
             -@ {threads} \
-        > {output.fna} \
+        > {output} \
         ) 2> {log}
         """
 
@@ -29,7 +26,7 @@ rule quantify__mags__recompress_fa:
 rule quantify__mags__annotation_gff:
     """Link annotation to the mags"""
     input:
-        get_mags_gff,
+        lambda w: features["mag_catalogues"][w.mag_catalogue]["gff"],
     output:
         MAGS / "{mag_catalogue}.gff",
     log:
