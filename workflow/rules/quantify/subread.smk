@@ -19,7 +19,7 @@ rule quantify__subread__feature_counts:
         """
         featureCounts \
             -F GFF \
-            -t CDS \
+            -t CDS,tRNA,rRNA \
             -g ID \
             -p \
             -a {input.annotation} \
