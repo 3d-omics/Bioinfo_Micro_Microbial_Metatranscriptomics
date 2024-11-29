@@ -1,13 +1,10 @@
-include: "hosts_functions.smk"
-
-
 rule preprocess__hosts__decompress_fa:
     """Decompress the genome to its place
 
     Note: STAR requires the genome decompressed.
     """
     input:
-        get_host_genome,
+        lambda w: features["hosts"][w.host_name]["genome"],
     output:
         HOSTS / "{host_name}.fa",
     log:
@@ -32,7 +29,7 @@ rule preprocess__hosts__decompress_gtf:
     Note: STAR requires the annotation decompressed
     """
     input:
-        get_host_annotation,
+        lambda w: features["hosts"][w.host_name]["gtf"],
     output:
         HOSTS / "{host_name}.gtf",
     log:

@@ -1,61 +1,53 @@
 rule quantify__subread__feature_counts:
     input:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
-        annotation=MAGS / "{mag_catalogue}.gtf",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        annotation=MAGS / "{mag_catalogue}.gff",
     output:
-        counts=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.gz",
-        summary=temp(
-            SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.summary"
-        ),
+        tmp=temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}"),
+        summary=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.summary",
+        counts=temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv"),
     log:
         SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/subread.yml"
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
-        tmp_out=lambda w: SUBREAD
-        / w.mag_catalogue
-        / f"{w.sample_id}.{w.library_id}.tsv",
+        tmp_out=lambda w: SUBREAD / w.mag_catalogue / f"{w.sample_id}.{w.library_id}",
+    resources:
+        mem_mb=4 * 1024,
     shell:
         """
         featureCounts \
-            -F GTF \
-            -t CDS \
-            -g gene_id \
+            -F GFF \
+            -t CDS,tRNA,rRNA \
+            -g ID \
             -p \
             -a {input.annotation} \
             -o {params.tmp_out} \
             {input.bam} \
         2> {log} 1>&2
 
-        ( grep -v ^# {params.tmp_out} \
+        ( grep -v ^# {output.tmp} \
         | cut -f 1,7 \
-        | gzip \
         > {output.counts} \
         ) 2>> {log}
-
-        rm -rfv {params.tmp_out} 2>> {log} 1>&2
         """
 
 
-rule quantify__subread__aggregate:
+rule quantify__subread__join:
     input:
-        tsvs=get_tsvs_for_subread,
+        lambda w: [
+            SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
     output:
         SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
         SUBREAD / "{mag_catalogue}.log",
-    conda:
-        "../../environments/subread.yml"
     params:
-        input_folder=lambda w: SUBREAD / f"{w.mag_catalogue}",
-    shell:
-        """
-        Rscript --vanilla workflow/scripts/aggregate_coverm.R \
-            --input-folder {params.input_folder} \
-            --output-file {output} \
-        2> {log}
-        """
+        subcommand="join",
+    wrapper:
+        "v5.2.1/utils/csvtk"
 
 
 rule quantify__subread__all:

@@ -1,32 +1,27 @@
-
 rule quantify__multiqc:
     """Collect all reports for the quantify step"""
     input:
         samtools_stats=[
-            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.stats.tsv"
+            BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.stats.tsv"
+            for mag_catalogue in MAG_CATALOGUES
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
+        featurecounts=[
+            SUBREAD / f"{mag_catalogue}" / f"{sample_id}.{library_id}.summary"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
     output:
         html=RESULTS / "quantify.html",
+        zip=RESULTS / "quantify.zip",
     log:
         RESULTS / "quantify.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
+        extra="--title quantify --dirs --dirs-depth 1 --fullnames --force",
     resources:
         mem_mb=8 * 1024,
-    shell:
-        """
-        multiqc \
-            --title quantify \
-            --force \
-            --filename quantify \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/multiqc"
 
 
 rule quantify__multiqc__all:

@@ -4,17 +4,16 @@ include: "bowtie2_functions.smk"
 rule quantify__bowtie2__build:
     """Build bowtie2 index for the mags"""
     input:
-        reference=MAGS / "{mag_catalogue}.fa.gz",
-        fai=MAGS / "{mag_catalogue}.fa.gz.fai",
+        ref=MAGS / "{mag_catalogue}.fa.gz",
     output:
         multiext(
-            str(BOWTIE2_INDEX / "{mag_catalogue}."),
-            "1.bt2l",
-            "2.bt2l",
-            "3.bt2l",
-            "4.bt2l",
-            "rev.1.bt2l",
-            "rev.2.bt2l",
+            str(BOWTIE2_INDEX / "{mag_catalogue}"),
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2",
         ),
     log:
         BOWTIE2_INDEX / "{mag_catalogue}.log",
@@ -22,18 +21,13 @@ rule quantify__bowtie2__build:
         "../../environments/bowtie2.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
-        prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
     retries: 5
-    shell:
-        """
-        bowtie2-build \
-            --threads {threads} \
-            --large-index \
-            {params.extra} \
-            {input.reference} \
-            {params.prefix} \
-        2> {log} 1>&2
-        """
+    threads: 24
+    resources:
+        mem_mb=double_ram(32 * 1024),
+        runtime=6 * 60,
+    wrapper:
+        "v5.2.1/bio/bowtie2/build"
 
 
 rule quantify__bowtie2__build__all:
@@ -43,12 +37,12 @@ rule quantify__bowtie2__build__all:
             BOWTIE2_INDEX / f"{mag_catalogue}.{extension}"
             for mag_catalogue in MAG_CATALOGUES
             for extension in [
-                "1.bt2l",
-                "2.bt2l",
-                "3.bt2l",
-                "4.bt2l",
-                "rev.1.bt2l",
-                "rev.2.bt2l",
+                "1.bt2",
+                "2.bt2",
+                "3.bt2",
+                "4.bt2",
+                "rev.1.bt2",
+                "rev.2.bt2",
             ]
         ],
 
@@ -63,17 +57,17 @@ rule quantify__bowtie2__map:
         reverse_=CLEAN / "{sample_id}.{library_id}_2.fq.gz",
         bowtie2_index=multiext(
             str(BOWTIE2_INDEX / "{mag_catalogue}"),
-            ".1.bt2l",
-            ".2.bt2l",
-            ".3.bt2l",
-            ".4.bt2l",
-            ".rev.1.bt2l",
-            ".rev.2.bt2l",
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2",
         ),
     output:
-        bam=BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     log:
-        BOWTIE2 / "{mag_catalogue}.{sample_id}.{library_id}.log",
+        BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/bowtie2.yml"
     params:
@@ -82,6 +76,10 @@ rule quantify__bowtie2__map:
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
         prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
+    threads: 24
+    resources:
+        mem_mb=double_ram(32 * 1024),
+        runtime=6 * 60,
     shell:
         """
         ( bowtie2 \
@@ -105,7 +103,7 @@ rule quantify__bowtie2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            BOWTIE2 / f"{mag_catalogue}.{sample_id}.{library_id}.bam"
+            BOWTIE2 / f"{mag_catalogue}" / f"{sample_id}.{library_id}.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],

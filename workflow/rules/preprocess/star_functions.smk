@@ -20,8 +20,3 @@ def get_input_forward_for_host_mapping(wildcards):
 def get_input_reverse_for_host_mapping(wildcards):
     """Compose the forward input file"""
     return get_input_for_host_mapping(wildcards, "reverse")
-
-
-def get_star_out_prefix(wildcards):
-    """Get the star output folder from the library wildcards"""
-    return STAR / f"{wildcards.host_name}.{wildcards.sample_id}.{wildcards.library_id}."

@@ -35,6 +35,10 @@ rule preprocess__star__index:
         prefix=lambda w: str(STAR_INDEX / w.host_name),
     retries: 5
     cache: True
+    threads: 24
+    resources:
+        mem_mb=double_ram(64 * 1024),
+        runtime=24 * 60,
     shell:
         """
         STAR \
@@ -89,11 +93,15 @@ rule preprocess__star__map:
     conda:
         "../../environments/star.yml"
     params:
-        out_prefix=get_star_out_prefix,
+        out_prefix=lambda w: STAR / f"{w.host_name}.{w.sample_id}.{w.library_id}.",
         index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
     group:
-        "{sample_id}.{library_id}"
+        "preprocess__{sample_id}.{library_id}"
+    threads: 24
+    resources:
+        mem_mb=double_ram(32 * 1024),
+        runtime=6 * 60,
     shell:
         """
         ulimit -n 90000 2> {log} 1>&2
@@ -144,6 +152,10 @@ rule preprocess__star__fastq:
         "../../environments/star.yml"
     group:
         "{sample_id}.{library_id}"
+    threads: 24
+    resources:
+        mem_mb=double_ram(32 * 1024),
+        runtime=6 * 60,
     shell:
         """
         rm \

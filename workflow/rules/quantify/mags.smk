@@ -1,44 +1,42 @@
-include: "mags_functions.smk"
-
-
 rule quantify__mags__recompress_fa:
     """Recompress the MAGs into the results directory"""
     input:
-        fna=get_mags_fasta,
+        lambda w: features["mag_catalogues"][w.mag_catalogue]["fasta"],
     output:
-        fna=MAGS / "{mag_catalogue}.fa.gz",
+        MAGS / "{mag_catalogue}.fa.gz",
     log:
         MAGS / "{mag_catalogue}.fa.log",
     conda:
         "../../environments/htslib.yml"
     cache: True
+    threads: 8
     shell:
         """
         ( gzip \
             --decompress \
             --stdout \
-            {input.fna} \
+            {input} \
         | bgzip \
             -@ {threads} \
-        > {output.fna} \
+        > {output} \
         ) 2> {log}
         """
 
 
-rule quantify__mags__annotation_gtf:
+rule quantify__mags__annotation_gff:
     """Link annotation to the mags"""
     input:
-        get_mags_gtf,
+        lambda w: features["mag_catalogues"][w.mag_catalogue]["gff"],
     output:
-        MAGS / "{mag_catalogue}.gtf",
+        MAGS / "{mag_catalogue}.gff",
     log:
-        MAGS / "{mag_catalogue}.gtf.log",
+        MAGS / "{mag_catalogue}.gff.log",
     conda:
-        "../../environments/htslib.yml"
+        "base"
     cache: True
     shell:
         """
-        gzip -dc {input} > {output} 2> {log}
+        gzip --decompress --stdout {input} > {output} 2> {log}
         """
 
 
@@ -48,5 +46,5 @@ rule quantify__mags__all:
         [
             MAGS / f"{mag_catalogue}.{extension}"
             for mag_catalogue in MAG_CATALOGUES
-            for extension in ["fa.gz", "gtf"]
+            for extension in ["fa.gz", "gff"]
         ],

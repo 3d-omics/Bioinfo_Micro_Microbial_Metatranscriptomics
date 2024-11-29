@@ -1,6 +1,3 @@
-include: "kraken2_functions.smk"
-
-
 rule preprocess__kraken2__assign:
     """
     Run kraken2 over all samples at once using the /dev/shm/ trick.
@@ -14,7 +11,7 @@ rule preprocess__kraken2__assign:
         rerverses=[
             FASTP / f"{sample}.{library}_2.fq.gz" for sample, library in SAMPLE_LIBRARY
         ],
-        database=get_kraken2_database,
+        database=lambda w: features["databases"]["kraken2"][w.kraken2_db],
     output:
         out_gzs=[
             KRAKEN2 / "{kraken2_db}" / f"{sample}.{library}.out.gz"
@@ -28,10 +25,14 @@ rule preprocess__kraken2__assign:
         KRAKEN2 / "{kraken2_db}.log",
     params:
         in_folder=FASTP,
-        out_folder=compose_out_folder_for_eval_kraken2_assign_all,
+        out_folder=lambda w: KRAKEN2 / w.kraken2_db,
         kraken_db_name="{kraken2_db}",
     conda:
         "../../environments/kraken2.yml"
+    threads: 8
+    resources:
+        mem_mb=800 * 1024,
+        runtime=24 * 60,
     shell:
         """
         {{
