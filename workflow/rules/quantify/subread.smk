@@ -46,6 +46,8 @@ rule quantify__subread__join:
         SUBREAD / "{mag_catalogue}.log",
     params:
         subcommand="join",
+    resources:
+        mem_mb=4 * 1024,
     wrapper:
         "v5.2.1/utils/csvtk"
 
