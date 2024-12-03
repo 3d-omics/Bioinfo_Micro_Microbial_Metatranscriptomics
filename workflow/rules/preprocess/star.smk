@@ -48,6 +48,7 @@ rule preprocess__star__index:
             --genomeFastaFiles {input.genome} \
             --sjdbGTFfile {input.annotation} \
             --sjdbOverhang {params.sjdbOverhang} \
+            --outTmpDir {params.prefix}.tmp \
         2> {log} 1>&2
         """
 
@@ -122,6 +123,7 @@ rule preprocess__star__map:
             --outSAMunmapped Within KeepPairs \
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
+            --outTmpDir {params.out_prefix}.tmp \
         2>> {log} 1>&2
         """
 
