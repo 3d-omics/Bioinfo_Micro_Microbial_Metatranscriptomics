@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+srun -c 24 --mem 64G --time 4:00:00 \
+    snakemake \
+        --use-conda \
+        --cache \
+        --executor slurm \
+        --cores 24
+        cache \
+        "@"
