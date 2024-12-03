@@ -7,7 +7,7 @@ rule preprocess__star__index:
         genome=PRE_HOSTS / "{host_name}.fa",
         annotation=PRE_HOSTS / "{host_name}.gtf",
     output:
-        multiext(
+        idx=multiext(
             str(PRE_INDEX / "{host_name}") + "/",
             "chrLength.txt",
             "chrNameLength.txt",
@@ -41,6 +41,8 @@ rule preprocess__star__index:
         runtime=24 * 60,
     shell:
         """
+        rm --recursive --force --verbose {params.prefix}.tmp 2> {log} 1>&2
+
         STAR \
             --runMode genomeGenerate \
             --runThreadN {threads} \
@@ -49,7 +51,7 @@ rule preprocess__star__index:
             --sjdbGTFfile {input.annotation} \
             --sjdbOverhang {params.sjdbOverhang} \
             --outTmpDir {params.prefix}.tmp \
-        2> {log} 1>&2
+        2>> {log} 1>&2
         """
 
 
@@ -110,6 +112,8 @@ rule preprocess__star__map:
     shell:
         """
         ulimit -n 90000 2> {log} 1>&2
+
+        rm --recursive --force --verbose {params.out_prefix}.tmp 2>> {log} 1>&2
 
         STAR \
             --runMode alignReads \
