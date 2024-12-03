@@ -51,5 +51,6 @@ include: "rules/quantify.smk"
 rule all:
     """Default pipeline"""
     input:
-        rules.preprocess__all.input,
-        rules.quantify__all.input,
+        rules.preprocess__multiqc__all.input,
+        rules.quantify__multiqc__all.input,
+        rules.quantify__subread__all.input,

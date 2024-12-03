@@ -65,13 +65,13 @@ https://conda.anaconda.org/conda-forge/linux-64/perl-storable-3.15-pl5321hb9d3cd
 https://conda.anaconda.org/conda-forge/linux-64/python-3.13.0-h9ebbce0_100_cp313.conda#08e9aef080f33daeb192b2ddc7e4721f
 https://conda.anaconda.org/conda-forge/linux-64/rsync-3.3.0-he6cb5fe_0.conda#27da3fb7abe92e3ef592eda5321a0230
 https://conda.anaconda.org/conda-forge/linux-64/gettext-0.22.5-he02047a_3.conda#c7f243bbaea97cd6ea1edd693270100e
-https://conda.anaconda.org/conda-forge/linux-64/libcurl-8.10.1-hbbe4b11_0.conda#6e801c50a40301f6978c53976917b277
+https://conda.anaconda.org/conda-forge/linux-64/libcurl-8.11.0-hbbe4b11_0.conda#610aa8fffc286c4d5784256fc6dd3bc6
 https://conda.anaconda.org/conda-forge/noarch/perl-carp-1.50-pl5321hd8ed1ab_0.tar.bz2#bdddc03e28019b902da71b722f2288d7
 https://conda.anaconda.org/conda-forge/linux-64/perl-encode-3.21-pl5321hb9d3cd8_1.conda#a418a0e7010007df65768e4e4b96dd14
 https://conda.anaconda.org/bioconda/noarch/perl-list-moreutils-0.430-pl5321hdfd78af_0.tar.bz2#7f04c79d216d0f8e7b6d5a51de4aafa0
 https://conda.anaconda.org/bioconda/noarch/perl-types-serialiser-1.01-pl5321hdfd78af_0.tar.bz2#cfc65753e827bbef80c00eaa395f6ae7
 https://conda.anaconda.org/conda-forge/noarch/pip-24.3.1-pyh145f28c_0.conda#ca3afe2d7b893a8c8cdf489d30a2b1a3
-https://conda.anaconda.org/conda-forge/linux-64/curl-8.10.1-hbbe4b11_0.conda#73c561c6b84bda71776c9fa21517e7eb
+https://conda.anaconda.org/conda-forge/linux-64/curl-8.11.0-hbbe4b11_0.conda#4413c72a6c6ad18a517e4712a5bb1061
 https://conda.anaconda.org/conda-forge/linux-64/libidn2-2.3.7-hd590300_0.conda#2b7b0d827c6447cc1d85dc06d5b5de46
 https://conda.anaconda.org/bioconda/linux-64/perl-io-compress-2.201-pl5321hdbdd923_2.tar.bz2#f40f599ce37ad75715bab686baa08197
 https://conda.anaconda.org/bioconda/linux-64/perl-json-xs-4.03-pl5321h4ac6f70_3.tar.bz2#7916cbb7315bc05abbaa0c383d379964
@@ -82,3 +82,4 @@ https://conda.anaconda.org/conda-forge/linux-64/wget-1.21.4-hda4d442_0.conda#361
 https://conda.anaconda.org/bioconda/linux-64/entrez-direct-22.4-he881be0_0.tar.bz2#0994f567f11543b7aea1afce884c2ce6
 https://conda.anaconda.org/bioconda/linux-64/blast-2.16.0-hc155240_2.tar.bz2#7870230d4cc0a7647eb90b6e2ebd977f
 https://conda.anaconda.org/bioconda/linux-64/kraken2-2.1.3-pl5321hdcf5f25_2.tar.bz2#c9cc0bb94d40d57b0fbe34a2980d5ba3
+https://conda.anaconda.org/bioconda/linux-64/bracken-3.0-h4ac6f70_0.tar.bz2#0485181e855174a79922f5f76dacb1a4

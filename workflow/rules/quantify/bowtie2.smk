@@ -103,7 +103,7 @@ rule quantify__bowtie2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            QUANT_BOWTIE2 / f"{mag_catalogue}" / f"{sample_id}.{library_id}.bam"
+            QUANT_BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],

@@ -12,7 +12,7 @@ rule preprocess__multiqc__all:
             for end in [1, 2]
         ],
         star=[
-            PRE_STAR / f"{host_name}.{sample_id}.{library_id}.Log.final.out"
+            PRE_STAR / host_name / f"{sample_id}.{library_id}.Log.final.out"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
@@ -26,6 +26,11 @@ rule preprocess__multiqc__all:
             for sample_id, library_id in SAMPLE_LIBRARY
             for kraken_db in features["databases"]["kraken2"]
         ],
+        # bracken=[
+        #     PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.bracken"
+        #     for sample_id, library_id in SAMPLE_LIBRARY
+        #     for kraken2_db in features["databases"]["kraken2"]
+        # ]
     output:
         html=RESULTS / "preprocess.html",
         zip=RESULTS / "preprocess.zip",

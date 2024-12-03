@@ -6,7 +6,7 @@ def get_final_fastq(wildcards, forward_or_reverse):
     library_id = wildcards.library_id
     if len(HOST_NAMES) == 0:
         return PRE_RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
-    return PRE_STAR / f"{LAST_HOST}.{sample_id}.{library_id}_u{end}.fq.gz"
+    return PRE_STAR / LAST_HOST / f"{sample_id}.{library_id}_u{end}.fq.gz"
 
 
 def get_final_forward(wildcards):
