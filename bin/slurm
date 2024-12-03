@@ -3,12 +3,13 @@
 set -euo pipefail
 
 snakemake \
-    --use-conda \
-    --rerun-incomplete \
     --cache \
-    --jobs 100 \
     --cores 24  \
+    --executor slurm \
+    --jobs 100 \
     --keep-going \
-    --profile profile/default \
     --latency-wait 60 \
+    --profile profile/default \
+    --rerun-incomplete \
+    --use-conda \
     "$@"
