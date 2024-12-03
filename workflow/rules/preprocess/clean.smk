@@ -13,7 +13,7 @@ rule preprocess__clean:
     conda:
         "../../environments/star.yml"
     group:
-        "{sample_id}.{library_id}"
+        "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         runtime=1 * 60,
