@@ -165,7 +165,7 @@ rule preprocess__star__fastq:
     conda:
         "../../environments/star.yml"
     group:
-        "{sample_id}.{library_id}"
+        "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
