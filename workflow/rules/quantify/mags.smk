@@ -8,7 +8,7 @@ rule quantify__mags__recompress_fa:
         QUANT_MAGS / "{mag_catalogue}.fa.log",
     conda:
         "../../environments/htslib.yml"
-    cache: True
+    cache: "omit-software"
     threads: 8
     shell:
         """
@@ -33,7 +33,7 @@ rule quantify__mags__annotation_gff:
         QUANT_MAGS / "{mag_catalogue}.gff.log",
     conda:
         "base"
-    cache: True
+    cache: "omit-software"
     shell:
         """
         gzip --decompress --stdout {input} > {output} 2> {log}

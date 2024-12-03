@@ -34,7 +34,7 @@ rule preprocess__star__index:
         sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
         prefix=lambda w: str(PRE_INDEX / w.host_name),
     retries: 5
-    cache: True
+    cache: "omit-software"
     threads: 24
     resources:
         mem_mb=double_ram(64 * 1024),

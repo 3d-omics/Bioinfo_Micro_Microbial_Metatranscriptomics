@@ -23,6 +23,7 @@ rule quantify__bowtie2__build:
         extra=params["quantify"]["bowtie2"]["extra"],
     retries: 5
     threads: 24
+    cache: "omit-software"
     resources:
         mem_mb=double_ram(32 * 1024),
         runtime=6 * 60,

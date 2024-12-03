@@ -9,7 +9,7 @@ rule preprocess__hosts__decompress_fa:
         PRE_HOSTS / "{host_name}.fa",
     log:
         PRE_HOSTS / "{host_name}.fa.log",
-    cache: True
+    cache: "omit-software"
     conda:
         "base"
     shell:
@@ -34,7 +34,7 @@ rule preprocess__hosts__decompress_gtf:
         PRE_HOSTS / "{host_name}.gtf",
     log:
         PRE_HOSTS / "{host_name}.gtf.log",
-    cache: True
+    cache: "omit-software"
     conda:
         "base"
     shell:
