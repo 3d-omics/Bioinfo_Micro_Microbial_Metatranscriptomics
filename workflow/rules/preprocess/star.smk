@@ -4,11 +4,11 @@ include: "star_functions.smk"
 rule preprocess__star__index:
     """Index the genome for STAR"""
     input:
-        genome=HOSTS / "{host_name}.fa",
-        annotation=HOSTS / "{host_name}.gtf",
+        genome=PRE_HOSTS / "{host_name}.fa",
+        annotation=PRE_HOSTS / "{host_name}.gtf",
     output:
         multiext(
-            str(STAR_INDEX / "{host_name}") + "/",
+            str(PRE_INDEX / "{host_name}") + "/",
             "chrLength.txt",
             "chrNameLength.txt",
             "chrName.txt",
@@ -29,10 +29,10 @@ rule preprocess__star__index:
     conda:
         "../../environments/star.yml"
     log:
-        STAR_INDEX / "{host_name}.log",
+        PRE_INDEX / "{host_name}.log",
     params:
         sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
-        prefix=lambda w: str(STAR_INDEX / w.host_name),
+        prefix=lambda w: str(PRE_INDEX / w.host_name),
     retries: 5
     cache: True
     threads: 24
@@ -55,7 +55,7 @@ rule preprocess__star__index:
 rule preprocess__star__index__all:
     """Build all the STAR indexes"""
     input:
-        [STAR_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
+        [PRE_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
 
 
 rule preprocess__star__map:
@@ -64,7 +64,7 @@ rule preprocess__star__map:
         forward_=get_input_forward_for_host_mapping,
         reverse_=get_input_reverse_for_host_mapping,
         index=multiext(
-            str(STAR_INDEX) + "/{host_name}/",
+            str(PRE_INDEX) + "/{host_name}/",
             "chrLength.txt",
             "chrNameLength.txt",
             "chrName.txt",
@@ -82,19 +82,20 @@ rule preprocess__star__map:
             "sjdbList.out.tab",
             "transcriptInfo.tab",
         ),
-        reference=HOSTS / "{host_name}.fa",
-        fai=HOSTS / "{host_name}.fa.fai",
+        reference=PRE_HOSTS / "{host_name}.fa",
+        fai=PRE_HOSTS / "{host_name}.fa.fai",
     output:
-        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        report=STAR / "{host_name}.{sample_id}.{library_id}.Log.final.out",
-        counts=STAR / "{host_name}.{sample_id}.{library_id}.ReadsPerGene.out.tab",
+        bam=PRE_STAR
+        / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        report=PRE_STAR / "{host_name}.{sample_id}.{library_id}.Log.final.out",
+        counts=PRE_STAR / "{host_name}.{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
-        STAR / "{host_name}.{sample_id}.{library_id}.log",
+        PRE_STAR / "{host_name}.{sample_id}.{library_id}.log",
     conda:
         "../../environments/star.yml"
     params:
-        out_prefix=lambda w: STAR / f"{w.host_name}.{w.sample_id}.{w.library_id}.",
-        index=lambda w: STAR_INDEX / w.host_name,
+        out_prefix=lambda w: PRE_STAR / f"{w.host_name}.{w.sample_id}.{w.library_id}.",
+        index=lambda w: PRE_INDEX / w.host_name,
     retries: 5
     group:
         "preprocess__{sample_id}.{library_id}"
@@ -126,7 +127,7 @@ rule preprocess__star__align__all:
     """Get all the STAR counts for all hosts"""
     input:
         [
-            STAR
+            PRE_STAR
             / f"{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
@@ -140,14 +141,15 @@ rule preprocess__star__fastq:
     bowtie2 fails to receive a piped SAM input. Therefore, we need to convert the CRAM file to a physical FASTQ file.
     """
     input:
-        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        bai=STAR
+        bam=PRE_STAR
+        / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bai=PRE_STAR
         / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
     output:
-        forward_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u1.fq.gz"),
-        reverse_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u2.fq.gz"),
+        forward_=temp(PRE_STAR / "{host_name}.{sample_id}.{library_id}_u1.fq.gz"),
+        reverse_=temp(PRE_STAR / "{host_name}.{sample_id}.{library_id}_u2.fq.gz"),
     log:
-        STAR / "{host_name}.{sample_id}.{library_id}.unaligned.log",
+        PRE_STAR / "{host_name}.{sample_id}.{library_id}.unaligned.log",
     conda:
         "../../environments/star.yml"
     group:

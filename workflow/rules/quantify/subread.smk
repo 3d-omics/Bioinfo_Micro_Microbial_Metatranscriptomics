@@ -1,19 +1,21 @@
 rule quantify__subread__feature_counts:
     input:
-        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
-        annotation=MAGS / "{mag_catalogue}.gff",
+        bam=QUANT_BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        annotation=QUANT_MAGS / "{mag_catalogue}.gff",
     output:
-        tmp=temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}"),
-        summary=SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.summary",
-        counts=temp(SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv"),
+        tmp=temp(QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}"),
+        summary=QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.summary",
+        counts=temp(QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv"),
     log:
-        SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
+        QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/subread.yml"
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
-        tmp_out=lambda w: SUBREAD / w.mag_catalogue / f"{w.sample_id}.{w.library_id}",
-        work_dir=lambda w: SUBREAD / w.mag_catalogue,
+        tmp_out=lambda w: QUANT_SUBREAD
+        / w.mag_catalogue
+        / f"{w.sample_id}.{w.library_id}",
+        work_dir=lambda w: QUANT_SUBREAD / w.mag_catalogue,
     resources:
         mem_mb=4 * 1024,
     shell:
@@ -39,14 +41,14 @@ rule quantify__subread__feature_counts:
 rule quantify__subread__join:
     input:
         lambda w: [
-            SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
+            QUANT_SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
         ]
         + ["/dev/null"],
     output:
-        SUBREAD / "{mag_catalogue}.tsv.gz",
+        QUANT_SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
-        SUBREAD / "{mag_catalogue}.log",
+        QUANT_SUBREAD / "{mag_catalogue}.log",
     params:
         subcommand="join",
         extra="--left-join --tabs --out-tabs",
@@ -58,4 +60,4 @@ rule quantify__subread__join:
 
 rule quantify__subread__all:
     input:
-        [SUBREAD / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],
+        [QUANT_SUBREAD / f"{mag_catalogue}.tsv.gz" for mag_catalogue in MAG_CATALOGUES],
