@@ -1,4 +1,4 @@
-rule preprocess__multiqc__all:
+rule preprocess__multiqc:
     """Collect all reports for the preprocess step"""
     input:
         fastqc=rules.preprocess__reads__fastqc__all.input,
@@ -26,11 +26,11 @@ rule preprocess__multiqc__all:
             for sample_id, library_id in SAMPLE_LIBRARY
             for kraken_db in features["databases"]["kraken2"]
         ],
-        # bracken=[
-        #     PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.bracken"
-        #     for sample_id, library_id in SAMPLE_LIBRARY
-        #     for kraken2_db in features["databases"]["kraken2"]
-        # ]
+        bracken=[
+            PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.bracken"
+            for sample_id, library_id in SAMPLE_LIBRARY
+            for kraken2_db in features["databases"]["kraken2"]
+        ],
     output:
         html=RESULTS / "preprocess.html",
         zip=RESULTS / "preprocess.zip",
@@ -42,3 +42,8 @@ rule preprocess__multiqc__all:
         mem_mb=8 * 1024,
     wrapper:
         "v5.2.1/bio/multiqc"
+
+
+rule preprocess__multiqc__all:
+    input:
+        rules.preprocess__multiqc.output,

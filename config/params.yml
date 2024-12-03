@@ -16,7 +16,7 @@ preprocess:
 
   kraken2:
     bracken:
-      extra:
+      extra: "-l S"
 
 quantify:
 

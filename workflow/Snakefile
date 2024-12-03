@@ -52,5 +52,6 @@ rule all:
     """Default pipeline"""
     input:
         rules.preprocess__multiqc__all.input,
+        rules.preprocess__kraken2__all.input,
         rules.quantify__multiqc__all.input,
         rules.quantify__subread__all.input,

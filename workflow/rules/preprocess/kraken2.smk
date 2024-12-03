@@ -87,66 +87,57 @@ rule preprocess__kraken2__assign:
         """
 
 
-# rule preprocess__kraken2__bracken:
-#     input:
-#         database=lambda w: features["databases"]["kraken2"][w.kraken2_db],
-#         report=PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.report",
-#     output:
-#         bracken=touch(PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.bracken"),
-#     log:
-#         PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.bracken.log",
-#     conda:
-#         "../../environments/kraken2.yml"
-#     params:
-#         extra=params["preprocess"]["kraken2"]["bracken"]["extra"],
-#     shell:
-#         """
-#         if [ ! -s {input.report} ] ; then
-#             echo "Empty report. Skipping" 2> {log} 1>&2
-#             exit 0
-#         fi
+rule preprocess__kraken2__bracken:
+    input:
+        database=lambda w: features["databases"]["kraken2"][w.kraken2_db],
+        report=PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.report",
+    output:
+        bracken=touch(PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.bracken"),
+    log:
+        PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.bracken.log",
+    conda:
+        "../../environments/kraken2.yml"
+    params:
+        extra=params["preprocess"]["kraken2"]["bracken"]["extra"],
+    shell:
+        """
+        if [ ! -s {input.report} ] ; then
+            echo "Empty report. Skipping" 2> {log} 1>&2
+            exit 0
+        fi
 
-#         bracken \
-#             -d {input.database} \
-#             -i {input.report} \
-#             -o {output.bracken} \
-#             {params.extra} \
-#         2> {log} 1>&2
-#         """
-
-
-# rule preprocess__kraken2__bracken__combine:
-#     """Combine all the bracken outputs for a single database"""
-#     input:
-#         lambda w: [
-#             PRE_KRAKEN2 / w.kraken2_db / f"{sample_id}.{library_id}.bracken"
-#             for sample_id, library_id in SAMPLE_LIBRARY
-#         ],
-#     output:
-#         PRE_KRAKEN2 / "{kraken2_db}.tsv",
-#     log:
-#         PRE_KRAKEN2 / "{kraken2_db}.tsv.log",
-#     conda:
-#         "../../environments/kraken2.yml"
-#     shell:
-#         """
-#         combine_bracken_outputs.py \
-#             --files {input} \
-#             --output {output} \
-#         2> {log} 1>&2
-#         """
+        bracken \
+            -d {input.database} \
+            -i {input.report} \
+            -o {output.bracken} \
+            {params.extra} \
+        2> {log} 1>&2
+        """
 
 
-# rule preprocess__kraken2__all:
-#     """Get the combined bracken results for all databases"""
-#     input:
-#         [PRE_KRAKEN2 / f"{kraken2_db}.tsv" for kraken2_db in KRAKEN2_DBS],
+rule preprocess__kraken2__bracken__combine:
+    """Combine all the bracken outputs for a single database"""
+    input:
+        lambda w: [
+            PRE_KRAKEN2 / w.kraken2_db / f"{sample_id}.{library_id}.bracken"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
+    output:
+        PRE_KRAKEN2 / "{kraken2_db}.tsv.gz",
+    log:
+        PRE_KRAKEN2 / "{kraken2_db}.tsv.log",
+    conda:
+        "../../environments/kraken2.yml"
+    shell:
+        """
+        combine_bracken_outputs.py \
+            --files {input} \
+            --output {output} \
+        2> {log} 1>&2
+        """
 
 
 rule preprocess__kraken2__all:
+    """Get the combined bracken results for all databases"""
     input:
-        [
-            PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.out.gz"
-            for sample_id, library_id in SAMPLE_LIBRARY
-            for kraken2_db in KRAKEN2_DBS
-        ],
+        [PRE_KRAKEN2 / f"{kraken2_db}.tsv.gz" for kraken2_db in KRAKEN2_DBS],

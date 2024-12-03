@@ -27,6 +27,6 @@ mag_catalogues:
 
 databases:
     kraken2:  # Comment the next lines if no database
-        mock: resources/databases/kraken2/kraken_mock
+        mock: resources/databases/kraken2/kraken2_mock
         # mock2: resources/databases/kraken2/kraken_mock
         # nt_20231129: /datasets/globe_databases/kraken2/kraken2_nt/20231129/
