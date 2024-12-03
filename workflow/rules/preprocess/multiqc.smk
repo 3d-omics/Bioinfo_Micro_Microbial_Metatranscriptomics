@@ -27,9 +27,10 @@ rule preprocess__multiqc:
             for kraken_db in features["databases"]["kraken2"]
         ],
         bracken=[
-            PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.bracken"
+            PRE_KRAKEN2 / kraken2_db / f"{sample_id}.{library_id}.{level}.bracken"
             for sample_id, library_id in SAMPLE_LIBRARY
             for kraken2_db in features["databases"]["kraken2"]
+            for level in ["S"]
         ],
     output:
         html=RESULTS / "preprocess.html",

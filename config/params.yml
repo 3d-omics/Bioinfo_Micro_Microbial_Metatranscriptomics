@@ -14,9 +14,6 @@ preprocess:
     index:
       sjdbOverhang: 150
 
-  kraken2:
-    bracken:
-      extra: "-l S"
 
 quantify:
 
