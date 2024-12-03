@@ -85,9 +85,13 @@ rule preprocess__star__map:
         reference=PRE_HOSTS / "{host_name}.fa",
         fai=PRE_HOSTS / "{host_name}.fa.fai",
     output:
-        bam=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bam=PRE_STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
         report=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
-        counts=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
+        counts=PRE_STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
         PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.log",
     conda:
@@ -126,7 +130,9 @@ rule preprocess__star__align__all:
     """Get all the STAR counts for all hosts"""
     input:
         [
-            PRE_STAR / host_name / f"{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
+            PRE_STAR
+            / host_name
+            / f"{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
@@ -139,8 +145,12 @@ rule preprocess__star__fastq:
     bowtie2 fails to receive a piped SAM input. Therefore, we need to convert the CRAM file to a physical FASTQ file.
     """
     input:
-        bam=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        bai=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
+        bam=PRE_STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bai=PRE_STAR
+        / "{host_name}"
+        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
     output:
         forward_=temp(PRE_STAR / "{host_name}" / "{sample_id}.{library_id}_u1.fq.gz"),
         reverse_=temp(PRE_STAR / "{host_name}" / "{sample_id}.{library_id}_u2.fq.gz"),
