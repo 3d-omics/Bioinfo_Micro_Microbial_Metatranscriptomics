@@ -57,3 +57,12 @@ rule all:
         rules.preprocess__kraken2__all.input,
         rules.quantify__multiqc__all.input,
         rules.quantify__subread__all.input,
+
+
+rule cache:
+    """Run only the stuff that will be cached. Run this inside a slurm job"""
+    input:
+        rules.preprocess__hosts__all.input,
+        rules.preprocess__star__index__all.input,
+        rules.quantify__mags__all.input,
+        rules.quantify__bowtie2__build__all.input,
