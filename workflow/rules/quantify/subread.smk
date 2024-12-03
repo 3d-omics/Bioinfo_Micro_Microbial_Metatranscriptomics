@@ -13,6 +13,7 @@ rule quantify__subread__feature_counts:
     params:
         sample_library=lambda w: f"{w.sample_id}.{w.library_id}",
         tmp_out=lambda w: SUBREAD / w.mag_catalogue / f"{w.sample_id}.{w.library_id}",
+        work_dir=lambda w: SUBREAD / w.mag_catalogue,
     resources:
         mem_mb=4 * 1024,
     shell:
@@ -29,6 +30,7 @@ rule quantify__subread__feature_counts:
 
         ( grep -v ^# {output.tmp} \
         | cut -f 1,7 \
+        | awk '$0 = NR == 1 ? replace : $0' replace='gene_id\t{params.sample_library}' \
         > {output.counts} \
         ) 2>> {log}
         """
@@ -39,13 +41,15 @@ rule quantify__subread__join:
         lambda w: [
             SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
             for sample_id, library_id in SAMPLE_LIBRARY
-        ],
+        ]
+        + ["/dev/null"],
     output:
         SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
         SUBREAD / "{mag_catalogue}.log",
     params:
         subcommand="join",
+        extra="--left-join --tabs --out-tabs",
     resources:
         mem_mb=4 * 1024,
     wrapper:
