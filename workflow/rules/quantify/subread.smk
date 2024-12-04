@@ -1,17 +1,18 @@
 rule quantify__subread__feature_counts:
     input:
-        samples=QUANT_BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        samples=lambda w: [
+            QUANT_BOWTIE2 / w.mag_catalogue / f"{sample_id}.{library_id}.bam"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
         annotation=QUANT_MAGS / "{mag_catalogue}.gff",
     output:
         multiext(
-            str(QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}"),
+            str(QUANT_SUBREAD / "{mag_catalogue}"),
             ".featureCounts",
             ".featureCounts.summary",
         ),
     log:
-        QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
-    # conda:
-    #     "../../environments/subread.yml"
+        QUANT_SUBREAD / "{mag_catalogue}.log",
     params:
         extra="-F GFF -t CDS,tRNA,rRNA -g ID -p",
     resources:
@@ -20,48 +21,28 @@ rule quantify__subread__feature_counts:
         "v5.2.1/bio/subread/featurecounts"
 
 
-rule quantify__subread__extract:
+rule quantify__subread__format:
     input:
-        QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.featureCounts",
-    output:
-        QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv",
-    log:
-        QUANT_SUBREAD / "{mag_catalogue}" / "{sample_id}.{library_id}.tsv.log",
-    conda:
-        "base"
-    params:
-        sample_library=lambda w: f"{w.sample_id}_{w.library_id}",
-    shell:
-        """
-        ( grep -v ^# {input} \
-        | cut -f 1,7 \
-        | awk '$0 = NR == 1 ? replace : $0' replace='gene_id\t{params.sample_library}' \
-        > {output} \
-        ) 2>> {log}
-        """
-
-
-rule quantify__subread__join:
-    input:
-        lambda w: [
-            QUANT_SUBREAD / w.mag_catalogue / f"{sample_id}.{library_id}.tsv"
-            for sample_id, library_id in SAMPLE_LIBRARY
-        ]
-        + ["/dev/null"],
+        QUANT_SUBREAD / "{mag_catalogue}.featureCounts",
     output:
         QUANT_SUBREAD / "{mag_catalogue}.tsv.gz",
     log:
-        QUANT_SUBREAD / "{mag_catalogue}.log",
+        QUANT_SUBREAD / "{mag_catalogue}.tsv.log",
+    conda:
+        "base"
     params:
-        subcommand="join",
-        extra="--left-join --tabs --out-tabs",
-        col1="gene_id",
-        col2="gene_id",
-    resources:
-        mem_mb=double_ram(32 * 1024),
-    retries: 5
-    wrapper:
-        "v5.2.1/utils/csvtk"
+        workdir=lambda w: str(QUANT_BOWTIE2 / w.mag_catalogue).replace("/", "\\/"),
+    shell:
+        """
+        ( grep -v ^# {input} \
+        | cut -f 1,7- \
+        | awk '{{ gsub("Geneid", "gene_id", $1); print }}' \
+        | awk '{{ gsub("{params.workdir}/", "", $0); print }}' \
+        | awk '{{ gsub(".bam", "", $0); print }}' \
+        | gzip \
+        > {output} \
+        ) 2>> {log}
+        """
 
 
 rule quantify__subread__all:
