@@ -13,8 +13,8 @@ rule preprocess__reads:
         PRE_READS / "{sample_id}.{library_id}.log",
     conda:
         "base"
-    group:
-        "preprocess__{sample_id}.{library_id}"
+    # group:
+    #     "preprocess__{sample_id}.{library_id}"
     shell:
         """
         ln --symbolic $(readlink --canonicalize {input.forward_}) {output.forward_}

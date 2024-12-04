@@ -103,8 +103,8 @@ rule preprocess__star__map:
         out_prefix=lambda w: PRE_STAR / w.host_name / f"{w.sample_id}.{w.library_id}.",
         index=lambda w: PRE_INDEX / w.host_name,
     retries: 5
-    group:
-        "preprocess__{sample_id}.{library_id}"
+    # group:
+    #     "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
@@ -164,8 +164,8 @@ rule preprocess__star__fastq:
         PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.unaligned.log",
     conda:
         "../../environments/star.yml"
-    group:
-        "preprocess__{sample_id}.{library_id}"
+    # group:
+    #     "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
