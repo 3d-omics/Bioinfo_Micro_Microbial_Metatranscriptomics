@@ -55,6 +55,8 @@ rule quantify__subread__join:
     params:
         subcommand="join",
         extra="--left-join --tabs --out-tabs",
+        col1="gene_id",
+        col2="gene_id",
     resources:
         mem_mb=double_ram(32 * 1024),
     retries: 5
