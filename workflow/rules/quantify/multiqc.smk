@@ -7,7 +7,9 @@ rule quantify__multiqc:
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
         featurecounts=[
-            QUANT_SUBREAD / f"{mag_catalogue}" / f"{sample_id}.{library_id}.summary"
+            QUANT_SUBREAD
+            / f"{mag_catalogue}"
+            / f"{sample_id}.{library_id}.featureCounts.summary"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
