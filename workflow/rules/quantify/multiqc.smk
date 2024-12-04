@@ -2,12 +2,12 @@ rule quantify__multiqc:
     """Collect all reports for the quantify step"""
     input:
         samtools_stats=[
-            BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.stats.tsv"
+            QUANT_BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.stats.tsv"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
         featurecounts=[
-            SUBREAD / f"{mag_catalogue}" / f"{sample_id}.{library_id}.summary"
+            QUANT_SUBREAD / f"{mag_catalogue}.featureCounts.summary"
             for mag_catalogue in MAG_CATALOGUES
             for sample_id, library_id in SAMPLE_LIBRARY
         ],

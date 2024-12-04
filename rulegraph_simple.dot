@@ -8,24 +8,24 @@ digraph snakemake_dag {
     subgraph cluster_0 {
         label = "Input";
         shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
-        reads           [label = "FASTQ\nreads",          color = "0.31 0.6 0.85", style="rounded"];
+        reads           [label = "FASTQ\nreads",        color = "0.31 0.6 0.85", style="rounded"];
 
         genome          [label = "Host\nGenome(s)",     color = "0.28 0.6 0.85", style="rounded"];
         gtf             [label = "Host\nAnnotation(s)", color = "0.14 0.6 0.85", style="rounded"];
 
-        mags            [label = "MAGs",       color = "0.38 0.6 0.85", style="rounded"];
-        annotation      [label = "MAG annotation", color = "0.14 0.6 0.85", style="rounded"];
+        mags            [label = "MAGs",                color = "0.38 0.6 0.85", style="rounded"];
+        annotation      [label = "MAG annotation",      color = "0.14 0.6 0.85", style="rounded"];
     }
 
     subgraph cluster_1 {
         label = "Preprocessing";
         shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
 
-        fastp           [label = "fastp",        color = "0.01 0.6 0.85", style="rounded"];
-        ribodetector    [label = "RiboDetector", color = "0.65 0.6 0.85", style="rounded"];
-        kraken2         [label = "kraken2",      color = "0.29 0.6 0.85", style="rounded"];
-        star            [label = "STAR", color = "0.66 0.6 0.85", style="rounded"];
-        clean           [label = "Clean", color = "0.66 0.6 0.85", style="rounded"];
+        fastp           [label = "fastp",               color = "0.01 0.6 0.85", style="rounded"];
+        ribodetector    [label = "RiboDetector",        color = "0.65 0.6 0.85", style="rounded"];
+        kraken2         [label = "kraken2",             color = "0.29 0.6 0.85", style="rounded"];
+        star            [label = "STAR",                color = "0.66 0.6 0.85", style="rounded"];
+        clean           [label = "Clean",               color = "0.66 0.6 0.85", style="rounded"];
 
         genome -> star
         gtf -> star
@@ -41,8 +41,8 @@ digraph snakemake_dag {
         label = "Quantification";
         shape=box; style=rounded; fontname=sans; fontsize=10; penwidth=2; margin=10;
 
-        bowtie2         [label = "bowtie2",                color = "0.55 0.6 0.85", style="rounded"];
-        featureCounts   [label = "featureCounts",                 color = "0.23 0.6 0.85", style="rounded"];
+        bowtie2         [label = "bowtie2",             color = "0.55 0.6 0.85", style="rounded"];
+        featureCounts   [label = "featureCounts",       color = "0.23 0.6 0.85", style="rounded"];
 
         mags -> bowtie2
         annotation -> featureCounts

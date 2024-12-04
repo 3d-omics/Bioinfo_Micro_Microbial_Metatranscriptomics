@@ -1,3 +1,3 @@
 sample_id	library_id	forward_filename	reverse_filename	forward_adapter	reverse_adapter
 sample1	1	resources/reads/GBRF1.1_1.fq.gz	resources/reads/GBRF1.1_2.fq.gz	AGATCGGAAGAGCACACGTCTGAACTCCAGTCA	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
-sample2	1	resources/reads/GBRM1.1_1.fq.gz	resources/reads/GBRM1.1_2.fq.gz	AGATCGGAAGAGCACACGTCTGAACTCCAGTCA	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+# sample2	1	resources/reads/GBRM1.1_1.fq.gz	resources/reads/GBRM1.1_2.fq.gz	AGATCGGAAGAGCACACGTCTGAACTCCAGTCA	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT

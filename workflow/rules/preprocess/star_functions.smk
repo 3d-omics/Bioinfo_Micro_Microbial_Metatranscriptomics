@@ -6,10 +6,10 @@ def get_input_for_host_mapping(wildcards, forward_or_reverse):
     sample_id = wildcards.sample_id
     library_id = wildcards.library_id
     if host_name == HOST_NAMES[0]:
-        return RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
+        return PRE_RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
     genome_index = HOST_NAMES.index(host_name)
     prev_genome = HOST_NAMES[genome_index - 1]
-    return [STAR / f"{prev_genome}.{sample_id}.{library_id}_u{end}.fq.gz"]
+    return [PRE_STAR / prev_genome / f"{sample_id}.{library_id}_u{end}.fq.gz"]
 
 
 def get_input_forward_for_host_mapping(wildcards):

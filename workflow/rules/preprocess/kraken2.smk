@@ -6,27 +6,29 @@ rule preprocess__kraken2__assign:
     """
     input:
         forwards=[
-            FASTP / f"{sample}.{library}_1.fq.gz" for sample, library in SAMPLE_LIBRARY
+            PRE_FASTP / f"{sample}.{library}_1.fq.gz"
+            for sample, library in SAMPLE_LIBRARY
         ],
         rerverses=[
-            FASTP / f"{sample}.{library}_2.fq.gz" for sample, library in SAMPLE_LIBRARY
+            PRE_FASTP / f"{sample}.{library}_2.fq.gz"
+            for sample, library in SAMPLE_LIBRARY
         ],
         database=lambda w: features["databases"]["kraken2"][w.kraken2_db],
     output:
         out_gzs=[
-            KRAKEN2 / "{kraken2_db}" / f"{sample}.{library}.out.gz"
+            PRE_KRAKEN2 / "{kraken2_db}" / f"{sample}.{library}.out.gz"
             for sample, library in SAMPLE_LIBRARY
         ],
         reports=[
-            KRAKEN2 / "{kraken2_db}" / f"{sample}.{library}.report"
+            PRE_KRAKEN2 / "{kraken2_db}" / f"{sample}.{library}.report"
             for sample, library in SAMPLE_LIBRARY
         ],
     log:
-        KRAKEN2 / "{kraken2_db}.log",
+        PRE_KRAKEN2 / "{kraken2_db}.log",
     params:
-        in_folder=FASTP,
-        out_folder=lambda w: KRAKEN2 / w.kraken2_db,
-        kraken_db_name="{kraken2_db}",
+        in_folder=PRE_FASTP,
+        out_folder=lambda w: PRE_KRAKEN2 / w.kraken2_db,
+        kraken_db_name=lambda w: w.kraken2_db,
     conda:
         "../../environments/kraken2.yml"
     threads: 8
@@ -85,11 +87,63 @@ rule preprocess__kraken2__assign:
         """
 
 
+rule preprocess__kraken2__bracken:
+    input:
+        database=lambda w: features["databases"]["kraken2"][w.kraken2_db],
+        report=PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.report",
+    output:
+        bracken=touch(
+            PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.{level}.bracken"
+        ),
+    log:
+        PRE_KRAKEN2 / "{kraken2_db}" / "{sample_id}.{library_id}.{level}.bracken.log",
+    conda:
+        "../../environments/kraken2.yml"
+    params:
+        level=lambda w: w.level,
+    shell:
+        """
+        if [ ! -s {input.report} ] ; then
+            echo "Empty report. Skipping" 2> {log} 1>&2
+            exit 0
+        fi
+
+        bracken \
+            -d {input.database} \
+            -i {input.report} \
+            -o {output.bracken} \
+            -l {params.level} \
+        2> {log} 1>&2
+        """
+
+
+rule preprocess__kraken2__bracken__combine:
+    """Combine all the bracken outputs for a single database"""
+    input:
+        lambda w: [
+            PRE_KRAKEN2 / w.kraken2_db / f"{sample_id}.{library_id}.{w.level}.bracken"
+            for sample_id, library_id in SAMPLE_LIBRARY
+        ],
+    output:
+        PRE_KRAKEN2 / "{kraken2_db}.{level}.tsv.gz",
+    log:
+        PRE_KRAKEN2 / "{kraken2_db}.{level}.tsv.log",
+    conda:
+        "../../environments/kraken2.yml"
+    shell:
+        """
+        combine_bracken_outputs.py \
+            --files {input} \
+            --output {output} \
+        2> {log} 1>&2
+        """
+
+
 rule preprocess__kraken2__all:
-    """Run kraken2 over all samples at once using the /dev/shm/ trick."""
+    """Get the combined bracken results for all databases"""
     input:
         [
-            KRAKEN2 / kraken_db / f"{sample_id}.{library_id}.report"
-            for sample_id, library_id in SAMPLE_LIBRARY
-            for kraken_db in features["databases"]["kraken2"]
+            PRE_KRAKEN2 / f"{kraken2_db}.{level}.tsv.gz"
+            for kraken2_db in KRAKEN2_DBS
+            for level in ["S", "G", "F", "P", "C", "O", "D"]
         ],
