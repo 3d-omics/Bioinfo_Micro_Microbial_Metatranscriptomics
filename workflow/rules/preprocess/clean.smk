@@ -6,14 +6,14 @@ rule preprocess__clean:
         forward_=get_final_forward,
         reverse_=get_final_reverse,
     output:
-        forward_=PRE_CLEAN / "{sample_id}.{library_id}_1.fq.gz",
-        reverse_=PRE_CLEAN / "{sample_id}.{library_id}_2.fq.gz",
+        forward_=CLEAN / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=CLEAN / "{sample_id}.{library_id}_2.fq.gz",
     log:
-        PRE_CLEAN / "{sample_id}.{library_id}.log",
+        CLEAN / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/star.yml"
-    # group:
-    #     "preprocess__{sample_id}.{library_id}"
+    group:
+        "{sample_id}.{library_id}"
     threads: 24
     resources:
         runtime=1 * 60,
@@ -44,7 +44,7 @@ rule preprocess__clean:
 rule preprocess__clean__all:
     input:
         [
-            PRE_CLEAN / f"{sample_id}.{library_id}_{end}.fq.gz"
+            CLEAN / f"{sample_id}.{library_id}_{end}.fq.gz"
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],

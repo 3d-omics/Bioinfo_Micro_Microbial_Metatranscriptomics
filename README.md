@@ -12,7 +12,7 @@ A Snakemake workflow for `mt_quant`:
   - Screen your reads with `kraken2`
 - Quantification:
   - Map reads to a MAG catalogue with `bowtie2`
-  - Get count tables with `featureCounts`
+  - Get count tables with `CoverM`
 - Report
   - Get a gazillion of reports with `samtools`, `fastqc` and `multiqc`
 
@@ -84,6 +84,6 @@ A Snakemake workflow for `mt_quant`:
 - [`STAR`](https://github.com/alexdobin/STAR)
 - [`bowtie2`](https://github.com/BenLangmead/bowtie2)
 - [`samtools`](https://github.com/samtools/samtools)
-- [`featureCounts`](https://subread.sourceforge.net/featureCounts.html)
+- [`CoverM`](https://github.com/wwood/CoverM)
 - [`FastQC`](https://github.com/s-andrews/FastQC)
 - [`multiqc`](https://github.com/ewels/MultiQC)

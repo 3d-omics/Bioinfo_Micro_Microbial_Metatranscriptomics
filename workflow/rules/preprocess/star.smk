@@ -4,11 +4,11 @@ include: "star_functions.smk"
 rule preprocess__star__index:
     """Index the genome for STAR"""
     input:
-        genome=PRE_HOSTS / "{host_name}.fa",
-        annotation=PRE_HOSTS / "{host_name}.gtf",
+        genome=HOSTS / "{host_name}.fa",
+        annotation=HOSTS / "{host_name}.gtf",
     output:
-        idx=multiext(
-            str(PRE_INDEX / "{host_name}") + "/",
+        multiext(
+            str(STAR_INDEX / "{host_name}") + "/",
             "chrLength.txt",
             "chrNameLength.txt",
             "chrName.txt",
@@ -29,20 +29,18 @@ rule preprocess__star__index:
     conda:
         "../../environments/star.yml"
     log:
-        PRE_INDEX / "{host_name}.log",
+        STAR_INDEX / "{host_name}.log",
     params:
         sjdbOverhang=params["preprocess"]["star"]["index"]["sjdbOverhang"],
-        prefix=lambda w: str(PRE_INDEX / w.host_name),
+        prefix=lambda w: str(STAR_INDEX / w.host_name),
     retries: 5
-    cache: "omit-software"
+    cache: True
     threads: 24
     resources:
         mem_mb=double_ram(64 * 1024),
         runtime=24 * 60,
     shell:
         """
-        rm --recursive --force --verbose {params.prefix}.tmp 2> {log} 1>&2
-
         STAR \
             --runMode genomeGenerate \
             --runThreadN {threads} \
@@ -50,15 +48,14 @@ rule preprocess__star__index:
             --genomeFastaFiles {input.genome} \
             --sjdbGTFfile {input.annotation} \
             --sjdbOverhang {params.sjdbOverhang} \
-            --outTmpDir {params.prefix}.tmp \
-        2>> {log} 1>&2
+        2> {log} 1>&2
         """
 
 
 rule preprocess__star__index__all:
     """Build all the STAR indexes"""
     input:
-        [PRE_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
+        [STAR_INDEX / host_name / "Genome" for host_name in HOST_NAMES],
 
 
 rule preprocess__star__map:
@@ -67,7 +64,7 @@ rule preprocess__star__map:
         forward_=get_input_forward_for_host_mapping,
         reverse_=get_input_reverse_for_host_mapping,
         index=multiext(
-            str(PRE_INDEX) + "/{host_name}/",
+            str(STAR_INDEX) + "/{host_name}/",
             "chrLength.txt",
             "chrNameLength.txt",
             "chrName.txt",
@@ -85,26 +82,22 @@ rule preprocess__star__map:
             "sjdbList.out.tab",
             "transcriptInfo.tab",
         ),
-        reference=PRE_HOSTS / "{host_name}.fa",
-        fai=PRE_HOSTS / "{host_name}.fa.fai",
+        reference=HOSTS / "{host_name}.fa",
+        fai=HOSTS / "{host_name}.fa.fai",
     output:
-        bam=PRE_STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        report=PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.Log.final.out",
-        counts=PRE_STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.ReadsPerGene.out.tab",
+        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        report=STAR / "{host_name}.{sample_id}.{library_id}.Log.final.out",
+        counts=STAR / "{host_name}.{sample_id}.{library_id}.ReadsPerGene.out.tab",
     log:
-        PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.log",
+        STAR / "{host_name}.{sample_id}.{library_id}.log",
     conda:
         "../../environments/star.yml"
     params:
-        out_prefix=lambda w: PRE_STAR / w.host_name / f"{w.sample_id}.{w.library_id}.",
-        index=lambda w: PRE_INDEX / w.host_name,
+        out_prefix=lambda w: STAR / f"{w.host_name}.{w.sample_id}.{w.library_id}.",
+        index=lambda w: STAR_INDEX / w.host_name,
     retries: 5
-    # group:
-    #     "preprocess__{sample_id}.{library_id}"
+    group:
+        "preprocess__{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
@@ -112,8 +105,6 @@ rule preprocess__star__map:
     shell:
         """
         ulimit -n 90000 2> {log} 1>&2
-
-        rm --recursive --force --verbose {params.out_prefix}.tmp 2>> {log} 1>&2
 
         STAR \
             --runMode alignReads \
@@ -127,7 +118,6 @@ rule preprocess__star__map:
             --outSAMunmapped Within KeepPairs \
             --readFilesCommand "gzip -cd" \
             --quantMode GeneCounts \
-            --outTmpDir {params.out_prefix}.tmp \
         2>> {log} 1>&2
         """
 
@@ -136,9 +126,8 @@ rule preprocess__star__align__all:
     """Get all the STAR counts for all hosts"""
     input:
         [
-            PRE_STAR
-            / host_name
-            / f"{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
+            STAR
+            / f"{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for host_name in HOST_NAMES
         ],
@@ -151,21 +140,18 @@ rule preprocess__star__fastq:
     bowtie2 fails to receive a piped SAM input. Therefore, we need to convert the CRAM file to a physical FASTQ file.
     """
     input:
-        bam=PRE_STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
-        bai=PRE_STAR
-        / "{host_name}"
-        / "{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
+        bam=STAR / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam",
+        bai=STAR
+        / "{host_name}.{sample_id}.{library_id}.Aligned.sortedByCoord.out.bam.bai",
     output:
-        forward_=temp(PRE_STAR / "{host_name}" / "{sample_id}.{library_id}_u1.fq.gz"),
-        reverse_=temp(PRE_STAR / "{host_name}" / "{sample_id}.{library_id}_u2.fq.gz"),
+        forward_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u1.fq.gz"),
+        reverse_=temp(STAR / "{host_name}.{sample_id}.{library_id}_u2.fq.gz"),
     log:
-        PRE_STAR / "{host_name}" / "{sample_id}.{library_id}.unaligned.log",
+        STAR / "{host_name}.{sample_id}.{library_id}.unaligned.log",
     conda:
         "../../environments/star.yml"
-    # group:
-    #     "preprocess__{sample_id}.{library_id}"
+    group:
+        "{sample_id}.{library_id}"
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),

@@ -4,10 +4,10 @@ include: "bowtie2_functions.smk"
 rule quantify__bowtie2__build:
     """Build bowtie2 index for the mags"""
     input:
-        ref=QUANT_MAGS / "{mag_catalogue}.fa.gz",
+        ref=MAGS / "{mag_catalogue}.fa.gz",
     output:
         multiext(
-            str(QUANT_INDEX / "{mag_catalogue}"),
+            str(BOWTIE2_INDEX / "{mag_catalogue}"),
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -16,14 +16,13 @@ rule quantify__bowtie2__build:
             ".rev.2.bt2",
         ),
     log:
-        QUANT_INDEX / "{mag_catalogue}.log",
+        BOWTIE2_INDEX / "{mag_catalogue}.log",
     conda:
         "../../environments/bowtie2.yml"
     params:
         extra=params["quantify"]["bowtie2"]["extra"],
     retries: 5
     threads: 24
-    cache: "omit-software"
     resources:
         mem_mb=double_ram(32 * 1024),
         runtime=6 * 60,
@@ -35,7 +34,7 @@ rule quantify__bowtie2__build__all:
     """Build all the bowtie2 indexes"""
     input:
         [
-            QUANT_INDEX / f"{mag_catalogue}.{extension}"
+            BOWTIE2_INDEX / f"{mag_catalogue}.{extension}"
             for mag_catalogue in MAG_CATALOGUES
             for extension in [
                 "1.bt2",
@@ -54,10 +53,10 @@ rule quantify__bowtie2__map:
     Output SAM file is piped to samtools sort to generate a CRAM file.
     """
     input:
-        forward_=PRE_CLEAN / "{sample_id}.{library_id}_1.fq.gz",
-        reverse_=PRE_CLEAN / "{sample_id}.{library_id}_2.fq.gz",
+        forward_=CLEAN / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=CLEAN / "{sample_id}.{library_id}_2.fq.gz",
         bowtie2_index=multiext(
-            str(QUANT_INDEX / "{mag_catalogue}"),
+            str(BOWTIE2_INDEX / "{mag_catalogue}"),
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -66,9 +65,9 @@ rule quantify__bowtie2__map:
             ".rev.2.bt2",
         ),
     output:
-        bam=QUANT_BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
+        bam=BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.bam",
     log:
-        QUANT_BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
+        BOWTIE2 / "{mag_catalogue}" / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/bowtie2.yml"
     params:
@@ -76,7 +75,7 @@ rule quantify__bowtie2__map:
         samtools_mem=params["quantify"]["bowtie2"]["samtools"]["mem_per_thread"],
         rg_id=compose_rg_id,
         rg_extra=compose_rg_extra,
-        prefix=lambda w: QUANT_INDEX / w.mag_catalogue,
+        prefix=lambda w: BOWTIE2_INDEX / w.mag_catalogue,
     threads: 24
     resources:
         mem_mb=double_ram(32 * 1024),
@@ -104,7 +103,7 @@ rule quantify__bowtie2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
-            QUANT_BOWTIE2 / mag_catalogue / f"{sample_id}.{library_id}.bam"
+            BOWTIE2 / f"{mag_catalogue}" / f"{sample_id}.{library_id}.bam"
             for sample_id, library_id in SAMPLE_LIBRARY
             for mag_catalogue in MAG_CATALOGUES
         ],

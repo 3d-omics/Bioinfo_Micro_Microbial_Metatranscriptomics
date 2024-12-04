@@ -10,14 +10,10 @@ min_version("8.0")
 import pandas as pd
 import yaml
 
-
 # Import configuration files
-configfile: "config/config.yml"
-
-
-samples = pd.read_table(config["samples"], comment="#", dtype="str")
-features = yaml.load(open(config["features"], "r"), Loader=yaml.SafeLoader)
-params = yaml.load(open(config["params"], "r"), Loader=yaml.SafeLoader)
+params = yaml.load(open("config/params.yml", "r"), Loader=yaml.SafeLoader)
+features = yaml.load(open("config/features.yml", "r"), Loader=yaml.SafeLoader)
+samples = pd.read_table("config/samples.tsv", comment="#", dtype="str")
 
 # Generate useful variables
 SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
@@ -29,6 +25,8 @@ KRAKEN2_DBS = (
     else list(features["databases"]["kraken2"].keys())
 )
 MAG_CATALOGUES = features["mag_catalogues"]
+COVERM_GENOME_METHODS = params["quantify"]["coverm"]["genome"]["methods"]
+COVERM_CONTIG_METHODS = params["quantify"]["coverm"]["contig"]["methods"]
 HOST_NAMES = [] if features["hosts"] is None else list(features["hosts"].keys())
 LAST_HOST = HOST_NAMES[-1] if len(HOST_NAMES) > 0 else None
 
@@ -37,7 +35,7 @@ module helpers:
     snakefile:
         github("jlanga/snakehelpers", path="workflow/Snakefile", branch="main")
     config:
-        config
+        params
 
 
 use rule * from helpers as helpers__*
@@ -53,16 +51,5 @@ include: "rules/quantify.smk"
 rule all:
     """Default pipeline"""
     input:
-        rules.preprocess__multiqc__all.input,
-        rules.preprocess__kraken2__all.input,
-        rules.quantify__multiqc__all.input,
-        rules.quantify__subread__all.input,
-
-
-rule cache:
-    """Run only the stuff that will be cached. Run this inside a slurm job"""
-    input:
-        rules.preprocess__hosts__all.input,
-        rules.preprocess__star__index__all.input,
-        rules.quantify__mags__all.input,
-        rules.quantify__bowtie2__build__all.input,
+        rules.preprocess__all.input,
+        rules.quantify__all.input,

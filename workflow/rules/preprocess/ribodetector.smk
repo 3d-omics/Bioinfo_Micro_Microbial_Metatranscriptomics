@@ -4,13 +4,13 @@ rule preprocess__ribodetector__cpu:
     ribodetector filters out rRNA reads from a library
     """
     input:
-        forward_=PRE_FASTP / "{sample_id}.{library_id}_1.fq.gz",
-        reverse_=PRE_FASTP / "{sample_id}.{library_id}_2.fq.gz",
+        forward_=FASTP / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=FASTP / "{sample_id}.{library_id}_2.fq.gz",
     output:
-        forward_=temp(PRE_RIBODETECTOR / "{sample_id}.{library_id}_1.fq.gz"),
-        reverse_=temp(PRE_RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz"),
+        forward_=RIBODETECTOR / "{sample_id}.{library_id}_1.fq.gz",
+        reverse_=RIBODETECTOR / "{sample_id}.{library_id}_2.fq.gz",
     log:
-        PRE_RIBODETECTOR / "{sample_id}.{library_id}.log",
+        RIBODETECTOR / "{sample_id}.{library_id}.log",
     conda:
         "../../environments/ribodetector.yml"
     params:
@@ -42,7 +42,7 @@ rule preprocess__ribodetector__cpu__all:
     """Run ribodetector_find_one over all libraries"""
     input:
         [
-            PRE_RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
+            RIBODETECTOR / f"{sample_id}.{library_id}_{end}.fq.gz"
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],
@@ -51,7 +51,7 @@ rule preprocess__ribodetector__cpu__all:
 rule preprocess__ribodetector__fastqc__all:
     input:
         [
-            PRE_RIBODETECTOR / f"{sample_id}.{library_id}_{end}_fastqc.zip"
+            RIBODETECTOR / f"{sample_id}.{library_id}_{end}_fastqc.zip"
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],
