@@ -53,7 +53,7 @@ rule quantify__subread__join:
         subcommand="join",
         extra="--left-join --tabs --out-tabs",
     resources:
-        mem_mb=4 * 1024,
+        mem_mb=32 * 1024,
     wrapper:
         "v5.2.1/utils/csvtk"
 
