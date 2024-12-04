@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.4.0](https://github.com/3d-omics/mt_quant/compare/v1.3.0...v1.4.0) (2024-12-04)
+
+
+### Features
+
+* add slurm, cache, test scripts ([4ab571f](https://github.com/3d-omics/mt_quant/commit/4ab571feea25d49cdc85dcc1be2f0b98b722e30f))
+* bracken ([8183326](https://github.com/3d-omics/mt_quant/commit/8183326760c5a1cc6e605d6482a7d10883f18763))
+* cache rule ([e7ac7bd](https://github.com/3d-omics/mt_quant/commit/e7ac7bd211bf1806191ca14282f02c5934db050e))
+* configfile ([ebac6c0](https://github.com/3d-omics/mt_quant/commit/ebac6c0c678307df2f506af7bc9be0e550ee14dd))
+* do bracken on all taxonomic levels, only show species in multiqc ([d8efee3](https://github.com/3d-omics/mt_quant/commit/d8efee335a5ba8a613eef7b741dcf4f4ac80b009))
+* get the aggregated counts directly from subread ([7f8900e](https://github.com/3d-omics/mt_quant/commit/7f8900e281dc46356f46270f71b2476be7b89a47))
+* use col1 and col2 to see if it reduces ram usage ([2f527c2](https://github.com/3d-omics/mt_quant/commit/2f527c23406c0facc472e6b0ca2b9c4776f29fe0))
+* use subread from wrappers ([e9971d8](https://github.com/3d-omics/mt_quant/commit/e9971d830237348498a0746536168dc81c90f8e5))
+
+
+### Bug Fixes
+
+* add all the bracken files to the copy in /dev/shm ([c4df691](https://github.com/3d-omics/mt_quant/commit/c4df6917a798b304b4d7fd8c5a916b08fcd896a8))
+* dont use slurm within slurm , dumbass ([acf4c57](https://github.com/3d-omics/mt_quant/commit/acf4c579fb3638f49c82be70866d2ecf54d10440))
+* get the correct featurecounts file ([a2beada](https://github.com/3d-omics/mt_quant/commit/a2beada0c3785b66b720cce0c89456ecc2c0df55))
+* handle manually subread sample renaming; corner case in csvtk ([0a15ae8](https://github.com/3d-omics/mt_quant/commit/0a15ae848f50e1bf3fb198bd34830d23cb497c59))
+* put clean in the preprocess group ([24be3b8](https://github.com/3d-omics/mt_quant/commit/24be3b86f13b71422aad07a8f411e243bfff212d))
+* put fastq in the correct group ([e6a3462](https://github.com/3d-omics/mt_quant/commit/e6a34626d6ad9cab0794af9ab4960fcd29e4d728))
+* put slurm executor ([f4b65f6](https://github.com/3d-omics/mt_quant/commit/f4b65f66fec74287ed559ea5997f1b2088d81da6))
+* put tmp folders for index and map ([a3c11ab](https://github.com/3d-omics/mt_quant/commit/a3c11abbb3efb85bd7d73211a6b8275a10703d8c))
+* remove more mentions to coverm ([900e667](https://github.com/3d-omics/mt_quant/commit/900e6678e3cee404195ff3c2d2c27f1ef849d2b8))
+* remove tmp dirs if they exist ([ccf4e09](https://github.com/3d-omics/mt_quant/commit/ccf4e094bf3c8f2fc8b7821edd21700b41249904))
+* rerun incomplete ([99941d1](https://github.com/3d-omics/mt_quant/commit/99941d10d326b67bff1e58ab7ff01251ba70066f))
+* undo bracken copy ([47f72eb](https://github.com/3d-omics/mt_quant/commit/47f72ebc463093037ff202db18801c375fb68d9a))
+* use proper featurecounts file ([d76c680](https://github.com/3d-omics/mt_quant/commit/d76c68058a50814728863d866cc7678cd4b4d75e))
+
+
+### Performance Improvements
+
+* cache but omit software versions ([09eb311](https://github.com/3d-omics/mt_quant/commit/09eb3112d874f7a09a7101a62d5eefed3e8c8174))
+* disable groups ([6d17ce8](https://github.com/3d-omics/mt_quant/commit/6d17ce88c3a7c277b016a51b17084aead5daf505))
+* double ram on subread join ([f3c356f](https://github.com/3d-omics/mt_quant/commit/f3c356f315284489e64020ac5d4bf7af6d47b116))
+* put reads in a group and disable localrule ([e7c2ad7](https://github.com/3d-omics/mt_quant/commit/e7c2ad7d3d6fa1195cbd4e455f66a91c0b37bdf6))
+* raise ram to tsv join ([a06dcad](https://github.com/3d-omics/mt_quant/commit/a06dcad6128df5bd0ca7fb8dd55d3023de731fae))
+* **subread:** raise ram to 4GB ([b0ea99a](https://github.com/3d-omics/mt_quant/commit/b0ea99a72b2e2264e4fdd3fe63f5ffe29abea477))
+
 ## [1.3.0](https://github.com/3d-omics/mt_quant/compare/v1.2.0...v1.3.0) (2024-11-29)
 
 
