@@ -52,7 +52,6 @@ rule preprocess__kraken2__assign:
                 --chmod u+rw \
                 --chown $(id --user):$(id --group) \
                 {input.database}/*.k2d \
-                {input.database}/*.kmer_distrib \
                 /dev/shm/{params.kraken_db_name} \
             2>> {log} 1>&2
 
